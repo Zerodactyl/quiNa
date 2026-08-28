@@ -1511,6 +1511,12 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val tabStyleStroke =
+        addConfig(
+            "TabStyleStroke",
+            ConfigItem.configTypeBool,
+            false
+        )
 
     private fun addConfig(
         k: String,

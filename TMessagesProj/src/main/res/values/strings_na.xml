@@ -384,4 +384,6 @@
     <string name="HideFadeView">Hide top and bottom fade gradients</string>
     <string name="ReduceMenuMotion">Reduce popup menu animation delay</string>
     <string name="DisableSaveDraftToCloud">Do not sync message drafts to cloud</string>
+    <string name="ForceVideoNewRewindMethod">Force video use new seek method</string>
+    <string name="TabStyleStroke">Tab indicator outline</string>
 </resources>
