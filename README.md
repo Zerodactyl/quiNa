@@ -233,9 +233,6 @@ If you experience a *crash*, you also need to click on the version number at the
 
 quiNa is based on Nagram and Telegram, thus most locales follow the translations of Telegram for Android, checkout <https://translations.telegram.org/en/android/>.
 
-Is quiNa not in your language, or the translation is incorrect or incomplete? Get involved in the translations on our [Crowdin](https://crowdin.com/project/quina) *(or Telegram translations)*.
-
-
 ## Thanks
 
 - [Nagram](https://github.com/NextAlone/Nagram)
@@ -247,5 +244,5 @@ Is quiNa not in your language, or the translation is incorrect or incomplete? Ge
 - [Nullgram](https://github.com/qwq233/Nullgram)
 - [TeleTux](https://github.com/TeleTux/TeleTux)
 - [OwlGram](https://github.com/OwlGramDev/OwlGram)
-- [@uzbekreleases](https://github.com/uzbekreleases)
+- [@uzbekreleases](https://t.me/uzbekreleases)
 - [uzbekgram](https://github.com/rastroco-labs/uzbekgram)
