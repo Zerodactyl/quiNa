@@ -169,6 +169,18 @@ object NaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val formatTimeWithSeconds =
+        addConfig(
+            "FormatTimeWithSeconds",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val autoQuoteReplies =
+        addConfig(
+            "AutoQuoteReplies",
+            ConfigItem.configTypeBool,
+            false
+        )
     val customTitle =
         addConfig(
             "CustomTitle",
@@ -1390,6 +1402,12 @@ object NaConfig {
             "FullSensorRoundVideo",
             ConfigItem.configTypeBool,
             true
+        )
+    val hideGreetingSticker =
+        addConfig(
+            "HideGreetingSticker",
+            ConfigItem.configTypeBool,
+            false
         )
     val m3ExpressiveProgress =
         addConfig(

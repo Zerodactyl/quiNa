@@ -15432,7 +15432,12 @@ public class ChatActivity extends BaseFragment implements
     }
 
     public void showFieldPanelForReply(MessageObject messageObjectToReply) {
-        showFieldPanel(true, messageObjectToReply, null, null, null, true, 0, null, false, 0, true);
+        ReplyQuote quote = null;
+        if (NaConfig.INSTANCE.getAutoQuoteReplies().Bool() && messageObjectToReply != null) {
+            quote = ReplyQuote.from(messageObjectToReply);
+            if (quote != null && !quote.isValid()) quote = null;
+        }
+        showFieldPanel(true, messageObjectToReply, null, null, null, true, 0, quote, false, 0, true);
     }
 
     private Runnable onHideFieldPanelRunnable;

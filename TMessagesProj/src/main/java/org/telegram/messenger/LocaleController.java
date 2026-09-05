@@ -64,6 +64,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import tw.nekomimi.nekogram.NekoConfig;
+import xyz.nextalone.nagram.NaConfig;
 import tw.nekomimi.nekogram.parts.LocFiltersKt;
 import tw.nekomimi.nekogram.shamsicalendar.PersianDate;
 import tw.nekomimi.nekogram.utils.FileUtil;
@@ -87,7 +88,6 @@ public class LocaleController {
     }
 
     public static boolean is24HourFormat = false;
-
     private volatile FastDateFormat formatterDay;
     public FastDateFormat getFormatterDay() {
         if (formatterDay == null) {
@@ -99,7 +99,7 @@ public class LocaleController {
                         lang = "en";
                     }
                     lang = lang.toLowerCase();
-                    formatterDay = createFormatter(lang.toLowerCase().equals("ar") || lang.toLowerCase().equals("ko") ? locale : Locale.US, (is24HourFormat ? getStringInternal("formatterDay24H", R.string.formatterDay24H) : getStringInternal("formatterDay12H", R.string.formatterDay12H)).replace(":mm", NekoConfig.showSeconds.Bool() ? ":mm:ss" : ":mm"), (is24HourFormat ? "HH:mm" : "h:mm a").replace(":mm", NekoConfig.showSeconds.Bool() ? ":mm:ss" : ":mm"));
+                    formatterDay = createFormatter(lang.toLowerCase().equals("ar") || lang.toLowerCase().equals("ko") ? locale : Locale.US, (is24HourFormat ? getStringInternal("formatterDay24H", R.string.formatterDay24H) : getStringInternal("formatterDay12H", R.string.formatterDay12H)).replace(":mm", (NekoConfig.showSeconds.Bool() || NaConfig.INSTANCE.getFormatTimeWithSeconds().Bool()) ? ":mm:ss" : ":mm"), (is24HourFormat ? "HH:mm" : "h:mm a").replace(":mm", (NekoConfig.showSeconds.Bool() || NaConfig.INSTANCE.getFormatTimeWithSeconds().Bool()) ? ":mm:ss" : ":mm"));
                 }
             }
         }
@@ -135,7 +135,7 @@ public class LocaleController {
                         lang = "en";
                     }
                     lang = lang.toLowerCase();
-                    formatterConstDay = createFormatter(lang.toLowerCase().equals("ar") || lang.toLowerCase().equals("ko") ? locale : Locale.US, (is24HourFormat ? "HH:mm" : "h:mm a").replace(":mm", NekoConfig.showSeconds.Bool() ? ":mm:ss" : ":mm"), (is24HourFormat ? "HH:mm" : "h:mm a").replace(":mm", NekoConfig.showSeconds.Bool() ? ":mm:ss" : ":mm"));
+                    formatterConstDay = createFormatter(lang.toLowerCase().equals("ar") || lang.toLowerCase().equals("ko") ? locale : Locale.US, (is24HourFormat ? "HH:mm" : "h:mm a").replace(":mm", (NekoConfig.showSeconds.Bool() || NaConfig.INSTANCE.getFormatTimeWithSeconds().Bool()) ? ":mm:ss" : ":mm"), (is24HourFormat ? "HH:mm" : "h:mm a").replace(":mm", (NekoConfig.showSeconds.Bool() || NaConfig.INSTANCE.getFormatTimeWithSeconds().Bool()) ? ":mm:ss" : ":mm"));
                 }
             }
         }

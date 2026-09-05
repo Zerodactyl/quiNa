@@ -115,6 +115,7 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
     private final AbstractConfigCell showEditedIconRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowEditedIcon()));
     private final AbstractConfigCell customEditedMessageRow = cellGroup.appendCell(new ConfigCellTextInput(null, NaConfig.INSTANCE.getCustomEditedMessage(), "", null));
     private final AbstractConfigCell showServicesTime = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowServicesTime()));
+    private final AbstractConfigCell autoQuoteRepliesRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getAutoQuoteReplies()));
 //    private final AbstractConfigCell combineMessageRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NaConfig.INSTANCE.getCombineMessage(), new String[]{
 //            LocaleController.getString("combineMessageEnabledWithReply", R.string.CombineMessageEnabledWithReply),
 //            LocaleController.getString("combineMessageEnabled", R.string.CombineMessageEnabled),

@@ -369,4 +369,7 @@
     <string name="M3SectionCards">M3 section cards</string>
     <string name="M3GlassMenu">M3 glass menu</string>
     <string name="DisableQuoteForward">Disable Quote Forward</string>
+    <string name="HideGreetingSticker">Hide greeting sticker</string>
+    <string name="FormatTimeWithSeconds">Show seconds in time</string>
+    <string name="AutoQuoteReplies">Auto quote replies</string>
 </resources>

@@ -50,6 +50,7 @@ import org.telegram.ui.Stories.recorder.HintView2;
 import java.util.Locale;
 
 import tw.nekomimi.nekogram.NekoConfig;
+import xyz.nextalone.nagram.NaConfig;
 
 public class ChatGreetingsView extends LinearLayout {
 
@@ -243,7 +244,7 @@ public class ChatGreetingsView extends LinearLayout {
     }
 
     private boolean getShowSticker() {
-        return !NekoConfig.dontSendGreetingSticker.Bool();
+        return !NekoConfig.dontSendGreetingSticker.Bool() && !NaConfig.INSTANCE.getHideGreetingSticker().Bool();
     }
 
     public void setSticker(TLRPC.Document sticker) {

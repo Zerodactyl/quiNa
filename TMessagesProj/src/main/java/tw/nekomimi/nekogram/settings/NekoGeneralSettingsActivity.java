@@ -308,6 +308,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     }, null));
     private final AbstractConfigCell usePersianCalendarRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.usePersianCalendar, LocaleController.getString("UsePersiancalendarInfo")));
     private final AbstractConfigCell displayPersianCalendarByLatinRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.displayPersianCalendarByLatin));
+    private final AbstractConfigCell formatTimeWithSecondsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getFormatTimeWithSeconds()));
+    private final AbstractConfigCell hideGreetingStickerRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getHideGreetingSticker()));
     private final AbstractConfigCell divider7 = cellGroup.appendCell(new ConfigCellDivider());
 
     private final AbstractConfigCell headerPushService = cellGroup.appendCell(new ConfigCellHeader(LocaleController.getString("Notifications", R.string.Notifications)));
