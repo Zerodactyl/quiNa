@@ -251,4 +251,6 @@ quiNa is based on Nagram and Telegram, thus most locales follow the translations
 - [TeleTux](https://github.com/TeleTux/TeleTux)
 - [OwlGram](https://github.com/OwlGramDev/OwlGram)
 - [@uzbekreleases](https://t.me/uzbekreleases)
+- [OctoGram](https://github.com/OctoGramApp/OctoGram)
+- [Cherrygram](https://github.com/arslan4k1390/Cherrygram)
 - [uzbekgram](https://github.com/rastroco-labs/uzbekgram)
