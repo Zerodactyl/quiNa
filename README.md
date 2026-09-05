@@ -18,6 +18,9 @@ identity belong to [@NextAlone](https://github.com/NextAlone).
 2. Match message filters against link URLs (thanks to exteraless)
 3. Quick read reactions on long-click (thanks to exteraless)
 4. Bottom bar settings tab long-press shortcuts menu (thanks to NagramXF)
+5. Strip tracking parameters from links
+6. Add comma after mention (thanks to @uzbekreleases)
+7. Full sensor round videos (thanks to exteraless)
 
 ----
 
@@ -243,3 +246,4 @@ Is quiNa not in your language, or the translation is incorrect or incomplete? Ge
 - [Nullgram](https://github.com/qwq233/Nullgram)
 - [TeleTux](https://github.com/TeleTux/TeleTux)
 - [OwlGram](https://github.com/OwlGramDev/OwlGram)
+- [@uzbekreleases](https://github.com/uzbekreleases)

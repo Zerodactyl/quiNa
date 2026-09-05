@@ -1367,6 +1367,24 @@ object NaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val cleanTrackingParams =
+        addConfig(
+            "CleanTrackingParams",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val addCommaAfterMention =
+        addConfig(
+            "AddCommaAfterMention",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val fullSensorRoundVideo =
+        addConfig(
+            "FullSensorRoundVideo",
+            ConfigItem.configTypeBool,
+            true
+        )
 
     private fun addConfig(
         k: String,

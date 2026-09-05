@@ -361,4 +361,7 @@
     <string name="FilterMatchLinks">Match filters against link URLs</string>
     <string name="QuickReadReactionsOnLongClick">Mark reactions as read on long click</string>
     <string name="BottomBarSettingsLongPress">Long-press settings tab menu</string>
+    <string name="CleanTrackingParams">Strip tracking parameters from links</string>
+    <string name="AddCommaAfterMention">Add comma after mention</string>
+    <string name="FullSensorRoundVideo">Full sensor round videos</string>
 </resources>

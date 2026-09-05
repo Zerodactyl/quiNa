@@ -36,6 +36,7 @@ import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
+import xyz.nextalone.nagram.NaConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,6 +73,8 @@ public class Camera2Session {
     private CaptureRequest.Builder captureRequestBuilder;
     private Rect sensorSize;
     private float maxZoom = 1f;
+    private float minZoom = 1f;
+    private Range<Float> zoomRatioRange;
     private float currentZoom = 1f;
 
     private final Size previewSize;
@@ -196,6 +199,12 @@ public class Camera2Session {
             sensorSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
             final Float value = cameraCharacteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM);
             maxZoom = (value == null || value < 1f) ? 1f : value;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && NaConfig.INSTANCE.getFullSensorRoundVideo().Bool()) {
+                zoomRatioRange = cameraCharacteristics.get(CameraCharacteristics.CONTROL_ZOOM_RATIO_RANGE);
+                if (zoomRatioRange != null) {
+                    minZoom = zoomRatioRange.getLower();
+                }
+            }
             cameraManager.openCamera(cameraId, cameraStateCallback, handler);
         } catch (Exception e) {
             FileLog.e(e);
@@ -345,7 +354,7 @@ public class Camera2Session {
         if (!isInitiated()) return;
         if (captureRequestBuilder == null || cameraDevice == null || sensorSize == null) return;
 
-        currentZoom = Utilities.clamp(value, maxZoom, 1f);
+        currentZoom = Utilities.clamp(value, maxZoom, minZoom);
         updateCaptureRequest();
 
         try {
@@ -375,8 +384,7 @@ public class Camera2Session {
     }
 
     public float getMinZoom() {
-        // TODO: support wide zoom camera switching
-        return 1f;
+        return minZoom;
     }
 
     public int getPreviewWidth() {
@@ -494,7 +502,9 @@ public class Camera2Session {
                 captureRequestBuilder.set(CaptureRequest.CONTROL_CAPTURE_INTENT, CaptureRequest.CONTROL_CAPTURE_INTENT_VIDEO_RECORD);
             }
 
-            if (sensorSize != null && Math.abs(currentZoom - 1f) >= 0.01f) {
+            if (zoomRatioRange != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && NaConfig.INSTANCE.getFullSensorRoundVideo().Bool()) {
+                captureRequestBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, currentZoom);
+            } else if (sensorSize != null && Math.abs(currentZoom - 1f) >= 0.01f) {
                 final int centerX = sensorSize.width() / 2;
                 final int centerY = sensorSize.height() / 2;
                 final int deltaX = (int) ((0.5f * sensorSize.width()) / currentZoom);

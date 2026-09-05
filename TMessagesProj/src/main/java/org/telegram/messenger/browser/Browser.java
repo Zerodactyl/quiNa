@@ -303,6 +303,7 @@ public class Browser {
         if (context == null || uri == null) {
             return;
         }
+        uri = Uri.parse(tw.nekomimi.nekogram.helpers.UrlCleanerHelper.cleanUrl(uri.toString()));
         final int currentAccount = UserConfig.selectedAccount;
         boolean[] forceBrowser = new boolean[]{false};
         boolean internalUri = isInternalUri(uri, forceBrowser);
