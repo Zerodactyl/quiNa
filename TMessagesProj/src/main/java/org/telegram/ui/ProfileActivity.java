@@ -4833,7 +4833,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     updateListAnimated(false);
                 });
                 o.add(R.drawable.msg_retry, LocaleController.getString(R.string.SwitchVersion), () -> {
-                    Browser.openUrl(ProfileActivity.this.getParentActivity(), "https://github.com/NextAlone/Nagram/releases");
+                    Browser.openUrl(ProfileActivity.this.getParentActivity(), "https://git.disroot.org/armaltheus/quiNa/releases");
                 });
 
                 o.add(R.drawable.msg_search, LocaleController.getString(R.string.CheckUpdate), () -> {
@@ -15460,11 +15460,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     new SearchResult(403, getString(R.string.TelegramFAQ), getString(R.string.SettingsHelp), R.drawable.msg2_help, () -> Browser.openUrl(f.getParentActivity(), getString(R.string.TelegramFaqUrl))).withLink("tg://settings/faq"),
                     new SearchResult(404, getString(R.string.PrivacyPolicy), getString(R.string.SettingsHelp), R.drawable.msg2_help, () -> Browser.openUrl(f.getParentActivity(), getString(R.string.PrivacyPolicyUrl))).withLink("tg://settings/privacy-policy"),
             };
-            ArrayList<SettingsSearchResult> nagramSettings = SettingsHelper.onCreateSearchArray(
+            ArrayList<SettingsSearchResult> quinaSettings = SettingsHelper.onCreateSearchArray(
                     fragment -> AndroidUtilities.runOnUIThread(() -> f.presentFragment(fragment, false, false))
             );
             ArrayList<SearchResult> list = new ArrayList<>();
-            for (SettingsSearchResult oldResult: nagramSettings) {
+            for (SettingsSearchResult oldResult: quinaSettings) {
                 SearchResult result = new SearchResult(
                     oldResult.guid, oldResult.searchTitle, null, oldResult.path1, oldResult.path2, oldResult.iconResId, oldResult.openRunnable
                 );

@@ -66,7 +66,7 @@ public class NekoDebugSettingsActivity extends BaseNekoXSettingsActivity {
     // 切换版本
     private final AbstractConfigCell switchVersionRow = cellGroup.appendCell(new ConfigCellText("SwitchVersion", () -> {
         if (getParentActivity() == null) return;
-        Browser.openUrl(getParentActivity(), "https://github.com/NextAlone/Nagram/releases");
+        Browser.openUrl(getParentActivity(), "https://git.disroot.org/armaltheus/quiNa/releases");
     }));
 
     // 检查更新

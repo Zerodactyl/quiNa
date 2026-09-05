@@ -4076,7 +4076,7 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                     if (url == null) return false;
                     Uri uriNew = Uri.parse(url);
 
-                    // ----- Nagram Hook start -----
+                    // ----- quiNa Hook start -----
                     String urlPatternStr = NaConfig.INSTANCE.getOpenUrlOutBotWebViewRegex().String();
                     if (botWebViewContainer != null && !urlPatternStr.isEmpty()) {
                         Pattern urlPattern = Pattern.compile(urlPatternStr, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
@@ -4086,7 +4086,7 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                             return true;
                         }
                     }
-                    // ----- Nagram Hook end -----
+                    // ----- quiNa Hook end -----
 
                     if (url.trim().startsWith("sms:")) {
                         return false;

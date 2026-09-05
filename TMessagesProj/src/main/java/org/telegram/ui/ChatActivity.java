@@ -32797,7 +32797,7 @@ public class ChatActivity extends BaseFragment implements
                     }
                 }
 
-                // === Strip hidden options before building popup (Nagram) ===
+                // === Strip hidden options before building popup (quiNa) ===
                 for (int a = items.size() - 1; a >= 0; a--) {
                     if (MessageMenuCompact.isHidden(options.get(a))) {
                         items.remove(a);
@@ -32805,7 +32805,7 @@ public class ChatActivity extends BaseFragment implements
                         icons.remove(a);
                     }
                 }
-                // === Compact icon bar pre-pass (Nagram) ===
+                // === Compact icon bar pre-pass (quiNa) ===
                 final HashSet<Integer> compactIndices = new HashSet<>();
                 for (int a = 0, N = items.size(); a < N; a++) {
                     if (MessageMenuCompact.isCompact(options.get(a))) {
@@ -36292,16 +36292,16 @@ public class ChatActivity extends BaseFragment implements
         if (channelHashtags || forcePublic || ChatObject.isChannelAndNotMegaGroup(currentChat) && ChatObject.isPublic(currentChat) && searchingHashtag != null) {
             defaultSearchPage = 2;
 
-//            ----- Nagram Hook Start -----
+//            ----- quiNa Hook Start -----
             defaultSearchPage = NaConfig.INSTANCE.getSearchHashtagDefaultPageChannel().Int();
-//            ----- Nagram Hook End -----
+//            ----- quiNa Hook End -----
 
         } else {
             defaultSearchPage = 0;
 
-//            ----- Nagram Hook Start -----
+//            ----- quiNa Hook Start -----
             defaultSearchPage = NaConfig.INSTANCE.getSearchHashtagDefaultPageChat().Int();
-//            ----- Nagram Hook End -----
+//            ----- quiNa Hook End -----
 
         }
         openSearchKeyboard = false;
@@ -46674,7 +46674,7 @@ public class ChatActivity extends BaseFragment implements
         ).setDuration(8000).show(true);
     }
 
-    interface NagramCopyMesage {
+    interface QuiNaCopyMesage {
         void run(int isCopy);
     }
 
@@ -46746,7 +46746,7 @@ public class ChatActivity extends BaseFragment implements
             });
         }
 
-        NagramCopyMesage run1 = (int isCopy) -> {
+        QuiNaCopyMesage run1 = (int isCopy) -> {
             String urlFinal = str;
             if (str.startsWith("video?") && messageObject != null && !messageObject.scheduled) {
                 MessageObject messageObject1 = messageObject;
@@ -46824,7 +46824,7 @@ public class ChatActivity extends BaseFragment implements
         options.add(R.drawable.msg_copy, getString(isHashtag ? R.string.CopyHashtag : isMail ? R.string.CopyMail : R.string.CopyLink), () -> {
             run1.run(1);
         });
-//        ----- Nagram Hook start -----
+//        ----- quiNa Hook start -----
         options.add(R.drawable.wallet_qr, getString(R.string.ShareQRCode), () -> {
             // QRCode
             ProxyUtil.showQrDialog(getParentActivity(), str);
@@ -46837,7 +46837,7 @@ public class ChatActivity extends BaseFragment implements
             // ShareMessage
             run1.run(2);
         });
-//        ----- Nagram Hook end -----
+//        ----- quiNa Hook end -----
 
         if (inAppBrowser && !isHashtag && !isMail && !str.startsWith("tg:")) {
             options.add(R.drawable.outline_saved_24, getString(R.string.WebBookmarkAdd), () -> {

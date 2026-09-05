@@ -7343,7 +7343,7 @@ public class MediaDataController extends BaseController {
             entities.add(entity);
         }
 
-        // Nagram: call new markdown parser before processing Spanned
+        // quiNa: call new markdown parser before processing Spanned
         if (!xyz.nextalone.nagram.NaConfig.INSTANCE.getDisableMarkdown().Bool() && xyz.nextalone.nagram.NaConfig.INSTANCE.getNewMarkdownParser().Bool() && parseMarkdown) {
             xyz.nextalone.nagram.helper.EntitiesHelper.parseMarkdown(message, allowStrike);
         }
@@ -7539,7 +7539,7 @@ public class MediaDataController extends BaseController {
         CharSequence cs = message[0];
         if (entities == null) entities = new ArrayList<>();
         if (parseMarkdown) {
-            // Nagram: skip old regex parsing when using new parser or markdown disabled
+            // quiNa: skip old regex parsing when using new parser or markdown disabled
             if (xyz.nextalone.nagram.NaConfig.INSTANCE.getNewMarkdownParser().Bool() || xyz.nextalone.nagram.NaConfig.INSTANCE.getDisableMarkdown().Bool()) return entities;
             cs = parsePattern(cs, BOLD_PATTERN, entities, obj -> new TLRPC.TL_messageEntityBold());
             cs = parsePattern(cs, ITALIC_PATTERN, entities, obj -> new TLRPC.TL_messageEntityItalic());

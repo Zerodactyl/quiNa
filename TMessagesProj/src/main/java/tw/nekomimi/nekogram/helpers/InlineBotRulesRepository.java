@@ -1,5 +1,5 @@
 /*
- * Nagram - Inline Bot Rules dual-track repository.
+ * quiNa - Inline Bot Rules dual-track repository.
  *
  * Bridges remote (read-only, from InlineBotRulesHelper) and
  * local (full CRUD, persisted via NaConfig) rule lists,

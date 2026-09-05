@@ -491,7 +491,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         versionView.setGravity(Gravity.CENTER);
         versionView.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_ALL));
         versionView.setOnClickListener(v -> {
-            openNagramDebugMenu(v);
+            openQuiNaDebugMenu(v);
         });
         versionView.setOnLongClickListener(v -> {
             versionViewPressCount++;
@@ -1447,7 +1447,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         }
     }
 
-    public void openNagramDebugMenu(View view) {
+    public void openQuiNaDebugMenu(View view) {
         ItemOptions o = ItemOptions.makeOptions(this, view);
         o.setScrimViewBackground(listView.getClipBackground(view));
 
@@ -1464,7 +1464,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             listView.adapter.update(true);
         });
         o.add(R.drawable.msg_retry, LocaleController.getString(R.string.SwitchVersion), () -> {
-            Browser.openUrl(getContext(), "https://github.com/NextAlone/Nagram/releases");
+            Browser.openUrl(getContext(), "https://git.disroot.org/armaltheus/quiNa/releases");
         });
 
         o.add(R.drawable.msg_search, LocaleController.getString(R.string.CheckUpdate), () -> {

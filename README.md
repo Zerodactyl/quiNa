@@ -1,22 +1,22 @@
-# Nagram
+# quiNa
 
-Nagram is a third-party Telegram client based on [NekoX](https://github.com/NekoX-Dev/NekoX) with some modifications.
+quiNa is a third-party Telegram client based on [Nagram](https://github.com/NextAlone/Nagram) / [NekoX](https://github.com/NekoX-Dev/NekoX) with some modifications.
 
 - Official Site: <https://nextalone.xyz>
 - Telegram Update Channel: <https://t.me/nagram_channel>
-- Releases: <https://github.com/NextAlone/Nagram/releases>
-- Issues here: <https://github.com/NextAlone/Nagram/issues>
+- Releases: <https://git.disroot.org/armaltheus/quiNa/releases>
+- Issues here: <https://git.disroot.org/armaltheus/quiNa/issues>
 
 ## Branding
 
-Nagram's source code is licensed under GPLv3. The Nagram name and project
+quiNa is a fork of Nagram. Nagram's source code is licensed under GPLv3. The Nagram name and project
 identity belong to [@NextAlone](https://github.com/NextAlone); the Nagram
 application icon artwork is copyright © MaitungTM. These are separate brand
 assets. Modified, forked, and third-party distributions must use distinct
 branding and replace the Nagram brand assets. See [BRANDING.md](BRANDING.md)
 for the complete policy.
 
-## Additional feature over Nagram
+## Additional features over Nagram
 
 1. Nice icon (copyright © MaitungTM)
 2. Combine message
@@ -203,7 +203,7 @@ Then, use base64 to encode the above.
 
 ## FAQ
 
-#### What is the differences between Nagram, NekoX and Nekogram?
+#### What is the differences between quiNa, Nagram, NekoX and Nekogram?
 
 Developed by different developers, read the feature list above to understand the differences.
 
@@ -223,14 +223,15 @@ If you experience a *crash*, you also need to click on the version number at the
 
 ## Localization
 
-Nagram is forked from Telegram, thus most locales follows the translations of Telegram for Android, checkout <https://translations.telegram.org/en/android/>.
+quiNa is based on Nagram and Telegram, thus most locales follow the translations of Telegram for Android, checkout <https://translations.telegram.org/en/android/>.
 
-Is Nagram not in your language, or the translation is incorrect or incomplete? Get involved in the translations on our [Weblate](https://xtaolabs.crowdin.com/nagram).
+Is quiNa not in your language, or the translation is incorrect or incomplete? Get involved in the translations on our [Weblate](https://xtaolabs.crowdin.com/nagram).
 
 [![Crowdin](https://badges.crowdin.net/e/156df3a631d257cc6b57301566d545fb/localized.svg)](https://xtaolabs.crowdin.com/nagram)
 
 ## Thanks
 
+- [Nagram](https://github.com/NextAlone/Nagram)
 - [NekoX](https://github.com/NekoX-Dev/NekoX)
 - [Nekogram](https://gitlab.com/Nekogram/Nekogram)
 - [Pigeongram](https://gitlab.com/JasonKhew96/Nekogram)

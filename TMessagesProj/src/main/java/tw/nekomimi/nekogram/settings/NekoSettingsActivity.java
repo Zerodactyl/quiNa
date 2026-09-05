@@ -112,7 +112,7 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
         } else if (position == channelTipsRow) {
             getMessagesController().openByUserName(channelUsernameTips, this, 1);
         } else if (position == sourceCodeRow) {
-            Browser.openUrl(getParentActivity(), "https://github.com/NextAlone/Nagram");
+            Browser.openUrl(getParentActivity(), "https://git.disroot.org/armaltheus/quiNa");
         } else if (position == translationRow) {
             Browser.openUrl(getParentActivity(), "https://xtaolabs.crowdin.com/nagram");
         } else if (position == datacenterRow) {

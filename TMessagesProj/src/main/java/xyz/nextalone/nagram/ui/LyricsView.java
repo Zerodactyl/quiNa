@@ -1,5 +1,5 @@
 /*
- * This is the source code of Nagram.
+ * This is the source code of quiNa.
  * It is licensed under GNU GPL v. 2 or later.
  *
  * Lyrics view for the in-app audio player.

@@ -18,16 +18,16 @@ class ReleaseCaptionTest(unittest.TestCase):
             "12.9.0",
             "1241",
             "abcdef123456",
-            "https://github.com/NextAlone/Nagram",
+            "https://git.disroot.org/armaltheus/quiNa",
         )
 
         self.assertIn(
-            "🧪 <b>Nagram</b> <code>12.9.0</code> <i>(1241)</i> · <b>Test Version</b>",
+            "🧪 <b>quiNa</b> <code>12.9.0</code> <i>(1241)</i> · <b>Test Version</b>",
             caption,
         )
         self.assertIn("✨ <b>Features</b>", caption)
         self.assertIn(
-            '<a href="https://github.com/NextAlone/Nagram/commit/abcdef123456">[abcdef1]</a>',
+            '<a href="https://git.disroot.org/armaltheus/quiNa/commit/abcdef123456">[abcdef1]</a>',
             caption,
         )
         self.assertIn("improve &lt;test&gt; notification", caption)
@@ -48,12 +48,12 @@ class ReleaseCaptionTest(unittest.TestCase):
             "12.9.0",
             "1241",
             "abcdef123456",
-            "https://github.com/NextAlone/Nagram",
+            "https://git.disroot.org/armaltheus/quiNa",
         )
 
         self.assertTrue(is_changelog_ignored(commit_message))
         self.assertEqual(
-            "🧪 <b>Nagram</b> <code>12.9.0</code> <i>(1241)</i> · <b>Test Version</b>",
+            "🧪 <b>quiNa</b> <code>12.9.0</code> <i>(1241)</i> · <b>Test Version</b>",
             caption,
         )
 
@@ -65,8 +65,8 @@ class ReleaseCaptionTest(unittest.TestCase):
             self.assertEqual("12.9.0", read_gradle_property("APP_VERSION_NAME", path))
             self.assertEqual("Unknown", read_gradle_property("APP_VERSION_CODE", path))
 
-    def test_reads_actual_nagram_version_from_apk_filename(self):
-        path = Path("Nagram-v12.9.0(1241)-arm64-v8a.apk")
+    def test_reads_actual_quina_version_from_apk_filename(self):
+        path = Path("quiNa-v12.9.0(1241)-arm64-v8a.apk")
 
         self.assertEqual(("12.9.0", 1241), read_apk_version(path))
 

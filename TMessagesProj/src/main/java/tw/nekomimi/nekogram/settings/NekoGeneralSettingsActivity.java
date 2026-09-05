@@ -229,7 +229,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     }, null));
     private final AbstractConfigCell notificationIconRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NaConfig.INSTANCE.getNotificationIcon(), new String[]{
             LocaleController.getString("Official", R.string.Official),
-            LocaleController.getString("Nagram", R.string.NekoX),
+            LocaleController.getString("quiNa", R.string.NekoX),
             LocaleController.getString("Nekogram", R.string.Nekogram)
     }, null));
     private final AbstractConfigCell tabletModeRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NekoConfig.tabletMode, new String[]{
