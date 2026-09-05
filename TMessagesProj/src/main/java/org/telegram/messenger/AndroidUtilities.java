@@ -150,13 +150,11 @@ import com.google.android.exoplayer2.util.Consumer;
 
 
 import org.telegram.PhoneFormat.PhoneFormat;
-import org.telegram.messenger.browser.Browser;
-import org.telegram.messenger.utils.CustomHtml;
-import org.telegram.messenger.utils.DebugRecordingCanvas;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.RequestTimeDelegate;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
+import xyz.nextalone.nagram.NaConfig;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.BottomSheet;
@@ -4015,6 +4013,9 @@ public class AndroidUtilities {
     }
 
     public static String formatCount(int count) {
+        if (NaConfig.INSTANCE.getDisableNumberRounding().Bool()) {
+            return String.valueOf(count);
+        }
         if (count < 1000) return Integer.toString(count);
 
         ArrayList<String> strings = new ArrayList<>();
@@ -4037,10 +4038,10 @@ public class AndroidUtilities {
 
         return stringBuilder.toString();
     }
-
-    public static final String[] numbersSignatureArray = {"", "K", "M", "B", "T", "P"};
-
     public static String formatWholeNumber(int v, int dif) {
+        if (NaConfig.INSTANCE.getDisableNumberRounding().Bool()) {
+            return String.valueOf(v);
+        }
         if (v == 0) {
             return "0";
         }

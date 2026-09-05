@@ -1433,6 +1433,18 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val disableNumberRounding =
+        addConfig(
+            "DisableNumberRounding",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val swipeMusicBar =
+        addConfig(
+            "SwipeMusicBar",
+            ConfigItem.configTypeBool,
+            false
+        )
 
     private fun addConfig(
         k: String,

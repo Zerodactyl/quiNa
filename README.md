@@ -253,4 +253,6 @@ quiNa is based on Nagram and Telegram, thus most locales follow the translations
 - [@uzbekreleases](https://t.me/uzbekreleases)
 - [OctoGram](https://github.com/OctoGramApp/OctoGram)
 - [Cherrygram](https://github.com/arslan4k1390/Cherrygram)
+- [Inugram](https://github.com/teidesu/inugram)
+- [Momogram](https://github.com/im030/Momogram)
 - [uzbekgram](https://github.com/rastroco-labs/uzbekgram)

@@ -372,4 +372,6 @@
     <string name="HideGreetingSticker">Hide greeting sticker</string>
     <string name="FormatTimeWithSeconds">Show seconds in time</string>
     <string name="AutoQuoteReplies">Auto quote replies</string>
+    <string name="DisableNumberRounding">Disable number rounding</string>
+    <string name="SwipeMusicBar">Swipe music bar to switch track</string>
 </resources>

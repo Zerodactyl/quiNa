@@ -109,6 +109,7 @@ import me.vkryl.android.animator.ReplaceAnimator;
 import me.vkryl.core.lambda.Destroyable;
 
 import tw.nekomimi.nekogram.NekoConfig;
+import xyz.nextalone.nagram.NaConfig;
 
 public class FragmentContextView extends FrameLayout implements NotificationCenter.NotificationCenterDelegate, VoIPService.StateListener, GroupCallMessagesController.CallMessageListener  {
     public final static int STYLE_NOT_SET = -1,
@@ -150,7 +151,9 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
     private RLottieImageView muteButton;
     private RLottieDrawable muteDrawable;
     private ImageView closeButton;
-    private ActionBarMenuItem playbackSpeedButton;
+    // quiNa: swipe music bar
+    private float swipeStartX;
+    private float swipeStartY;
     private SpeedIconDrawable speedIcon;
     private ActionBarMenuSlider.SpeedSlider speedSlider;
     private ActionBarMenuItem.Item[] speedItems = new ActionBarMenuItem.Item[6];
@@ -853,6 +856,37 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
                 fragment.showDialog(importingAlert);
                 checkImport(false);
             }
+        });
+
+        // quiNa: swipe music bar to switch track - isolated touch logic
+        setOnTouchListener((v, event) -> {
+            if (currentStyle != STYLE_AUDIO_PLAYER) {
+                return false;
+            }
+            if (!NaConfig.INSTANCE.getSwipeMusicBar().Bool()) {
+                return false;
+            }
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    swipeStartX = event.getX();
+                    swipeStartY = event.getY();
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL: {
+                    float dx = event.getX() - swipeStartX;
+                    float dy = event.getY() - swipeStartY;
+                    if (Math.abs(dx) > AndroidUtilities.dp(50) && Math.abs(dx) > Math.abs(dy)) {
+                        if (dx < 0) {
+                            MediaController.getInstance().playNextMessage();
+                        } else {
+                            MediaController.getInstance().playPreviousMessage();
+                        }
+                        return true;
+                    }
+                    break;
+                }
+            }
+            return false;
         });
 
         setLeftMargin(leftMargin);

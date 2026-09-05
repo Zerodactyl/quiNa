@@ -3092,7 +3092,7 @@ public class LocaleController {
     }
 
     public static String formatShortNumber(int number, int[] rounded) {
-        if (NekoConfig.disableNumberRounding.Bool()) {
+        if (NekoConfig.disableNumberRounding.Bool() || NaConfig.INSTANCE.getDisableNumberRounding().Bool()) {
             if (rounded != null) {
                 rounded[0] = number;
             }
