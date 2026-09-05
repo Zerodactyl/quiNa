@@ -147,7 +147,8 @@ android {
     }
 
     splits {
-
+        // F-Droid reproducible: universal APK when task contains "fdroid" (e.g. assembleFdroid)
+        // keeps F-Droid verification deterministic (no per-ABI splits)
         abi {
             if (targetTask.contains("fdroid")) {
                 enable false
@@ -165,7 +166,6 @@ android {
         }
 
     }
-
     defaultConfig {
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion,OldTargetApi
@@ -185,10 +185,11 @@ android {
         }
 
         buildConfigField "String", "BUILD_VERSION_STRING", "\"" + verName + "\""
+        // F-Droid reproducible: APP_BUILD_TIMESTAMP from gradle.properties (2000000000000 placeholder)
+        // is replaced at CI time (see .gitlab-ci.yml / .github/workflows) for deterministic builds
         buildConfigField "long", "BUILD_TIMESTAMP", APP_BUILD_TIMESTAMP + ""
         buildConfigField "String", "OFFICIAL_VERSION", "\"" + officialVer + "\""
         buildConfigField "int", "OFFICIAL_VERSION_CODE", officialCode + ""
-        buildConfigField "int", "APP_ID", appId
         buildConfigField "String", "APP_HASH", "\"" + appHash + "\""
 
         externalNativeBuild {
@@ -213,6 +214,8 @@ android {
     }
 
     signingConfigs {
+        // F-Droid reproducible: F-Droid rebuilds with its own keystore; keep passwords
+        // out of VCS (local.properties/env) so fdroid build can inject its own.
         release {
             storeFile project.file("release.keystore")
             storePassword keystorePwd
@@ -243,7 +246,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
     flavorDimensions "version"
 
     packagingOptions {

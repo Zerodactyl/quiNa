@@ -133,6 +133,12 @@ object NaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val disableQuoteForward =
+        addConfig(
+            "DisableQuoteForward",
+            ConfigItem.configTypeBool,
+            false
+        )
     val showRepeatAsCopy =
         addConfig(
             "RepeatAsCopy",
@@ -1396,6 +1402,18 @@ object NaConfig {
             "M3ExpressiveDialogs",
             ConfigItem.configTypeBool,
             true
+        )
+    val m3SectionCards =
+        addConfig(
+            "M3SectionCards",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val m3GlassMenu =
+        addConfig(
+            "M3GlassMenu",
+            ConfigItem.configTypeBool,
+            false
         )
 
     private fun addConfig(

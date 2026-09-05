@@ -2081,6 +2081,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         long monoForumPeerId,
         MessageSuggestionParams suggestionParams
     ) {
+        if (NaConfig.INSTANCE.getDisableQuoteForward().Bool()) {
+            forwardFromMyName = true;
+        }
         if (messages == null || messages.isEmpty()) {
             return 0;
         }

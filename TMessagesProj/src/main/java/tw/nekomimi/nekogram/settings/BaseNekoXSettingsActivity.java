@@ -32,6 +32,9 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.UndoView;
 
+import app.exteraless.appearance.M3SectionCardHelper;
+import app.exteraless.appearance.M3SectionCardRecyclerView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,13 +69,13 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
                 }
             }
         });
-
         fragmentView = new FrameLayout(context);
         fragmentView.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray));
         FrameLayout frameLayout = (FrameLayout) fragmentView;
 
-        listView = new BlurredRecyclerView(context);
-        listView.setSections(true);
+        listView = new M3SectionCardRecyclerView(context);
+        // M3 Expressive section cards: 18dp radius + forced shadows when enabled (NaConfig.m3SectionCards), otherwise stock 16dp
+        M3SectionCardHelper.applyToRecyclerListView(listView);
         listView.setVerticalScrollBarEnabled(false);
         listView.setLayoutManager(layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));

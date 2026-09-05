@@ -3819,7 +3819,7 @@ public class ChatActivity extends BaseFragment implements
                     chatActivity.replyingQuote = quote;
                     chatActivity.replyingMessageObject = messageObject;
                     chatActivity.forbidForwardingWithDismiss = false;
-                    chatActivity.messagePreviewParams = new MessagePreviewParams(chatActivity.currentEncryptedChat != null, chatActivity.isPeerNoForwards(), ChatObject.isMonoForum(chatActivity.currentChat), noForwardQuote);
+                    chatActivity.messagePreviewParams = new MessagePreviewParams(chatActivity.currentEncryptedChat != null, chatActivity.isPeerNoForwards(), ChatObject.isMonoForum(chatActivity.currentChat), noForwardQuote || NaConfig.INSTANCE.getDisableQuoteForward().Bool());
                     chatActivity.messagePreviewParams.updateReply(chatActivity.replyingMessageObject, chatActivity.getGroup(messageObject.getGroupId()), chatActivity.getDialogId(), chatActivity.replyingQuote);
                     Bundle args = new Bundle();
                     args.putBoolean("onlySelect", true);
@@ -15097,6 +15097,9 @@ public class ChatActivity extends BaseFragment implements
     }
 
     private void forwardMessages(ArrayList<MessageObject> arrayList, boolean fromMyName, boolean hideCaption, boolean notify, int scheduleDate, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams) {
+        if (NaConfig.INSTANCE.getDisableQuoteForward().Bool()) {
+            fromMyName = true;
+        }
         if (arrayList == null || arrayList.isEmpty()) {
             return;
         }
@@ -15110,7 +15113,6 @@ public class ChatActivity extends BaseFragment implements
             }
         }
         int result = getSendMessagesHelper().sendMessage(arrayList, dialog_id, fromMyName, hideCaption, notify, scheduleDate, 0, getThreadMessage(), -1, payStars, monoForumPeerId, suggestionParams);
-        AlertsCreator.showSendMediaAlert(result, this, themeDelegate);
         if (result != 0) {
             AndroidUtilities.runOnUIThread(() -> {
                 waitingForSendingMessageLoad = false;
@@ -15118,9 +15120,11 @@ public class ChatActivity extends BaseFragment implements
             });
         }
     }
-
     // This method is used to forward messages to Saved Messages, or to multi Dialogs
     private void forwardMessages(ArrayList<MessageObject> arrayList, boolean fromMyName, boolean notify, int scheduleDate, long did, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams) {
+        if (NaConfig.INSTANCE.getDisableQuoteForward().Bool()) {
+            fromMyName = true;
+        }
         if (arrayList == null || arrayList.isEmpty()) {
             return;
         }
@@ -15678,7 +15682,7 @@ public class ChatActivity extends BaseFragment implements
                 chatActivityEnterView.setEditingMessageObject(null, null, false);
                 forbidForwardingWithDismiss = false;
                 if (messagePreviewParams == null) {
-                    messagePreviewParams = new MessagePreviewParams(currentEncryptedChat != null, isPeerNoForwards(), ChatObject.isMonoForum(currentChat), noForwardQuote);
+                    messagePreviewParams = new MessagePreviewParams(currentEncryptedChat != null, isPeerNoForwards(), ChatObject.isMonoForum(currentChat), noForwardQuote || NaConfig.INSTANCE.getDisableQuoteForward().Bool());
                     messagePreviewParams.attach(forwardingPreviewView);
                 }
                 messagePreviewParams.updateReply(replyingMessageObject, replyingQuoteGroup != null ? replyingQuoteGroup : getGroup(replyingMessageObject.getGroupId()), dialog_id, replyingQuote);
@@ -15872,7 +15876,7 @@ public class ChatActivity extends BaseFragment implements
                 final SimpleTextView replyObjectHintTextView = replyLayout.current().objHint;
 
                 if (messagePreviewParams == null) {
-                    messagePreviewParams = new MessagePreviewParams(currentEncryptedChat != null, isPeerNoForwards(), ChatObject.isMonoForum(currentChat), noForwardQuote);
+                    messagePreviewParams = new MessagePreviewParams(currentEncryptedChat != null, isPeerNoForwards(), ChatObject.isMonoForum(currentChat), noForwardQuote || NaConfig.INSTANCE.getDisableQuoteForward().Bool());
                     messagePreviewParams.attach(forwardingPreviewView);
                 }
                 messagePreviewParams.updateForward(messageObjectsToForward, dialog_id);
@@ -16057,7 +16061,7 @@ public class ChatActivity extends BaseFragment implements
 
                 replyIconImageView.setImageResource(R.drawable.filled_link);
                 if (messagePreviewParams == null) {
-                    messagePreviewParams = new MessagePreviewParams(currentEncryptedChat != null, isPeerNoForwards(), ChatObject.isMonoForum(currentChat), noForwardQuote);
+                    messagePreviewParams = new MessagePreviewParams(currentEncryptedChat != null, isPeerNoForwards(), ChatObject.isMonoForum(currentChat), noForwardQuote || NaConfig.INSTANCE.getDisableQuoteForward().Bool());
                     messagePreviewParams.attach(forwardingPreviewView);
                 }
                 messagePreviewParams.updateLink(currentAccount, foundWebPage, chatActivityEnterView.getFieldText(), replyingMessageObject == threadMessageObject ? null : replyingMessageObject, replyingQuote, editingMessageObject);
@@ -34296,9 +34300,9 @@ public class ChatActivity extends BaseFragment implements
                     selectedObjectGroup = null;
                     return;
                 }
-                noForwardQuote = false; //fuck
+                noForwardQuote = NaConfig.INSTANCE.getDisableQuoteForward().Bool();
                 if (messagePreviewParams != null) {
-                    messagePreviewParams.setHideForwardSendersName(noForwardQuote);
+                    messagePreviewParams.setHideForwardSendersName(noForwardQuote || NaConfig.INSTANCE.getDisableQuoteForward().Bool());
                 }
                 forwardingMessage = selectedObject;
                 forwardingMessageGroup = selectedObjectGroup;

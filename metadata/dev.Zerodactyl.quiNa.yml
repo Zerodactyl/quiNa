@@ -1,0 +1,43 @@
+Categories:
+  - Internet
+License: GPL-3.0-only
+AuthorName: Zerodactyl
+WebSite: https://git.disroot.org/armaltheus/quiNa
+SourceCode: https://git.disroot.org/armaltheus/quiNa
+IssueTracker: https://git.disroot.org/armaltheus/quiNa/issues
+Changelog: https://git.disroot.org/armaltheus/quiNa/releases
+Donate: null
+
+AutoName: quiNa
+Summary: Third-party Telegram client based on Nagram
+Description: |-
+  quiNa is a third-party Telegram client based on Nagram / NekoX with additional features
+  and Material 3 Expressive polish.
+
+  Features include restored official Telegram icons, message-filter URL matching,
+  quick-read reactions, bottom-bar shortcuts, tracking-parameter stripping,
+  full sensor round videos, M3 Expressive wavy progress/dialogs, combined messages,
+  editable text styles, proxy subscription support (VMess/Shadowsocks/SSR/Trojan),
+  OpenCC translation, and many NekoX enhancements. See README for full list.
+
+  Anti-Feature: Non-Free Network (Telegram servers are proprietary).
+
+RepoType: git
+Repo: https://git.disroot.org/armaltheus/quiNa
+
+Builds:
+  - versionName: 12.10.0
+    versionCode: 7031
+    commit: 471deb8925c30755b6d4c6ad031f5101d70bcdc9
+    submodules: true
+    gradle:
+      - yes
+    prebuild: bash bin/fdroid/prebuild.sh
+    build: bash bin/fdroid/build.sh && ./gradlew assembleRelease
+    # F-Droid reproducible: universal APK (no ABI splits) when task contains "fdroid"
+    # APP_BUILD_TIMESTAMP is replaced at CI time for deterministic builds
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 12.10.0
+CurrentVersionCode: 7031

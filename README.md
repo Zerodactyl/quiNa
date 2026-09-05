@@ -2,8 +2,8 @@
 
 quiNa is a third-party Telegram client based on [Nagram](https://github.com/NextAlone/Nagram) / [NekoX](https://github.com/NekoX-Dev/NekoX) with some modifications.
 
-- Official Site: <https://ncatt.io.vn/quina>
-- Telegram Update Channel: <https://t.me/quina_channel>
+- Official Site: <building>
+- Telegram Update Channel: <https://t.me/athesiam>
 - Releases: <https://git.disroot.org/armaltheus/quiNa/releases>
 - Issues here: <https://git.disroot.org/armaltheus/quiNa/issues>
 
@@ -143,7 +143,7 @@ Environment:
   sdkmanager --sdk_root $HOME/Android/SDK --install "build-tools;33.0.0" "platforms;android-33" "ndk;27.2.12479018" "cmake;3.18.1" "cmake;3.22.1"
   ```
 
-Build: 
+Build:
 
 1. Checkout submodules
 
@@ -156,7 +156,7 @@ Build:
    ./run init libs
    ```
 
-3. Build external libraries and native code: 
+3. Build external libraries and native code:
    ```shell
    ./run libs native
    ```
@@ -175,7 +175,11 @@ Build:
 
 8. *(removed - integrity check deleted)*
 
-----
+### Reproducible builds / F-Droid
+
+- F-Droid metadata: `metadata/dev.Zerodactyl.quiNa.yml` with `bin/fdroid/prebuild.sh` / `bin/fdroid/build.sh`.
+- Reproducible flag: `TMessagesProj/build.gradle` builds a universal APK when the Gradle task contains `fdroid` (no ABI splits), and `APP_BUILD_TIMESTAMP` in `gradle.properties` is replaced at CI time (`sed` in `.gitlab-ci.yml` / `.github/workflows`) for deterministic builds; local placeholder is `2000000000000`.
+- No integrity/genuine header generation is required.
 
 ## Compilation with GitHub Action
 
@@ -208,6 +212,8 @@ Then, use base64 to encode the above.
 4. Run Release Build
 
 5. *(removed - integrity check deleted)*
+
+> **Reproducible builds:** F-Droid builds use `metadata/dev.Zerodactyl.quiNa.yml`; see `### Reproducible builds / F-Droid` above. No `genuine.h` generation.
 
 ## FAQ
 

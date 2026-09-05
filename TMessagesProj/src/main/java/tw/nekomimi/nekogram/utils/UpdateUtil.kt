@@ -10,8 +10,8 @@ import org.telegram.ui.ActionBar.AlertDialog
 
 object UpdateUtil {
 
-    const val channelUsername = "quina_channel"
-    const val channelUsernameTips = "quiNaTips"
+    const val channelUsername = "athesiam"
+    const val channelUsernameTips = "athesiam"
     const val wikiUrl = "https://na-wiki.xtaolabs.com"
 
     @JvmStatic

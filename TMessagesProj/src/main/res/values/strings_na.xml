@@ -366,4 +366,7 @@
     <string name="FullSensorRoundVideo">Full sensor round videos</string>
     <string name="M3ExpressiveProgress">Material 3 Expressive wavy progress bars</string>
     <string name="M3ExpressiveDialogs">Material 3 Expressive dialog styling</string>
+    <string name="M3SectionCards">M3 section cards</string>
+    <string name="M3GlassMenu">M3 glass menu</string>
+    <string name="DisableQuoteForward">Disable Quote Forward</string>
 </resources>
