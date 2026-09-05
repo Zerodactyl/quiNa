@@ -10,22 +10,22 @@ quiNa is a third-party Telegram client based on [Nagram](https://github.com/Next
 ## Branding
 
 quiNa is a fork of Nagram. Nagram's source code is licensed under GPLv3. The Nagram name and project
-identity belong to [@NextAlone](https://github.com/NextAlone); the Nagram
-application icon artwork is copyright © MaitungTM. These are separate brand
-assets.
+identity belong to [@NextAlone](https://github.com/NextAlone).
 
-## Additional features over Nagram
+## Additional features over quiNa
 
-1. Nice icon (copyright © MaitungTM)
-2. Combine message
-3. Editable text style 
-4. Forced copy
-5. Invert reply
-6. Quick reply in longClick menu (thanks to @blxueya)
-7. Undo and Redo
-8. Scrollable chat preview (thanks to TeleTux)
-9. Noise suppress and voice enhance (thanks to )
-
+1. Restored official Telegram icons (Default, Vintage, Aqua, Premium, Turbo, Nox)
+2. Match message filters against link URLs (thanks to exteraless)
+3. Quick read reactions on long-click (thanks to exteraless)
+4. Bottom bar settings tab long-press shortcuts menu (thanks to NagramXF)
+5. Combine message
+6. Editable text style 
+7. Forced copy
+8. Invert reply
+9. Quick reply in longClick menu (thanks to @blxueya)
+10. Undo and Redo
+11. Scrollable chat preview (thanks to TeleTux)
+12. Noise suppress and voice enhance
 ----
 
 ## NekoX Changes
