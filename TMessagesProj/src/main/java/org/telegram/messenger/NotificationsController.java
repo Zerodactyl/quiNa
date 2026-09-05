@@ -6422,10 +6422,9 @@ public class NotificationsController extends BaseController implements Notificat
         int notificationIconConfigValue = NaConfig.INSTANCE.getNotificationIcon().Int();
         switch (notificationIconConfigValue) {
             case 0:
+            default:
                 return R.drawable.notification;
             case 1:
-                return R.drawable.nagram_notification;
-            case 2:
                 return R.drawable.notification_neko;
         }
 
