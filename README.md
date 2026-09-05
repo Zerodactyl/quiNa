@@ -18,14 +18,19 @@ identity belong to [@NextAlone](https://github.com/NextAlone).
 2. Match message filters against link URLs (thanks to exteraless)
 3. Quick read reactions on long-click (thanks to exteraless)
 4. Bottom bar settings tab long-press shortcuts menu (thanks to NagramXF)
-5. Combine message
-6. Editable text style 
-7. Forced copy
-8. Invert reply
-9. Quick reply in longClick menu (thanks to @blxueya)
-10. Undo and Redo
-11. Scrollable chat preview (thanks to TeleTux)
-12. Noise suppress and voice enhance
+
+----
+
+## Additional feature over Nagram
+
+1. Combine message
+2. Editable text style 
+3. Forced copy
+4. Invert reply
+5. Quick reply in longClick menu (thanks to @blxueya)
+6. Undo and Redo
+7. Scrollable chat preview (thanks to TeleTux)
+8. Noise suppress and voice enhance
 ----
 
 ## NekoX Changes
