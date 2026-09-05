@@ -56,7 +56,7 @@ def keystorePwd = null
 def alias = null
 def pwd = null
 def sentry_token = System.getenv("SENTRY_AUTH_TOKEN")
-def nagram_build_args = System.getenv("NAGRAM_BUILD_ARGS")
+def quina_build_args = System.getenv("QUINA_BUILD_ARGS")
 def disableCMakeRelWithDebInfo = System.getenv("COMPILE_NATIVE") == null
 
 Properties properties
@@ -74,7 +74,9 @@ if (properties != null) {
     alias = properties.getProperty("ALIAS_NAME")
     pwd = properties.getProperty("ALIAS_PASS")
     sentry_token = properties.getProperty("SENTRY_AUTH_TOKEN", sentry_token)
-    nagram_build_args = properties.getProperty("NAGRAM_BUILD_ARGS", nagram_build_args)
+    quina_build_args = properties.getProperty("QUINA_BUILD_ARGS", quina_build_args)
+    // legacy fallback
+    if (quina_build_args == null) quina_build_args = properties.getProperty("NAGRAM_BUILD_ARGS", null)
 }
 
 keystorePwd = keystorePwd ?: System.getenv("KEYSTORE_PASS")
@@ -282,8 +284,7 @@ android {
             task.enabled = false
         } else if (task.name.endsWith("GoogleServices") && task.name.contains("NoGcm")) {
             task.enabled = false
-        } else if (task.name.contains("buildCMakeDebug") && nagram_build_args != null && nagram_build_args.contains("skip_buildCMakeDebug")) {
-            task.enabled = false
+        } else if (task.name.contains("buildCMakeDebug") && quina_build_args != null && quina_build_args.contains("skip_buildCMakeDebug")) {
         }
     }
 
@@ -426,8 +427,7 @@ sentry {
     // The slug of the Sentry organization to use for uploading proguard mappings/source contexts.
     org = "teampgm"
 
-    // The slug of the Sentry project to use for uploading proguard mappings/source contexts.
-    projectName = "nagram"
+    projectName = "quiNa"
 
     // The authentication token to use for uploading proguard mappings/source contexts.
     // WARNING: Do not expose this token in your build.gradle files, but rather set an environment

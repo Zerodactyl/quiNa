@@ -3,7 +3,7 @@
 quiNa is a third-party Telegram client based on [Nagram](https://github.com/NextAlone/Nagram) / [NekoX](https://github.com/NekoX-Dev/NekoX) with some modifications.
 
 - Official Site: <https://ncatt.io.vn/quina>
-- Telegram Update Channel: <https://t.me/nagram_channel>
+- Telegram Update Channel: <https://t.me/quina_channel>
 - Releases: <https://git.disroot.org/armaltheus/quiNa/releases>
 - Issues here: <https://git.disroot.org/armaltheus/quiNa/issues>
 
@@ -12,7 +12,7 @@ quiNa is a third-party Telegram client based on [Nagram](https://github.com/Next
 quiNa is a fork of Nagram. Nagram's source code is licensed under GPLv3. The Nagram name and project
 identity belong to [@NextAlone](https://github.com/NextAlone).
 
-## Additional features over quiNa
+## Additional features over Nagram (quiNa exclusive)
 
 1. Restored official Telegram icons (Default, Vintage, Aqua, Premium, Turbo, Nox)
 2. Match message filters against link URLs (thanks to exteraless)
@@ -173,7 +173,7 @@ Build:
    ./gradlew assemble<Release/Debug>
    ```
 
-8. Generate `TMessagesProj/jni/integrity/genuine.h` - https://github.com/brevent/genuine
+8. *(removed - integrity check deleted)*
 
 ----
 
@@ -207,7 +207,7 @@ Then, use base64 to encode the above.
 
 4. Run Release Build
 
-5. Generate `TMessagesProj/jni/integrity/genuine.h` - https://github.com/brevent/genuine
+5. *(removed - integrity check deleted)*
 
 ## FAQ
 
@@ -225,7 +225,7 @@ First, make sure you have the latest version installed (check the channel).
 
 Then, if the issue appears in the official Telegram client too, please submit it to the officials, (be careful not to show NekoX in the description and screenshots, the official developers doesn't like us!).
 
-Then, submit it to our [group](https://t.me/nagram_group) with #bug.
+Then, submit it to our [issues](https://git.disroot.org/armaltheus/quiNa/issues) with #bug.
 
 If you experience a *crash*, you also need to click on the version number at the bottom of the settings and select "Enable Log" and send it to us.
 
@@ -233,9 +233,8 @@ If you experience a *crash*, you also need to click on the version number at the
 
 quiNa is based on Nagram and Telegram, thus most locales follow the translations of Telegram for Android, checkout <https://translations.telegram.org/en/android/>.
 
-Is quiNa not in your language, or the translation is incorrect or incomplete? Get involved in the translations on our [Weblate](https://xtaolabs.crowdin.com/nagram).
+Is quiNa not in your language, or the translation is incorrect or incomplete? Get involved in the translations on our [Crowdin](https://crowdin.com/project/quina) *(or Telegram translations)*.
 
-[![Crowdin](https://badges.crowdin.net/e/156df3a631d257cc6b57301566d545fb/localized.svg)](https://xtaolabs.crowdin.com/nagram)
 
 ## Thanks
 

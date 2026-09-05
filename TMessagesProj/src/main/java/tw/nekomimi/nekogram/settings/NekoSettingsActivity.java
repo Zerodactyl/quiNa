@@ -114,7 +114,7 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
         } else if (position == sourceCodeRow) {
             Browser.openUrl(getParentActivity(), "https://git.disroot.org/armaltheus/quiNa");
         } else if (position == translationRow) {
-            Browser.openUrl(getParentActivity(), "https://xtaolabs.crowdin.com/nagram");
+            Browser.openUrl(getParentActivity(), "https://crowdin.com/project/quina");
         } else if (position == datacenterRow) {
             presentFragment(new DatacenterActivity(0));
         } else if (position == networkLogRow) {

@@ -445,7 +445,7 @@
         <activity
             android:name="tw.nekomimi.nekogram.helpers.AppRestartHelper"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:process=":nagram"
+            android:process=":quiNa"
             android:exported="false" />
 
         <receiver
