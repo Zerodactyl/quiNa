@@ -358,4 +358,7 @@
     <string name="LiquidGlassAngle">Liquid Glass angle</string>
     <string name="LiquidGlassIntensity">Liquid Glass intensity</string>
     <string name="DisableGooeyAvatarAnimation">Disable \"Gooey\" avatar animation</string>
+    <string name="FilterMatchLinks">Match filters against link URLs</string>
+    <string name="QuickReadReactionsOnLongClick">Mark reactions as read on long click</string>
+    <string name="BottomBarSettingsLongPress">Long-press settings tab menu</string>
 </resources>

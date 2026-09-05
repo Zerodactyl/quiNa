@@ -253,6 +253,9 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
             }, null));
     private final AbstractConfigCell hideTabBarPermissionWarningsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getHideTabBarPermissionWarnings()));
     private final AbstractConfigCell showRecentChatsOnTabLongPressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowRecentChatsOnTabLongPress()));
+    private final AbstractConfigCell bottomBarSettingsLongPressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getBottomBarSettingsLongPress()));
+    private final AbstractConfigCell quickReadReactionsOnLongClickRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getQuickReadReactionsOnLongClick()));
+    private final AbstractConfigCell filterMatchLinksRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getFilterMatchLinks()));
     private final AbstractConfigCell customDialogsMenuRow = cellGroup.appendCell(new ConfigCellSelectBox(NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), null, null, () -> {
         if (getParentActivity() == null) return;
         showDialog(showConfigMenuAlert(getParentActivity(), NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), new ArrayList<>() {{

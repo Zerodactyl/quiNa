@@ -230,6 +230,8 @@ Is quiNa not in your language, or the translation is incorrect or incomplete? Ge
 ## Thanks
 
 - [Nagram](https://github.com/NextAlone/Nagram)
+- [NagramXF](https://github.com/Keeperorowner/NagramXF)
+- [exteraless](https://github.com/exteraless/exteraless)
 - [NekoX](https://github.com/NekoX-Dev/NekoX)
 - [Nekogram](https://gitlab.com/Nekogram/Nekogram)
 - [Pigeongram](https://gitlab.com/JasonKhew96/Nekogram)

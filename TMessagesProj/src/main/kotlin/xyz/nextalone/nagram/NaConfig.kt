@@ -1349,6 +1349,24 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val filterMatchLinks =
+        addConfig(
+            "FilterMatchLinks",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val quickReadReactionsOnLongClick =
+        addConfig(
+            "QuickReadReactionsOnLongClick",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val bottomBarSettingsLongPress =
+        addConfig(
+            "BottomBarSettingsLongPress",
+            ConfigItem.configTypeBool,
+            true
+        )
 
     private fun addConfig(
         k: String,

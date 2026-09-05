@@ -94,6 +94,16 @@ import tw.nekomimi.nekogram.helpers.PasscodeHelper;
 import xyz.nextalone.nagram.MainTabsStyle;
 import xyz.nextalone.nagram.NaConfig;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.DialogsActivity;
+import org.telegram.ui.ThemeActivity;
+import org.telegram.ui.web.WebBrowserSettings;
+import tw.nekomimi.nekogram.NekoConfig;
+import tw.nekomimi.nekogram.helpers.AppRestartHelper;
+import tw.nekomimi.nekogram.settings.NekoGhostModeActivity;
+import tw.nekomimi.nekogram.settings.NekoSettingsActivity;
 public class MainTabsActivity extends ViewPagerActivity implements NotificationCenter.NotificationCenterDelegate, FactorAnimator.Target {
 
     private static final int COLLAPSED_ACCOUNT_COUNT = 5;
@@ -383,12 +393,23 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         tabs[INDEX_CONTACTS].setOnLongClickListener(this::openContactsSelector);
         tabs[INDEX_CALLS].setOnLongClickListener(this::openCallsSelector);
         tabs[INDEX_PROFILE].setOnLongClickListener(this::openAccountSelector);
+        if (tabs[INDEX_SETTINGS] != null) {
+            tabs[INDEX_SETTINGS].setOnLongClickListener(this::openSettingsSelector);
+        }
+        if (tabs[INDEX_SETTINGS_SLIDE] != null) {
+            tabs[INDEX_SETTINGS_SLIDE].setOnLongClickListener(this::openSettingsSelector);
+        }
 
         tabsView.addTabToIgnoreClick(tabs[INDEX_CHATS]);
         tabsView.addTabToIgnoreClick(tabs[INDEX_CONTACTS]);
         tabsView.addTabToIgnoreClick(tabs[INDEX_PROFILE]);
         tabsView.addTabToIgnoreClick(tabs[INDEX_CALLS]);
-
+        if (tabs[INDEX_SETTINGS] != null) {
+            tabsView.addTabToIgnoreClick(tabs[INDEX_SETTINGS]);
+        }
+        if (tabs[INDEX_SETTINGS_SLIDE] != null) {
+            tabsView.addTabToIgnoreClick(tabs[INDEX_SETTINGS_SLIDE]);
+        }
         for (int index = 0; index < tabs.length; index++) {
             final GlassTabView view = tabs[index];
 
@@ -525,6 +546,73 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         o.setScrimViewBackground(bg);
         o.show();
         return true;
+    }
+    public boolean openSettingsSelector(View anchor) {
+        if (getContext() == null || getParentActivity() == null) return false;
+        if (!NaConfig.INSTANCE.getBottomBarSettingsLongPress().Bool()) return false;
+
+        final ItemOptions o = ItemOptions.makeOptions(this, anchor);
+        boolean isDark = resourceProvider != null ? resourceProvider.isDark() : Theme.isCurrentThemeDark();
+        o.add(isDark ? R.drawable.menu_day_mode_24 : R.drawable.menu_night_mode_24, getString(isDark ? R.string.SwitchThemeToDay : R.string.SwitchThemeToNight), () -> {
+            if (DialogsActivity.switchingTheme) return;
+            DialogsActivity.switchingTheme = true;
+            SharedPreferences prefs = ApplicationLoader.applicationContext.getSharedPreferences("themeconfig", Context.MODE_PRIVATE);
+            String dayTheme = prefs.getString("lastDayTheme", "Blue");
+            Theme.ThemeInfo dayInfo = Theme.getTheme(dayTheme);
+            if (dayInfo == null || dayInfo.isDark()) dayTheme = "Blue";
+            String darkTheme = prefs.getString("lastDarkTheme", "Dark Blue");
+            Theme.ThemeInfo darkInfo = Theme.getTheme(darkTheme);
+            if (darkInfo == null || !darkInfo.isDark()) darkTheme = "Dark Blue";
+            Theme.ThemeInfo active = Theme.getActiveTheme();
+            String targetKey;
+            if (dayTheme.equals(darkTheme)) {
+                boolean isActiveDark = active.isDark();
+                if (isActiveDark && dayTheme.equals("Dark Blue")) {
+                    targetKey = "Blue";
+                } else if (!isActiveDark && dayTheme.equals("Blue")) {
+                    targetKey = "Dark Blue";
+                } else {
+                    targetKey = isActiveDark ? dayTheme : darkTheme;
+                }
+            } else {
+                targetKey = active.getKey().equals(dayTheme) ? darkTheme : dayTheme;
+            }
+            Theme.ThemeInfo target = Theme.getTheme(targetKey);
+            switchTheme(anchor, target, active.getKey().equals(dayTheme));
+            BulletinFactory bulletinFactory = BulletinFactory.of(MainTabsActivity.this);
+            Theme.turnOffAutoNight(bulletinFactory, () -> presentFragment(new ThemeActivity(ThemeActivity.THEME_TYPE_NIGHT)));
+        });
+        o.addGap();
+        if (NekoConfig.showGhostToggleInDrawer) {
+            final String msg = NekoConfig.isGhostModeActive() ? getString(R.string.GhostMode) : getString(R.string.GhostMode);
+            o.add(R.drawable.icon_ghost, msg, () -> presentFragment(new NekoGhostModeActivity()), () -> {
+                final String toggleMsg = NekoConfig.isGhostModeActive() ? getString(R.string.GhostModeDisabled) : getString(R.string.GhostModeEnabled);
+                NekoConfig.toggleGhostMode();
+                BulletinFactory.of(contentView, resourceProvider).createSuccessBulletin(toggleMsg).show();
+                NotificationCenter.getInstance(UserConfig.selectedAccount).postNotificationName(NotificationCenter.mainUserInfoChanged);
+            });
+            o.addGap();
+        }
+        o.add(R.drawable.msg_settings, getString(R.string.NekoSettings), () -> presentFragment(new NekoSettingsActivity()));
+        o.add(R.drawable.baseline_open_in_browser_24, getString(R.string.InappBrowser), () -> presentFragment(new WebBrowserSettings(null)));
+        o.addGap();
+        o.add(R.drawable.msg_retry, getString(R.string.BotUnblockNoCaps), AppRestartHelper::triggerRebirth);
+        o.setBlur(true);
+        o.translate(0, -dp(4));
+        final ShapeDrawable bg = Theme.createRoundRectDrawable(dp(28), getThemedColor(Theme.key_windowBackgroundWhite));
+        bg.getPaint().setShadowLayer(dp(6), 0, dp(1), Theme.multAlpha(0xFF000000, 0.15f));
+        o.setScrimViewBackground(bg);
+        o.show();
+        return true;
+    }
+
+    private void switchTheme(View view, Theme.ThemeInfo themeInfo, boolean z) {
+        if (view == null) return;
+        int[] loc = new int[2];
+        view.getLocationInWindow(loc);
+        loc[0] += view.getMeasuredWidth() / 2;
+        loc[1] += view.getMeasuredHeight() / 2;
+        NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.needSetDayNightTheme, themeInfo, Boolean.FALSE, loc, -1, Boolean.valueOf(z), null, null, null, Boolean.TRUE);
     }
 
     private Integer pendingFolderId;

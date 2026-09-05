@@ -26,6 +26,7 @@ import org.telegram.ui.Components.TranscribeButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
 
 import xyz.nextalone.nagram.NaConfig;
@@ -210,7 +211,18 @@ public class AyuFilter {
             }
         }
 
-        res = isFiltered(getMessageText(msg, group), dialogId);
+        CharSequence text = getMessageText(msg, group);
+        if (NaConfig.INSTANCE.getFilterMatchLinks().Bool()) {
+            CharSequence linkUrls = getLinkUrls(msg, group);
+            if (!TextUtils.isEmpty(linkUrls)) {
+                if (TextUtils.isEmpty(text)) {
+                    text = linkUrls;
+                } else {
+                    text = new StringBuilder(text).append('\n').append(linkUrls);
+                }
+            }
+        }
+        res = isFiltered(text, dialogId);
 
         if (cached == null) {
             cached = new HashMap<>();
@@ -228,6 +240,39 @@ public class AyuFilter {
         return res;
     }
 
+    private static CharSequence getLinkUrls(MessageObject selectedObject, MessageObject.GroupedMessages selectedObjectGroup) {
+        LinkedHashSet<String> urls = new LinkedHashSet<>();
+        if (selectedObjectGroup != null && selectedObjectGroup.messages != null) {
+            for (MessageObject grouped : selectedObjectGroup.messages) {
+                collectLinkUrls(grouped, urls);
+            }
+        }
+        collectLinkUrls(selectedObject, urls);
+        return urls.isEmpty() ? null : TextUtils.join("\n", urls);
+    }
+
+    private static void collectLinkUrls(MessageObject messageObject, LinkedHashSet<String> out) {
+        if (messageObject == null || messageObject.messageOwner == null) {
+            return;
+        }
+        if (messageObject.messageOwner.entities != null) {
+            for (TLRPC.MessageEntity entity : messageObject.messageOwner.entities) {
+                if (entity instanceof TLRPC.TL_messageEntityTextUrl) {
+                    String url = ((TLRPC.TL_messageEntityTextUrl) entity).url;
+                    if (!TextUtils.isEmpty(url)) {
+                        out.add(url);
+                    }
+                }
+            }
+        }
+        TLRPC.MessageMedia media = MessageObject.getMedia(messageObject.messageOwner);
+        if (media instanceof TLRPC.TL_messageMediaWebPage) {
+            TLRPC.WebPage webPage = ((TLRPC.TL_messageMediaWebPage) media).webpage;
+            if (webPage != null && !TextUtils.isEmpty(webPage.url)) {
+                out.add(webPage.url);
+            }
+        }
+    }
     public static class FilterModel {
         @Expose
         public String regex;
