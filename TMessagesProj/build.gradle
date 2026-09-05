@@ -98,7 +98,7 @@ android {
     buildToolsVersion '35.0.0'
     ndkVersion rootProject.ext.ndkVersion // 27.2.12479018
 
-    defaultConfig.applicationId = "xyz.nextalone.nagram"
+    defaultConfig.applicationId = "dev.Zerodactyl.quiNa"
 
     sourceSets {
 
