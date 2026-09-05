@@ -21,6 +21,8 @@ identity belong to [@NextAlone](https://github.com/NextAlone).
 5. Strip tracking parameters from links
 6. Add comma after mention (thanks to @uzbekreleases)
 7. Full sensor round videos (thanks to exteraless)
+8. Material 3 Expressive wavy progress bars (thanks to exteraless)
+9. Material 3 Expressive dialog styling (thanks to uzbekgram)
 
 ----
 
@@ -247,3 +249,4 @@ Is quiNa not in your language, or the translation is incorrect or incomplete? Ge
 - [TeleTux](https://github.com/TeleTux/TeleTux)
 - [OwlGram](https://github.com/OwlGramDev/OwlGram)
 - [@uzbekreleases](https://github.com/uzbekreleases)
+- [uzbekgram](https://github.com/rastroco-labs/uzbekgram)

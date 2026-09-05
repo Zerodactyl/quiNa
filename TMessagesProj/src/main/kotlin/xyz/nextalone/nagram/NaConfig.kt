@@ -1385,6 +1385,18 @@ object NaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val m3ExpressiveProgress =
+        addConfig(
+            "M3ExpressiveProgress",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val m3ExpressiveDialogs =
+        addConfig(
+            "M3ExpressiveDialogs",
+            ConfigItem.configTypeBool,
+            true
+        )
 
     private fun addConfig(
         k: String,

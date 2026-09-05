@@ -17,6 +17,8 @@ import org.telegram.ui.Cells.RadioButtonCell
 import org.telegram.ui.Cells.TextCell
 import org.telegram.ui.Cells.TextCheckCell
 import org.telegram.ui.Components.LayoutHelper
+import org.telegram.ui.Components.EditTextBoldCursor
+import xyz.nextalone.nagram.NaConfig
 import java.util.*
 
 
@@ -243,6 +245,22 @@ class BottomBuilder(val ctx: Context, val needFocus: Boolean = true, val bgColor
 
     @JvmOverloads
     fun addEditText(hintText: String? = null): EditText {
+        if (NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool()) {
+            return EditTextBoldCursor(ctx).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f)
+                setTextColor(Theme.getColor(Theme.key_dialogTextBlack))
+                setHintTextColor(Theme.getColor(Theme.key_dialogTextBlue4))
+                setCursorColor(Theme.getColor(Theme.key_dialogTextBlack))
+                setCursorSize(AndroidUtilities.dp(18f))
+                setCursorWidth(1.5f)
+                hintText?.also { hint = it }
+                isSingleLine = true
+                isFocusable = true
+                setBackgroundDrawable(null)
+
+                this@BottomBuilder.rootView.addView(this, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, -2, rtl, AndroidUtilities.dp(6F), 0, 0, 0))
+            }
+        }
         return EditText(ctx).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
             setTextColor(Theme.getColor(Theme.key_dialogTextBlack))

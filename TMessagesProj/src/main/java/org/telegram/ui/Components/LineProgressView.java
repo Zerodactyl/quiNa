@@ -12,6 +12,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Path;
+import android.os.SystemClock;
+import xyz.nextalone.nagram.NaConfig;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -107,6 +110,11 @@ public class LineProgressView extends View {
     }
 
     public void onDraw(Canvas canvas) {
+        if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+            drawMaterial3(canvas);
+            updateAnimation();
+            return;
+        }
         if (backColor != 0 && animatedProgressValue != 1) {
             progressPaint.setColor(backColor);
             progressPaint.setAlpha((int) (255 * animatedAlphaValue));
@@ -133,5 +141,97 @@ public class LineProgressView extends View {
         }
 
         updateAnimation();
+    }
+
+    private Paint m3Paint;
+    private Path m3Path;
+
+    private void drawMaterial3(Canvas canvas) {
+        if (m3Paint == null) {
+            m3Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            m3Paint.setStrokeCap(Paint.Cap.ROUND);
+            m3Paint.setStrokeJoin(Paint.Join.ROUND);
+        }
+        final float width = getWidth();
+        final float height = getHeight();
+        if (width <= 0 || height <= 0) {
+            return;
+        }
+        final float thickness = Math.min(height, AndroidUtilities.dp(2));
+        final float cy = height / 2f;
+        final float top = cy - thickness / 2f;
+        final float bottom = cy + thickness / 2f;
+        final float radius = thickness / 2f;
+        final float gap = AndroidUtilities.dp(2);
+        final float stop = AndroidUtilities.dp(2);
+        final int alpha = (int) (255 * animatedAlphaValue);
+        final float progress = Math.max(0, Math.min(1, animatedProgressValue));
+        final float indicatorRight = width * progress;
+
+        if (backColor != 0) {
+            final float trackLeft = Math.min(width, indicatorRight > 0 ? indicatorRight + gap : 0);
+            if (trackLeft < width) {
+                m3Paint.setStyle(Paint.Style.FILL);
+                m3Paint.setColor(backColor);
+                m3Paint.setAlpha(alpha);
+                rect.set(trackLeft, top, width, bottom);
+                canvas.drawRoundRect(rect, radius, radius, m3Paint);
+            }
+        }
+
+        if (indicatorRight > 0) {
+            m3Paint.setColor(progressColor);
+            m3Paint.setAlpha(alpha);
+            final float amplitude = getWaveAmplitude(progress, height, thickness);
+            if (amplitude > 0) {
+                if (m3Path == null) {
+                    m3Path = new Path();
+                }
+                buildWavePath(indicatorRight, cy, amplitude);
+                m3Paint.setStyle(Paint.Style.STROKE);
+                m3Paint.setStrokeWidth(thickness);
+                canvas.drawPath(m3Path, m3Paint);
+            } else {
+                m3Paint.setStyle(Paint.Style.FILL);
+                rect.set(0, top, indicatorRight, bottom);
+                canvas.drawRoundRect(rect, radius, radius, m3Paint);
+            }
+        }
+
+        if (width - indicatorRight > gap + stop) {
+            m3Paint.setStyle(Paint.Style.FILL);
+            m3Paint.setColor(progressColor);
+            m3Paint.setAlpha(alpha);
+            canvas.drawCircle(width - stop / 2f, cy, Math.min(stop, thickness) / 2f, m3Paint);
+        }
+
+        if (animatedProgressValue < 1) {
+            invalidate();
+        }
+    }
+
+    private float getWaveAmplitude(float progress, float height, float thickness) {
+        final float ramp = Math.max(0, Math.min(1, (progress - 0.05f) / 0.05f));
+        return Math.min(AndroidUtilities.dp(3) * ramp, Math.max(0, (height - thickness) / 2f));
+    }
+
+    private void buildWavePath(float right, float cy, float amplitude) {
+        m3Path.reset();
+        final float wavelength = AndroidUtilities.dp(40);
+        final float speed = AndroidUtilities.dp(15);
+        final float phase = (SystemClock.elapsedRealtime() % 100000L) / 1000f * speed;
+        final float step = AndroidUtilities.dpf2(2);
+        boolean first = true;
+        for (float x = 0; x <= right; x += step) {
+            final float y = cy + (float) (amplitude * Math.sin(2 * Math.PI * (x + phase) / wavelength));
+            if (first) {
+                m3Path.moveTo(x, y);
+                first = false;
+            } else {
+                m3Path.lineTo(x, y);
+            }
+        }
+        final float y = cy + (float) (amplitude * Math.sin(2 * Math.PI * (right + phase) / wavelength));
+        m3Path.lineTo(right, y);
     }
 }

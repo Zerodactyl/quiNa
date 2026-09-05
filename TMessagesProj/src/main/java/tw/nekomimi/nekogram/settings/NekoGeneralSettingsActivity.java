@@ -259,6 +259,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell cleanTrackingParamsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getCleanTrackingParams()));
     private final AbstractConfigCell addCommaAfterMentionRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getAddCommaAfterMention()));
     private final AbstractConfigCell fullSensorRoundVideoRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getFullSensorRoundVideo()));
+    private final AbstractConfigCell m3ExpressiveProgressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveProgress()));
+    private final AbstractConfigCell m3ExpressiveDialogsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveDialogs()));
     private final AbstractConfigCell customDialogsMenuRow = cellGroup.appendCell(new ConfigCellSelectBox(NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), null, null, () -> {
         if (getParentActivity() == null) return;
         showDialog(showConfigMenuAlert(getParentActivity(), NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), new ArrayList<>() {{

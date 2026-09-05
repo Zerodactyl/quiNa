@@ -364,4 +364,6 @@
     <string name="CleanTrackingParams">Strip tracking parameters from links</string>
     <string name="AddCommaAfterMention">Add comma after mention</string>
     <string name="FullSensorRoundVideo">Full sensor round videos</string>
+    <string name="M3ExpressiveProgress">Material 3 Expressive wavy progress bars</string>
+    <string name="M3ExpressiveDialogs">Material 3 Expressive dialog styling</string>
 </resources>
