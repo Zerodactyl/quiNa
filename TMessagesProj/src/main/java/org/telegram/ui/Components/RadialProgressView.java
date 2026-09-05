@@ -21,6 +21,8 @@ import androidx.annotation.Keep;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
+import tw.nekomimi.nekogram.helpers.M3CircularProgress;
+import xyz.nextalone.nagram.NaConfig;
 
 public class RadialProgressView extends View {
 
@@ -223,18 +225,34 @@ public class RadialProgressView extends View {
         }
     }
 
+    private M3CircularProgress m3Progress;
+
+    private void drawArc(Canvas canvas) {
+        drawingCircleLenght = currentCircleLength;
+        if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+            if (m3Progress == null) {
+                m3Progress = new M3CircularProgress();
+                m3Progress.setWavyValues(AndroidUtilities.dp(15), AndroidUtilities.dp(1.6f), AndroidUtilities.dp(5));
+            }
+            m3Progress.setTrackColor(Theme.multAlpha(progressColor, 0.2f));
+            m3Progress.draw(canvas, cicleRect, radOffset, drawingCircleLenght, progressPaint);
+            return;
+        }
+        canvas.drawArc(cicleRect, radOffset, drawingCircleLenght, false, progressPaint);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         int x = (getMeasuredWidth() - size) / 2;
         int y = (getMeasuredHeight() - size) / 2;
         cicleRect.set(x, y, x + size, y + size);
-        canvas.drawArc(cicleRect, radOffset, drawingCircleLenght = currentCircleLength, false, progressPaint);
+        drawArc(canvas);
         updateAnimation();
     }
 
     public void draw(Canvas canvas, float cx, float cy) {
         cicleRect.set(cx - size / 2f, cy - size / 2f, cx + size / 2f, cy +  size / 2f);
-        canvas.drawArc(cicleRect, radOffset, drawingCircleLenght = currentCircleLength, false, progressPaint);
+        drawArc(canvas);
         updateAnimation();
     }
 

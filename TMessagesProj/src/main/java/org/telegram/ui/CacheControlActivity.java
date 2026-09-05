@@ -159,6 +159,7 @@ import tw.nekomimi.nekogram.ui.BottomBuilder;
 import tw.nekomimi.nekogram.utils.EnvUtil;
 import tw.nekomimi.nekogram.utils.FileUtil;
 import tw.nekomimi.nekogram.utils.UIUtil;
+import xyz.nextalone.nagram.NaConfig;
 
 public class CacheControlActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -1971,6 +1972,7 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
         class ProgressView extends View {
 
             Paint in = new Paint(Paint.ANTI_ALIAS_FLAG), out = new Paint(Paint.ANTI_ALIAS_FLAG);
+            private Path m3Path = new Path();
 
             public ProgressView(Context context) {
                 super(context);
@@ -1990,6 +1992,60 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
             @Override
             protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
+
+                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+                    final float width = getMeasuredWidth();
+                    final float height = getMeasuredHeight();
+                    final float progress = progressT.set(this.progress);
+                    final float indicatorRight = width * progress;
+                    final float cy = height / 2f;
+                    final float thickness = AndroidUtilities.dp(3);
+                    final float gap = AndroidUtilities.dp(2);
+                    final float stop = AndroidUtilities.dp(2);
+
+                    final float trackLeft = Math.min(width, indicatorRight > 0 ? indicatorRight + gap : 0);
+                    if (trackLeft < width) {
+                        out.setStyle(Paint.Style.FILL);
+                        AndroidUtilities.rectTmp.set(trackLeft, cy - thickness / 2f, width, cy + thickness / 2f);
+                        canvas.drawRoundRect(AndroidUtilities.rectTmp, thickness / 2f, thickness / 2f, out);
+                    }
+
+                    if (indicatorRight > 0) {
+                        in.setColor(Theme.getColor(Theme.key_switchTrackChecked));
+                        final float wavelength = AndroidUtilities.dp(40);
+                        final float speed = AndroidUtilities.dp(15);
+                        final float phase = (SystemClock.elapsedRealtime() % 100000L) / 1000f * speed;
+                        final float amplitude = Math.min(AndroidUtilities.dp(2.5f), cy);
+                        m3Path.reset();
+                        boolean first = true;
+                        final float step = AndroidUtilities.dpf2(2);
+                        for (float x = 0; x <= indicatorRight; x += step) {
+                            final float y = cy + (float) (amplitude * Math.sin(2 * Math.PI * (x + phase) / wavelength));
+                            if (first) {
+                                m3Path.moveTo(x, y);
+                                first = false;
+                            } else {
+                                m3Path.lineTo(x, y);
+                            }
+                        }
+                        final float y = cy + (float) (amplitude * Math.sin(2 * Math.PI * (indicatorRight + phase) / wavelength));
+                        m3Path.lineTo(indicatorRight, y);
+                        in.setStyle(Paint.Style.STROKE);
+                        in.setStrokeWidth(thickness);
+                        in.setStrokeCap(Paint.Cap.ROUND);
+                        canvas.drawPath(m3Path, in);
+                    }
+
+                    if (width - indicatorRight > gap + stop) {
+                        in.setStyle(Paint.Style.FILL);
+                        canvas.drawCircle(width - stop / 2f, cy, Math.min(stop, thickness) / 2f, in);
+                    }
+
+                    if (this.progress < 1) {
+                        invalidate();
+                    }
+                    return;
+                }
 
                 AndroidUtilities.rectTmp.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
                 canvas.drawRoundRect(AndroidUtilities.rectTmp, AndroidUtilities.dp(3), AndroidUtilities.dp(3), out);

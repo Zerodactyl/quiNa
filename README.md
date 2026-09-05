@@ -2,7 +2,7 @@
 
 quiNa is a third-party Telegram client based on [Nagram](https://github.com/NextAlone/Nagram) / [NekoX](https://github.com/NekoX-Dev/NekoX) with some modifications.
 
-- Official Site: <https://nextalone.xyz>
+- Official Site: <https://ncatt.io.vn/quina>
 - Telegram Update Channel: <https://t.me/nagram_channel>
 - Releases: <https://git.disroot.org/armaltheus/quiNa/releases>
 - Issues here: <https://git.disroot.org/armaltheus/quiNa/issues>

@@ -13,11 +13,15 @@ import androidx.annotation.Nullable;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.ui.ActionBar.Theme;
+import tw.nekomimi.nekogram.helpers.M3CircularProgress;
+import xyz.nextalone.nagram.NaConfig;
 
 public class CircularProgressDrawable extends Drawable {
 
     public float size = AndroidUtilities.dp(18);
     public float thickness = AndroidUtilities.dp(2.25f);
+    private M3CircularProgress m3Progress;
 
     public CircularProgressDrawable() {
         this(0xffffffff);
@@ -64,6 +68,16 @@ public class CircularProgressDrawable extends Drawable {
             start = SystemClock.elapsedRealtime();
         }
         updateSegment();
+        if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+            if (m3Progress == null) {
+                m3Progress = new M3CircularProgress();
+                m3Progress.setWavyValues(AndroidUtilities.dp(7), AndroidUtilities.dp(0.75f), AndroidUtilities.dp(6));
+            }
+            m3Progress.setTrackColor(Theme.multAlpha(paint.getColor(), 0.2f));
+            m3Progress.draw(canvas, bounds, angleOffset + segment[0], segment[1] - segment[0], paint);
+            invalidateSelf();
+            return;
+        }
         canvas.drawArc(
             bounds,
             angleOffset + segment[0],
