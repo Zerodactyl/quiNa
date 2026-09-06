@@ -1688,6 +1688,12 @@ public class DatabaseMigrationHelper {
             database.executeFast("PRAGMA user_version = 177").stepThis().dispose();
             version = 177;
         }
+        if (version == 177) {
+            executeNoException(database, "ALTER TABLE dialog_filter_neko ADD COLUMN type INTEGER default 0");
+            executeNoException(database, "ALTER TABLE dialog_filter_neko ADD COLUMN local INTEGER default 0");
+            database.executeFast("PRAGMA user_version = 178").stepThis().dispose();
+            version = 178;
+        }
 
         return version;
     }

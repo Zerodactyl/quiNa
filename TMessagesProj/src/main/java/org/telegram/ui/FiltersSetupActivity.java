@@ -916,13 +916,17 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                         FilterCell cell = (FilterCell) v.getParent();
                         MessagesController.DialogFilter filter = cell.getCurrentFilter();
                         ItemOptions options = ItemOptions.makeOptions(FiltersSetupActivity.this, cell);
-                        options.add(R.drawable.msg_edit, LocaleController.getString(R.string.FilterEditItem), () -> {
-                            if (filter.locked) {
-                                showDialog(new LimitReachedBottomSheet(FiltersSetupActivity.this, mContext, LimitReachedBottomSheet.TYPE_FOLDERS, currentAccount, null));
-                            } else {
-                                presentFragment(new FilterCreateActivity(filter));
-                            }
-                        });
+                        if (!filter.local) {
+                            // NagramX: a built-in folder's name, icon and rules come from its type,
+                            // ensureLocalFilters() would revert any edit on the next load
+                            options.add(R.drawable.msg_edit, LocaleController.getString(R.string.FilterEditItem), () -> {
+                                if (filter.locked) {
+                                    showDialog(new LimitReachedBottomSheet(FiltersSetupActivity.this, mContext, LimitReachedBottomSheet.TYPE_FOLDERS, currentAccount, null));
+                                } else {
+                                    presentFragment(new FilterCreateActivity(filter));
+                                }
+                            });
+                        }
                         options.add(R.drawable.msg_delete, LocaleController.getString(R.string.FilterDeleteItem), true, () -> {
                             if (filter.isChatlist()) {
                                 FolderBottomSheet.showForDeletion(FiltersSetupActivity.this, filter.id, success -> {
@@ -936,6 +940,12 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                             builder.setMessage(LocaleController.getString(R.string.FilterDeleteAlert));
                             builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
                             builder.setPositiveButton(LocaleController.getString(R.string.Delete), (dialog2, which2) -> {
+                                if (filter.local) {
+                                    // NagramX: local folders only exist on this device, drop them without an RPC
+                                    getMessagesController().removeFilter(filter);
+                                    getMessagesStorage().deleteDialogFilter(filter);
+                                    return;
+                                }
                                 AlertDialog progressDialog = null;
                                 if (getParentActivity() != null) {
                                     progressDialog = new AlertDialog(getParentActivity(), AlertDialog.ALERT_TYPE_SPINNER);
@@ -986,6 +996,14 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
                     SuggestedFilterCell suggestedFilterCell = new SuggestedFilterCell(mContext);
                     suggestedFilterCell.setAddOnClickListener(v -> {
                         TLRPC.TL_dialogFilterSuggested suggested = suggestedFilterCell.getSuggestedFilter();
+                        LocalFolderHelper.FolderType localType = LocalFolderHelper.folderTypeOf(suggested);
+                        if (localType != null) {
+                            // NagramX: a built-in folder is enabled in the recipe, not created on the server
+                            LocalFolderHelper.setFolderEnabled(localType, true);
+                            LocalFolderHelper.ensureLocalFilters(currentAccount);
+                            updateRows(true);
+                            return;
+                        }
                         MessagesController.DialogFilter filter = new MessagesController.DialogFilter();
                         filter.name = suggested.filter.title.text;
                         filter.entities = suggested.filter.title.entities;

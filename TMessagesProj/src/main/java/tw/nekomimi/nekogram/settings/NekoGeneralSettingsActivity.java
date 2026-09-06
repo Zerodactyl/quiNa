@@ -265,6 +265,9 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell bottomBarSettingsLongPressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getBottomBarSettingsLongPress()));
     private final AbstractConfigCell mainTabsCustomizeRow = cellGroup.appendCell(new ConfigCellCustom("MainTabsCustomize", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
     private final AbstractConfigCell drawerElementsRow = cellGroup.appendCell(new ConfigCellCustom("DrawerElements", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
+    private final AbstractConfigCell nowPlayingRow = cellGroup.appendCell(new ConfigCellCustom("NowPlaying", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
+    private final AbstractConfigCell replaceBlockedMyInfoRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getReplaceBlockedMyInfo()));
+    private final AbstractConfigCell showFullAboutRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowFullAbout()));
     private final AbstractConfigCell quickReadReactionsOnLongClickRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getQuickReadReactionsOnLongClick()));
     private final AbstractConfigCell filterMatchLinksRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getFilterMatchLinks()));
     private final AbstractConfigCell cleanTrackingParamsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getCleanTrackingParams()));
@@ -506,6 +509,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     presentFragment(new MainTabsCustomizeActivity());
                 } else if (position == cellGroup.rows.indexOf(drawerElementsRow)) {
                     presentFragment(new SidebarMenuActivity());
+                } else if (position == cellGroup.rows.indexOf(nowPlayingRow)) {
+                    presentFragment(new org.telegram.ui.SetupNowPlayingActivity());
                 } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                     tw.nekomimi.nekogram.helpers.BackupHelper.INSTANCE.backupSettings(this);
                 } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
@@ -870,6 +875,10 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                             textCell.setTextAndValue(getString(R.string.MainTabsCustomize), getString(R.string.MainTabsCustomizeInfo), divider);
                         } else if (position == cellGroup.rows.indexOf(drawerElementsRow)) {
                             textCell.setTextAndValue(getString(R.string.DrawerElements), "", divider);
+                        } else if (position == cellGroup.rows.indexOf(nowPlayingRow)) {
+                            int svc = NaConfig.INSTANCE.getNowPlayingServiceType().Int();
+                            String serviceName = svc == 1 ? "Last.fm" : (svc == 2 ? "Stats.fm" : getString(R.string.Disable));
+                            textCell.setTextAndValue(getString(R.string.NowPlaying), serviceName, divider);
                         } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                             textCell.setTextAndValue("Export .cherry", "Backup quiNa settings", divider);
                         } else if (position == cellGroup.rows.indexOf(importCherryRow)) {

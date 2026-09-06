@@ -2007,7 +2007,42 @@ object NaConfig {
             ConfigItem.configTypeInt,
             2
         )
-
+    val nowPlayingServiceType =
+        addConfig(
+            "NowPlayingServiceType",
+            ConfigItem.configTypeInt,
+            0
+        )
+    val nowPlayingLastFmUsername =
+        addConfig(
+            "NowPlayingLastFmUsername",
+            ConfigItem.configTypeString,
+            ""
+        )
+    val nowPlayingStatsFmUsername =
+        addConfig(
+            "NowPlayingStatsFmUsername",
+            ConfigItem.configTypeString,
+            ""
+        )
+    val replaceBlockedMyInfo =
+        addConfig(
+            "ReplaceBlockedMyInfo",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val showFullAbout =
+        addConfig(
+            "ShowFullAbout",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val builtInFolders =
+        addConfig(
+            "BuiltInFolders",
+            ConfigItem.configTypeString,
+            ""
+        )
     private fun addConfig(
         k: String,
         t: Int,

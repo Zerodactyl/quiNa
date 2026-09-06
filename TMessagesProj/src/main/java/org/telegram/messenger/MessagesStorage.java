@@ -88,6 +88,7 @@ import cn.hutool.core.util.StrUtil;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.database.ObjectBoxKt;
 import xyz.nextalone.nagram.NaConfig;
+import xyz.nextalone.nagram.helper.LocalFolderHelper;
 public class MessagesStorage extends BaseController {
 
     private DispatchQueue storageQueue;
@@ -125,7 +126,7 @@ public class MessagesStorage extends BaseController {
     private static SparseArray<MessagesStorage> Instance = new SparseArray();
     private static final Object lockObject = new Object();
 
-    public final static int LAST_DB_VERSION = 177;
+    public final static int LAST_DB_VERSION = 178;
     private boolean databaseMigrationInProgress;
     public boolean showClearDatabaseAlert;
 
@@ -590,7 +591,7 @@ public class MessagesStorage extends BaseController {
         database.executeFast("CREATE INDEX IF NOT EXISTS folder_id_idx_4_dialogs ON dialogs(folder_id);").stepThis().dispose();
         database.executeFast("CREATE INDEX IF NOT EXISTS flags_idx_4_dialogs ON dialogs(flags);").stepThis().dispose();
 
-        database.executeFast("CREATE TABLE dialog_filter_neko(id INTEGER PRIMARY KEY, ord INTEGER, unread_count INTEGER, flags INTEGER, title TEXT, emoticon TEXT, color INTEGER DEFAULT -1, entities BLOB, noanimate INTEGER)").stepThis().dispose();
+        database.executeFast("CREATE TABLE dialog_filter_neko(id INTEGER PRIMARY KEY, ord INTEGER, unread_count INTEGER, flags INTEGER, title TEXT, emoticon TEXT, color INTEGER DEFAULT -1, entities BLOB, noanimate INTEGER, type INTEGER DEFAULT 0, local INTEGER DEFAULT 0)").stepThis().dispose();
         database.executeFast("CREATE TABLE dialog_filter_ep(id INTEGER, peer INTEGER, PRIMARY KEY (id, peer))").stepThis().dispose();
         database.executeFast("CREATE TABLE dialog_filter_pin_v2(id INTEGER, peer INTEGER, pin INTEGER, PRIMARY KEY (id, peer))").stepThis().dispose();
 
@@ -2581,7 +2582,7 @@ public class MessagesStorage extends BaseController {
 
                 usersToLoad.add(getUserConfig().getClientUserId());
 
-                filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, emoticon, color, entities, noanimate FROM dialog_filter_neko WHERE 1");
+                filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, emoticon, color, entities, noanimate, type, local FROM dialog_filter_neko WHERE 1");
 
                 boolean updateCounters = false;
                 boolean hasDefaultFilter = false;
@@ -2601,6 +2602,8 @@ public class MessagesStorage extends BaseController {
                         buff.reuse();
                     }
                     filter.title_noanimate = filtersCursor.intValue(8) == 1;
+                    filter.type = filtersCursor.intValue(9);
+                    filter.local = filtersCursor.intValue(10) == 1;
                     dialogFilters.add(filter);
                     dialogFiltersMap.put(filter.id, filter);
                     filtersById.put(filter.id, filter);
@@ -2670,7 +2673,7 @@ public class MessagesStorage extends BaseController {
                     dialogFiltersMap.put(filter.id, filter);
                     filtersById.put(filter.id, filter);
 
-                    state = database.executeFast("REPLACE INTO dialog_filter_neko VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    state = database.executeFast("REPLACE INTO dialog_filter_neko VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     state.bindInteger(1, filter.id);
                     state.bindInteger(2, filter.order);
                     state.bindInteger(3, filter.unreadCount);
@@ -2683,6 +2686,8 @@ public class MessagesStorage extends BaseController {
                     entitiesVector.serializeToStream(entitiesBuffer);
                     state.bindByteBuffer(8, entitiesBuffer);
                     state.bindInteger(9, filter.title_noanimate ? 1 : 0);
+                    state.bindInteger(10, filter.type);
+                    state.bindInteger(11, filter.local ? 1 : 0);
                     state.stepThis().dispose();
                     state = null;
                     entitiesBuffer.reuse();
@@ -2741,6 +2746,9 @@ public class MessagesStorage extends BaseController {
     private int[][] bots = new int[][]{new int[2], new int[2]};
     private int[][] channels = new int[][]{new int[2], new int[2]};
     private int[][] groups = new int[][]{new int[2], new int[2]};
+    // NagramX: split out for the built-in basic-groups (21) and supergroups (22) folders
+    private int[][] basicGroups = new int[][]{new int[2], new int[2]};
+    private int[][] megagroups = new int[][]{new int[2], new int[2]};
     private int[][] communities = new int[][]{new int[2], new int[2]};
     private int[] mentionChannels = new int[2];
     private int[] mentionGroups = new int[2];
@@ -2752,7 +2760,7 @@ public class MessagesStorage extends BaseController {
         try {
             for (int a = 0; a < 2; a++) {
                 for (int b = 0; b < 2; b++) {
-                    contacts[a][b] = nonContacts[a][b] = bots[a][b] = channels[a][b] = groups[a][b] = communities[a][b] = 0;
+                    contacts[a][b] = nonContacts[a][b] = bots[a][b] = channels[a][b] = groups[a][b] = basicGroups[a][b] = megagroups[a][b] = communities[a][b] = 0;
                 }
             }
             dialogsWithMentions.clear();
@@ -2924,6 +2932,12 @@ public class MessagesStorage extends BaseController {
                         channels[idx1][idx2]++;
                     } else {
                         groups[idx1][idx2]++;
+                        // NagramX: keep the basic/super split so the built-in folders can count them
+                        if (chat.megagroup) {
+                            megagroups[idx1][idx2]++;
+                        } else {
+                            basicGroups[idx1][idx2]++;
+                        }
                     }
                     chatsDict.put(chat.id, chat);
                 }
@@ -2995,6 +3009,15 @@ public class MessagesStorage extends BaseController {
                     }
                 }
                 if ((flags & MessagesController.DIALOG_FILTER_FLAG_GROUPS) != 0) {
+                    int[][] bucket = groups;
+                    // NagramX: the built-in basic-groups (21) / supergroups (22) folders only count one half
+                    if (filter != null && filter.local) {
+                        if (filter.type == MessagesController.DIALOG_FILTER_TYPE_GROUPS) {
+                            bucket = basicGroups;
+                        } else if (filter.type == MessagesController.DIALOG_FILTER_TYPE_MEGAGROUPS) {
+                            bucket = megagroups;
+                        }
+                    }
                     if ((flags & MessagesController.DIALOG_FILTER_FLAG_ONLY_ARCHIVED) == 0) {
                         unreadCount += groups[0][0];
                         if ((flags & MessagesController.DIALOG_FILTER_FLAG_EXCLUDE_MUTED) == 0) {
@@ -3193,7 +3216,7 @@ public class MessagesStorage extends BaseController {
                 dialogFiltersMap.put(filter.id, filter);
             }
 
-            state = database.executeFast("REPLACE INTO dialog_filter_neko VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            state = database.executeFast("REPLACE INTO dialog_filter_neko VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             state.bindInteger(1, filter.id);
             state.bindInteger(2, filter.order);
             state.bindInteger(3, filter.unreadCount);
@@ -3211,6 +3234,8 @@ public class MessagesStorage extends BaseController {
             entitiesVector.serializeToStream(entitiesBuffer);
             state.bindByteBuffer(8, entitiesBuffer);
             state.bindInteger(9, filter.title_noanimate ? 1 : 0);
+            state.bindInteger(10, filter.type);
+            state.bindInteger(11, filter.local ? 1 : 0);
             state.step();
             state.dispose();
             entitiesBuffer.reuse();
@@ -3293,6 +3318,10 @@ public class MessagesStorage extends BaseController {
                 SparseArray<MessagesController.DialogFilter> filtersToDelete = new SparseArray<>();
                 for (int a = 0, N = dialogFilters.size(); a < N; a++) {
                     MessagesController.DialogFilter filter = dialogFilters.get(a);
+                    // NagramX: local folders are not known to the server, never delete them here
+                    if (filter.local) {
+                        continue;
+                    }
                     filtersToDelete.put(filter.id, filter);
                 }
                 ArrayList<Integer> filtersOrder = new ArrayList<>();

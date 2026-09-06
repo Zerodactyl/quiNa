@@ -66,6 +66,8 @@ import org.telegram.ui.DialogsActivity;
 import org.telegram.ui.FilterCreateActivity;
 import org.telegram.ui.FiltersSetupActivity;
 import org.telegram.ui.MainTabsActivity;
+import xyz.nextalone.nagram.helper.LocalFolderHelper;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +111,10 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
     private HeaderCell headerCell;
 
     public static void showForDeletion(final BaseFragment fragment, final int filterId, final Utilities.Callback<Boolean> whenDone) {
+        if (LocalFolderHelper.isLocalFilterId(filterId)) {
+            // NagramX: this sheet talks to the server about a chatlist; a local folder has no server side
+            return;
+        }
         ArrayList<MessagesController.DialogFilter> myFilters = fragment.getMessagesController().dialogFilters;
         MessagesController.DialogFilter f = null;
         if (myFilters != null) {
