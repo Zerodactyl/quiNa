@@ -2081,9 +2081,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         long monoForumPeerId,
         MessageSuggestionParams suggestionParams
     ) {
-        if (NaConfig.INSTANCE.getDisableQuoteForward().Bool()) {
-            forwardFromMyName = true;
-        }
+        final boolean finalForwardFromMyName = forwardFromMyName || NaConfig.INSTANCE.getDisableQuoteForward().Bool();
         if (messages == null || messages.isEmpty()) {
             return 0;
         }
@@ -2111,7 +2109,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
             }
             if (currentPayStars != payStars) {
                 AlertsCreator.ensurePaidMessageConfirmation(currentAccount, peer, Math.max(1, messages.size()), newPayStars -> {
-                    sendMessage(messages, peer, forwardFromMyName, hideCaption, notify, scheduleDate, scheduleRepeatPeriod, replyToTopMsg, video_timestamp, newPayStars, monoForumPeerId, suggestionParams);
+                    sendMessage(messages, peer, finalForwardFromMyName, hideCaption, notify, scheduleDate, scheduleRepeatPeriod, replyToTopMsg, video_timestamp, newPayStars, monoForumPeerId, suggestionParams);
                 });
                 return 0;
             }
@@ -2248,7 +2246,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                 }
 
                 final TLRPC.Message newMsg = new TLRPC.TL_message();
-                if (!forwardFromMyName) {
+                if (!finalForwardFromMyName) {
                     boolean forwardFromSaved = msgObj.getDialogId() == myId && msgObj.isFromUser() && msgObj.messageOwner.from_id.user_id == myId;
                     if (msgObj.isForwarded()) {
                         newMsg.fwd_from = new TLRPC.TL_messageFwdHeader();
@@ -2588,7 +2586,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                     }
                     req.random_id = randomIds;
                     req.id = ids;
-                    req.drop_author = forwardFromMyName;
+                    req.drop_author = finalForwardFromMyName;
                     req.drop_media_captions = hideCaption;
                     req.with_my_score = messages.size() == 1 && messages.get(0).messageOwner.with_my_score;
                     req.from_ephemeral = fwdEphemeral;
