@@ -2971,6 +2971,9 @@ public class AndroidUtilities {
     }
 
     public static int getPhotoSize() {
+        if (NaConfig.INSTANCE.getLargePhotos().Bool()) {
+            return getPhotoSize(true);
+        }
         return getPhotoSize(false);
     }
 

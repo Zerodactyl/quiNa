@@ -4318,6 +4318,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         MessageObject.SendAnimationData sendAnimationData = sendMessageParams.sendAnimationData;
         boolean updateStickersOrder = sendMessageParams.updateStickersOrder;
         boolean hasMediaSpoilers = sendMessageParams.hasMediaSpoilers;
+        if (!hasMediaSpoilers && (photo != null || (document != null && (MessageObject.isVideoDocument(document) || MessageObject.isGifDocument(document))))) {
+            hasMediaSpoilers = NaConfig.INSTANCE.getMediaSpoilerByDefault().Bool();
+        }
         TL_stories.StoryItem replyToStoryItem = sendMessageParams.replyToStoryItem;
         TL_stories.StoryItem sendingStory = sendMessageParams.sendingStory;
         ChatActivity.ReplyQuote replyQuote = sendMessageParams.replyQuote;

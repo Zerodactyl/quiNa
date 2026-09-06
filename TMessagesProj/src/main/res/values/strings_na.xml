@@ -374,4 +374,15 @@
     <string name="AutoQuoteReplies">Auto quote replies</string>
     <string name="DisableNumberRounding">Disable number rounding</string>
     <string name="SwipeMusicBar">Swipe music bar to switch track</string>
+    <string name="MediaSpoilerByDefault">Media spoiler by default</string>
+    <string name="DrawerQuran">Show Quran in menu</string>
+    <string name="DrawerBible">Show Bible in menu</string>
+    <string name="RepliesLinksShowColors">Show colors in reply link lines</string>
+    <string name="HideSentTimeOnStickers">Hide sent time on stickers</string>
+    <string name="TranslatorKeepMarkdown">Keep markdown formatting in translation</string>
+    <string name="LargePhotos">Send photos in high resolution</string>
+    <string name="DisableBgParallax">Disable wallpaper parallax effect</string>
+    <string name="HideFadeView">Hide top and bottom fade gradients</string>
+    <string name="ReduceMenuMotion">Reduce popup menu animation delay</string>
+    <string name="DisableSaveDraftToCloud">Do not sync message drafts to cloud</string>
 </resources>

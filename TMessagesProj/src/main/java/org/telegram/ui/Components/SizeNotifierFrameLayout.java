@@ -395,7 +395,7 @@ public class SizeNotifierFrameLayout extends FrameLayout implements Theme.Colora
     }
 
     private void checkMotion() {
-        boolean motion = oldBackgroundMotion || backgroundMotion;
+        boolean motion = (oldBackgroundMotion || backgroundMotion) && !NaConfig.INSTANCE.getDisableBgParallax().Bool();
         if (motion) {
             if (parallaxEffect == null) {
                 parallaxEffect = new WallpaperParallaxEffect(getContext());

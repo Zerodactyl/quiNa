@@ -31,6 +31,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import xyz.nextalone.nagram.NaConfig;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -380,6 +381,9 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
                 } else if (res != null) {
                     firstTranslation = false;
                     TLRPC.TL_textWithEntities text = preprocess(textWithEntities, res);
+                    if (!NaConfig.INSTANCE.getTranslatorKeepMarkdown().Bool() && text != null && text.entities != null) {
+                        text.entities.clear();
+                    }
                     CharSequence translated = SpannableStringBuilder.valueOf(text.text);
                     MessageObject.addEntitiesToText(translated, text.entities, false, true, false, false);
                     translated = preprocessText(translated);
@@ -423,6 +427,9 @@ public class TranslateAlert2 extends BottomSheet implements NotificationCenter.N
                 ) {
                     firstTranslation = false;
                     TLRPC.TL_textWithEntities text = preprocess(textWithEntities, ((TLRPC.TL_messages_translateResult) res).result.get(0));
+                    if (!NaConfig.INSTANCE.getTranslatorKeepMarkdown().Bool() && text != null && text.entities != null) {
+                        text.entities.clear();
+                    }
                     CharSequence translated = SpannableStringBuilder.valueOf(text.text);
                     MessageObject.addEntitiesToText(translated, text.entities, false, true, false, false);
                     translated = preprocessText(translated);

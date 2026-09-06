@@ -1445,6 +1445,72 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val mediaSpoilerByDefault =
+        addConfig(
+            "MediaSpoilerByDefault",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerQuran =
+        addConfig(
+            "DrawerQuran",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerBible =
+        addConfig(
+            "DrawerBible",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val repliesLinksShowColors =
+        addConfig(
+            "RepliesLinksShowColors",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val hideSentTimeOnStickers =
+        addConfig(
+            "HideSentTimeOnStickers",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val translatorKeepMarkdown =
+        addConfig(
+            "TranslatorKeepMarkdown",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val largePhotos =
+        addConfig(
+            "LargePhotos",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val disableBgParallax =
+        addConfig(
+            "DisableBgParallax",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val hideFadeView =
+        addConfig(
+            "HideFadeView",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val reduceMenuMotion =
+        addConfig(
+            "ReduceMenuMotion",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val disableSaveDraftToCloud =
+        addConfig(
+            "DisableSaveDraftToCloud",
+            ConfigItem.configTypeBool,
+            false
+        )
 
     private fun addConfig(
         k: String,

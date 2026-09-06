@@ -303,6 +303,17 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell autoPauseVideoRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.autoPauseVideo, LocaleController.getString("AutoPauseVideoAbout")));
     private final AbstractConfigCell disableNumberRoundingRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableNumberRounding(), "4.8K -> 4777"));
     private final AbstractConfigCell swipeMusicBarRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getSwipeMusicBar()));
+    private final AbstractConfigCell mediaSpoilerByDefaultRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getMediaSpoilerByDefault()));
+    private final AbstractConfigCell drawerQuranRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDrawerQuran()));
+    private final AbstractConfigCell drawerBibleRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDrawerBible()));
+    private final AbstractConfigCell repliesLinksShowColorsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getRepliesLinksShowColors()));
+    private final AbstractConfigCell hideSentTimeOnStickersRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getHideSentTimeOnStickers()));
+    private final AbstractConfigCell translatorKeepMarkdownRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getTranslatorKeepMarkdown()));
+    private final AbstractConfigCell largePhotosRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getLargePhotos()));
+    private final AbstractConfigCell disableBgParallaxRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableBgParallax()));
+    private final AbstractConfigCell hideFadeViewRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getHideFadeView()));
+    private final AbstractConfigCell reduceMenuMotionRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getReduceMenuMotion()));
+    private final AbstractConfigCell disableSaveDraftToCloudRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableSaveDraftToCloud()));
     private final AbstractConfigCell nameOrderRow = cellGroup.appendCell(new ConfigCellSelectBox(null, NekoConfig.nameOrder, new String[]{
             LocaleController.getString("LastFirst", R.string.LastFirst),
             LocaleController.getString("FirstLast", R.string.FirstLast)

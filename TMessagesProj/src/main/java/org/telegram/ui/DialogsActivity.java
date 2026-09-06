@@ -13944,6 +13944,12 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         io.addIf(NekoConfig.showGhostToggleInDrawer, R.drawable.icon_ghost, getString(R.string.GhostMode), () -> {
             presentFragment(new NekoGhostModeActivity());
         });
+        io.addIf(NaConfig.INSTANCE.getDrawerQuran().Bool(), R.drawable.filter_book, "Quran", () -> {
+            Browser.openUrl(getParentActivity(), "https://tanzil.net/");
+        });
+        io.addIf(NaConfig.INSTANCE.getDrawerBible().Bool(), R.drawable.filter_book, "Bible", () -> {
+            Browser.openUrl(getParentActivity(), "https://www.biblegateway.com/");
+        });
         if (ApplicationLoader.applicationLoaderInstance != null) {
             ApplicationLoader.applicationLoaderInstance.addItemOptions(io);
         }

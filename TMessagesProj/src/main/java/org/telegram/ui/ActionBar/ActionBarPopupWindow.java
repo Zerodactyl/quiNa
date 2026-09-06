@@ -8,6 +8,7 @@
 
 package org.telegram.ui.ActionBar;
 
+import xyz.nextalone.nagram.NaConfig;
 import static org.telegram.messenger.AndroidUtilities.dp;
 
 import android.animation.Animator;
@@ -381,6 +382,14 @@ public class ActionBarPopupWindow extends PopupWindow {
         }
 
         private void startChildAnimation(View child) {
+            if (NaConfig.INSTANCE.getReduceMenuMotion().Bool()) {
+                child.setAlpha(child.isEnabled() ? 1f : 0.5f);
+                child.setTranslationY(0);
+                if (child instanceof ActionBarMenuSubItem) {
+                    ((ActionBarMenuSubItem) child).onItemShown();
+                }
+                return;
+            }
             if (animationEnabled) {
                 AnimatorSet animatorSet = new AnimatorSet();
                 animatorSet.playTogether(

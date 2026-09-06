@@ -31,6 +31,7 @@ import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.utils.RadiiUtils;
 import org.telegram.tgnet.TLRPC;
+import xyz.nextalone.nagram.NaConfig;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.ChatMessageCell;
 
@@ -359,6 +360,9 @@ public class ReplyMessageLine {
             } else {
                 colorId = 0;
             }
+            if (!NaConfig.INSTANCE.getRepliesLinksShowColors().Bool()) {
+                colorId = 0;
+            }
             resolveColor(messageObject, colorId, resourcesProvider);
             backgroundColor = Theme.multAlpha(color1, 0.10f);
             nameColor = color1;
@@ -407,6 +411,9 @@ public class ReplyMessageLine {
                     colorId = 0;
                 }
             } else {
+                colorId = 0;
+            }
+            if (!NaConfig.INSTANCE.getRepliesLinksShowColors().Bool()) {
                 colorId = 0;
             }
             resolveColor(messageObject.replyMessageObject, colorId, resourcesProvider);
