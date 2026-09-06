@@ -155,16 +155,33 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
         final float viewWidth = hasVisualWidth ? visualWidth : getWidth();
         final float selectedFactor = hasGestureSelectedOverride ? gestureSelectedOverride : isSelectedAnimator.getFloatValue();
         if (selectedFactor > 0 && !skipDrawSelector) {
-            final float alpha = AnimatorUtils.DECELERATE_INTERPOLATOR.getInterpolation(selectedFactor);
+            if (NaConfig.INSTANCE.getM3TabPill().Bool()) {
+                int pillColor = ColorUtils.setAlphaComponent(
+                    colorSelected != 0 ? colorSelected : Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
+                    (int) (55 * selectedFactor)
+                );
+                paintCounterBackground.setColor(pillColor);
+                float pillWidth = AndroidUtilities.dp(56) * (0.65f + 0.35f * selectedFactor);
+                float pillHeight = AndroidUtilities.dp(30);
+                float cx = viewWidth / 2f;
+                float cy = (imageView.getTop() + imageView.getBottom()) / 2f;
+                if (cy <= 0) {
+                    cy = AndroidUtilities.dp(16);
+                }
+                tmpRectF.set(cx - pillWidth / 2f, cy - pillHeight / 2f, cx + pillWidth / 2f, cy + pillHeight / 2f);
+                canvas.drawRoundRect(tmpRectF, pillHeight / 2f, pillHeight / 2f, paintCounterBackground);
+            } else {
+                final float alpha = AnimatorUtils.DECELERATE_INTERPOLATOR.getInterpolation(selectedFactor);
 
-            paintCounterBackground.setColor(Theme.multAlpha(colorSelected, 0.09f * alpha));
-            tmpRectF.set(0, 0, viewWidth, getHeight());
-            final float r = Math.min(tmpRectF.width(), tmpRectF.height()) / 2f;
-            final float s = lerp(0.6f, 1, selectedFactor) * MathUtils.clamp(attachScale, 0, 1);
-            canvas.save();
-            canvas.scale(s, s, tmpRectF.centerX(), tmpRectF.centerY());
-            canvas.drawRoundRect(tmpRectF, r, r, paintCounterBackground);
-            canvas.restore();
+                paintCounterBackground.setColor(Theme.multAlpha(colorSelected, 0.09f * alpha));
+                tmpRectF.set(0, 0, viewWidth, getHeight());
+                final float r = Math.min(tmpRectF.width(), tmpRectF.height()) / 2f;
+                final float s = lerp(0.6f, 1, selectedFactor) * MathUtils.clamp(attachScale, 0, 1);
+                canvas.save();
+                canvas.scale(s, s, tmpRectF.centerX(), tmpRectF.centerY());
+                canvas.drawRoundRect(tmpRectF, r, r, paintCounterBackground);
+                canvas.restore();
+            }
         }
 
         final float hasCounter = (usePremiumCounter ? 1f : isHasCounterAnimator.getFloatValue()) * attachScale;
@@ -675,32 +692,6 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
 
     public void onPreBind() {
 
-    }
-    private final Paint m3PillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final RectF m3PillRect = new RectF();
-
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        if (NaConfig.INSTANCE.getM3TabPill().Bool()) {
-            float selectFraction = isSelectedAnimator.getFloatValue();
-            if (selectFraction > 0.01f) {
-                int pillColor = ColorUtils.setAlphaComponent(
-                    colorSelected != 0 ? colorSelected : Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
-                    (int) (55 * selectFraction)
-                );
-                m3PillPaint.setColor(pillColor);
-                float pillWidth = AndroidUtilities.dp(56) * (0.65f + 0.35f * selectFraction);
-                float pillHeight = AndroidUtilities.dp(30);
-                float cx = getWidth() / 2f;
-                float cy = (imageView.getTop() + imageView.getBottom()) / 2f;
-                if (cy <= 0) {
-                    cy = AndroidUtilities.dp(16);
-                }
-                m3PillRect.set(cx - pillWidth / 2f, cy - pillHeight / 2f, cx + pillWidth / 2f, cy + pillHeight / 2f);
-                canvas.drawRoundRect(m3PillRect, pillHeight / 2f, pillHeight / 2f, m3PillPaint);
-            }
-        }
-        super.dispatchDraw(canvas);
     }
 
     public void enableTextFreeMode() {
