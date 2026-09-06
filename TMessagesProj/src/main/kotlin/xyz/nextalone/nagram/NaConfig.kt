@@ -1523,6 +1523,12 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val m3ExpressiveAll =
+        addConfig(
+            "M3ExpressiveAll",
+            ConfigItem.configTypeBool,
+            false
+        )
     val m3WavySlider =
         addConfig(
             "M3WavySlider",

@@ -41,13 +41,13 @@ public abstract class M3GlassMenuHelper {
     private M3GlassMenuHelper() {}
 
     public static boolean isEnabled(int currentAccount, Theme.ResourcesProvider resourcesProvider) {
-        return NaConfig.INSTANCE.getM3GlassMenu().Bool()
+        return (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3GlassMenu().Bool())
             && BlurredBackgroundProviderImpl.checkBlurEnabled(currentAccount, resourcesProvider);
     }
 
     public static boolean isEnabled() {
         // Fallback when account/provider not available - just check toggle.
-        return NaConfig.INSTANCE.getM3GlassMenu().Bool();
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3GlassMenu().Bool();
     }
 
     private static BlurredBackgroundProviderBuilder scrimMenuGlass(Theme.ResourcesProvider resourcesProvider) {

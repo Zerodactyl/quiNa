@@ -110,7 +110,7 @@ public class LineProgressView extends View {
     }
 
     public void onDraw(Canvas canvas) {
-        if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+        if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
             drawMaterial3(canvas);
             updateAnimation();
             return;

@@ -68,7 +68,7 @@ public class CircularProgressDrawable extends Drawable {
             start = SystemClock.elapsedRealtime();
         }
         updateSegment();
-        if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+        if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
             if (m3Progress == null) {
                 m3Progress = new M3CircularProgress();
                 m3Progress.setWavyValues(AndroidUtilities.dp(7), AndroidUtilities.dp(0.75f), AndroidUtilities.dp(6));

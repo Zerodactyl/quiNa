@@ -208,7 +208,7 @@ public class FragmentFloatingButton extends FrameLayout implements FactorAnimato
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (NaConfig.INSTANCE.getM3SpringPhysics().Bool()) {
+        if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3SpringPhysics().Bool()) {
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 animate().scaleX(0.92f).scaleY(0.92f).setDuration(120).setInterpolator(CubicBezierInterpolator.EASE_OUT).start();
             } else if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {

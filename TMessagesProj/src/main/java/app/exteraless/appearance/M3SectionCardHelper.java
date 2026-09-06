@@ -39,7 +39,7 @@ public final class M3SectionCardHelper {
     private M3SectionCardHelper() {}
 
     public static boolean isEnabled() {
-        return NaConfig.INSTANCE.getM3SectionCards().Bool();
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3SectionCards().Bool();
     }
 
     /** M3 Expressive card corner radius: 18dp when enabled, otherwise 0 (stock delegates). */

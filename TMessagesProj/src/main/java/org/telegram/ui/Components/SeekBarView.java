@@ -659,7 +659,7 @@ public class SeekBarView extends FrameLayout {
 
     private void drawProgressBar(Canvas canvas, RectF rect, Paint paint) {
         float radius = AndroidUtilities.dp(2);
-        if (paint == outerPaint1 && NaConfig.INSTANCE.getM3WavySlider().Bool() && !pressed && rect.width() > AndroidUtilities.dp(8)) {
+        if (paint == outerPaint1 && (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3WavySlider().Bool()) && !pressed && rect.width() > AndroidUtilities.dp(8)) {
             if (m3WavePath == null) {
                 m3WavePath = new Path();
             }

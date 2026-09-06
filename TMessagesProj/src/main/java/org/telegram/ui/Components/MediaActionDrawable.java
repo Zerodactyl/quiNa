@@ -568,7 +568,7 @@ public class MediaActionDrawable extends Drawable {
                     canvas.drawArc(rect, 0, 360, false, paint);
                     paint.setAlpha(alpha);
                 }
-                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+                if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
                     if (m3Progress == null) {
                         m3Progress = new M3CircularProgress();
                         m3Progress.setWavyValues(AndroidUtilities.dp(12), AndroidUtilities.dp(1.8f), AndroidUtilities.dp(6));
@@ -597,7 +597,7 @@ public class MediaActionDrawable extends Drawable {
                 float rad = Math.max(4, 360 * animatedDownloadProgress);
                 int diff = AndroidUtilities.dp(isMini ? 2 : 4);
                 rect.set(bounds.left + diff, bounds.top + diff, bounds.right - diff, bounds.bottom - diff);
-                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+                if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
                     if (m3Progress == null) {
                         m3Progress = new M3CircularProgress();
                         m3Progress.setWavyValues(AndroidUtilities.dp(12), AndroidUtilities.dp(1.8f), AndroidUtilities.dp(6));

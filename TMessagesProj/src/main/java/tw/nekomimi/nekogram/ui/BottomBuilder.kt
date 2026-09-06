@@ -245,7 +245,7 @@ class BottomBuilder(val ctx: Context, val needFocus: Boolean = true, val bgColor
 
     @JvmOverloads
     fun addEditText(hintText: String? = null): EditText {
-        if (NaConfig.m3ExpressiveDialogs.Bool()) {
+        if (NaConfig.m3ExpressiveAll.Bool() || NaConfig.m3ExpressiveDialogs.Bool()) {
             return EditTextBoldCursor(ctx).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f)
                 setTextColor(Theme.getColor(Theme.key_dialogTextBlack))

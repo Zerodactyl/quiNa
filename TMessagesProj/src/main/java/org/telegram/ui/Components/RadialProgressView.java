@@ -229,7 +229,7 @@ public class RadialProgressView extends View {
 
     private void drawArc(Canvas canvas) {
         drawingCircleLenght = currentCircleLength;
-        if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+        if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
             if (m3Progress == null) {
                 m3Progress = new M3CircularProgress();
                 m3Progress.setWavyValues(AndroidUtilities.dp(15), AndroidUtilities.dp(1.6f), AndroidUtilities.dp(5));

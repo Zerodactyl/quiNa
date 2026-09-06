@@ -155,7 +155,7 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
         final float viewWidth = hasVisualWidth ? visualWidth : getWidth();
         final float selectedFactor = hasGestureSelectedOverride ? gestureSelectedOverride : isSelectedAnimator.getFloatValue();
         if (selectedFactor > 0 && !skipDrawSelector) {
-            if (NaConfig.INSTANCE.getM3TabPill().Bool()) {
+            if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3TabPill().Bool()) {
                 int pillColor = ColorUtils.setAlphaComponent(
                     colorSelected != 0 ? colorSelected : Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
                     (int) (55 * selectedFactor)

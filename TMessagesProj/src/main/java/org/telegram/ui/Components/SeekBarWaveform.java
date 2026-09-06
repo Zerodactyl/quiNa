@@ -453,7 +453,7 @@ public class SeekBarWaveform {
         if (loadingT < 1f) {
             float progressWidth = (this.progress * (width + strokeWidth)) * (1f - loadingT);
             canvas.drawRect(0, 0, progressWidth, height, paintOuter);
-            if (isPlaying && NaConfig.INSTANCE.getM3ExpressiveVoice().Bool() && progressWidth > AndroidUtilities.dp(6)) {
+            if (isPlaying && (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveVoice().Bool()) && progressWidth > AndroidUtilities.dp(6)) {
                 float wavePhase = (SystemClock.elapsedRealtime() % 1200L) / 1200f;
                 int waveAlpha = (int) (paintOuter.getAlpha() * 0.35f);
                 if (m3VoicePaint == null) {
