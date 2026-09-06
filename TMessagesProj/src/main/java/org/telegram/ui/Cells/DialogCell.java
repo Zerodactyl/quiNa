@@ -3289,6 +3289,14 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                                 message = MessageHelper.getInstance(currentAccount).getLastMessageFromUnblock(dialog.id);
                                 MessagesController.getInstance(currentAccount).dialogMessageFromUnblocked.put(dialog.id, message);
                             }
+                            // --- AyuGram hook: fallback to deleted message cache
+                            if (message == null) {
+                                MessageObject ayuPreview = com.radolyn.ayugram.messages.AyuMessagesController.getInstance().getLastMessageCached(currentAccount, dialog.id);
+                                if (ayuPreview != null) {
+                                    message = ayuPreview;
+                                }
+                            }
+                            // --- AyuGram hook
                             // Username show may be abnormal if User who send `message` is not loaded in (never enter chat since boot, esp after cold starting)
                         }
                         lastUnreadState = message != null && message.isUnread();

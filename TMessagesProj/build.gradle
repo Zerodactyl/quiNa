@@ -198,6 +198,11 @@ android {
                 arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
             }
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ['room.schemaLocation': "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     bundle {
@@ -431,6 +436,9 @@ dependencies {
     implementation 'org.unifiedpush.android:connector:3.1.2'
     // add for copy webm and tgs to gif
     implementation "com.airbnb.android:lottie:6.4.1"
+    // add for save deleted messages
+    implementation 'androidx.room:room-runtime:2.8.4'
+    annotationProcessor 'androidx.room:room-compiler:2.8.4'
 }
 
 apply plugin: "com.google.gms.google-services"

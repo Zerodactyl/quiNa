@@ -1380,7 +1380,9 @@ public class ChatActivity extends BaseFragment implements
             NotificationCenter.didSetNewWallpapper,
             NotificationCenter.savedMessagesDialogsUpdate,
             NotificationCenter.didApplyNewTheme,
-            NotificationCenter.messageReceivedByServer2
+            NotificationCenter.messageReceivedByServer2,
+            com.radolyn.ayugram.AyuConstants.MESSAGES_DELETED_NOTIFICATION,
+            com.radolyn.ayugram.AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION
     };
 
     private final DialogInterface.OnCancelListener postponedScrollCancelListener = dialog -> {
@@ -3159,6 +3161,8 @@ public class ChatActivity extends BaseFragment implements
             .add(NotificationCenter.closeChatActivity)
             .add(NotificationCenter.messagesDeleted)
             .add(NotificationCenter.historyCleared)
+            .add(com.radolyn.ayugram.AyuConstants.MESSAGES_DELETED_NOTIFICATION)
+            .add(com.radolyn.ayugram.AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION)
             .add(NotificationCenter.messageReceivedByServer)
             .add(NotificationCenter.messageReceivedByAck)
             .add(NotificationCenter.messageSendError)
@@ -23266,6 +23270,32 @@ public class ChatActivity extends BaseFragment implements
                 } else {
                     removeSelfFromStack();
                 }
+            }
+        } else if (id == com.radolyn.ayugram.AyuConstants.MESSAGES_DELETED_NOTIFICATION) {
+            // --- AyuGram hook (ayuDeleted)
+            long dialogId = (Long) args[0];
+            if (getDialogId() != dialogId && (org.telegram.messenger.ChatObject.isChannel(currentChat) || dialogId != 0)) {
+                return;
+            }
+            ArrayList<Integer> mIds = (ArrayList<Integer>) args[1];
+            for (int mid : mIds) {
+                MessageObject currentMessage = messagesDict[0].get(mid);
+                if (currentMessage != null) {
+                    currentMessage.messageOwner.ayuDeleted = true;
+                    if (chatAdapter != null) {
+                        chatAdapter.updateRowWithMessageObject(currentMessage, false, false);
+                    }
+                }
+            }
+            // --- AyuGram hook (ayuDeleted)
+        } else if (id == com.radolyn.ayugram.AyuConstants.DELETED_MEDIA_LOADED_NOTIFICATION) {
+            try {
+                java.io.File file = (java.io.File) args[1];
+                if (chatAdapter != null) {
+                    AndroidUtilities.runOnUIThread(() -> chatAdapter.notifyDataSetChanged());
+                }
+            } catch (Exception e) {
+                org.telegram.messenger.FileLog.e(e);
             }
         } else if (id == NotificationCenter.quickRepliesDeleted) {
             if (chatMode != MODE_QUICK_REPLIES) return;

@@ -1,0 +1,226 @@
+/*
+ * This is the source code of AyuGram for Android.
+ *
+ * We do not and cannot prevent the use of our code,
+ * but be respectful and credit the original author.
+ *
+ * Copyright @Radolyn, 2023
+ */
+
+package com.radolyn.ayugram.messages;
+
+
+import org.telegram.messenger.MessageObject;
+import org.telegram.messenger.MessagesController;
+import org.telegram.messenger.MessagesStorage;
+import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.Utilities;
+import org.telegram.tgnet.TLRPC;
+
+import me.vkryl.core.BitwiseUtils;
+
+import tw.nekomimi.nekogram.NekoConfig;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+
+import xyz.nextalone.nagram.NaConfig;
+
+public class AyuSavePreferences {
+    public static final String saveExclusionPrefix = "saveDeletedExclusion_";
+    public static ConcurrentHashMap<Long, Boolean> saveDeletedExclusions = new ConcurrentHashMap<>();
+    public static boolean isSaveDeletedExclusionsLoaded = false;
+    private final TLRPC.Message message;
+    private final int accountId;
+    private final long userId;
+    private long dialogId = -1;
+    private long topicId = -1;
+    private int messageId = -1;
+    private int requestCatchTime = -1;
+
+    public AyuSavePreferences(TLRPC.Message msg, int accountId, long dialogId, long topicId, int messageId, int requestCatchTime) {
+        this.message = msg;
+        this.accountId = accountId;
+        this.userId = UserConfig.getInstance(accountId).getClientUserId();
+
+        if (msg == null) {
+            return;
+        }
+
+        this.dialogId = dialogId;
+        this.topicId = topicId;
+        this.messageId = messageId;
+        this.requestCatchTime = requestCatchTime;
+    }
+
+    public AyuSavePreferences(TLRPC.Message msg, int accountId) {
+        this.message = msg;
+        this.accountId = accountId;
+        this.userId = UserConfig.getInstance(accountId).getClientUserId();
+
+        if (msg == null) {
+            return;
+        }
+
+        this.dialogId = msg.dialog_id;
+        this.topicId = resolveTopicId(accountId, msg);
+        this.messageId = msg.id;
+        this.requestCatchTime = (int) (System.currentTimeMillis() / 1000);
+    }
+
+    /**
+     * 解析消息归属的话题 id。
+     *
+     * <p>必须显式告知对话类型：monoForum（频道私信）的归属信息在 {@code saved_peer_id}，
+     * 不带该标记时 {@link MessageObject#getTopicId} 会直接返回 0，导致这些消息全部
+     * 存到 topicId=0 下、读取时按错误的列去匹配而永远查不出来。
+     */
+    private static long resolveTopicId(int accountId, TLRPC.Message msg) {
+        long dialogId = msg.dialog_id != 0 ? msg.dialog_id : MessageObject.getDialogId(msg);
+        return resolveTopicId(accountId, msg, dialogId);
+    }
+
+    /**
+     * 所有删除保存路径统一从这里解析话题 id。
+     * 不要用 {@link MessageObject#getTopicId(int, TLRPC.Message, boolean)}：它不感知
+     * monoForum，会把频道私信消息解析成 topicId=0，与读取侧查询不一致。
+     */
+    public static long resolveTopicId(int accountId, TLRPC.Message msg, long dialogId) {
+        MessagesController messagesController = MessagesController.getInstance(accountId);
+        int forumFlags = 0;
+        try {
+            if (messagesController.isMonoForum(dialogId)) {
+                forumFlags = BitwiseUtils.setFlag(forumFlags, MessagesStorage.FORUM_TYPE_DIRECT, true);
+            } else if (messagesController.isForum(dialogId)) {
+                forumFlags = BitwiseUtils.setFlag(forumFlags, MessagesStorage.FORUM_TYPE_CHAT, true);
+            }
+        } catch (Exception ignored) {
+            // 拿不到对话信息时退回不带标记的解析
+        }
+        return MessageObject.getTopicId(accountId, msg, forumFlags);
+    }
+
+    public static boolean saveDeletedMessageFor(int accountId, long dialogId, MessageObject messageObject) {
+        if (messageObject != null && messageObject.messageOwner != null && messageObject.messageOwner.from_id != null) {
+            return saveDeletedMessageFor(accountId, dialogId, messageObject.messageOwner.from_id.user_id);
+        }
+        return saveDeletedMessageFor(accountId, dialogId, 0);
+    }
+
+    public static boolean saveDeletedMessageFor(int accountId, long dialogId, long userId) {
+        if (!NaConfig.INSTANCE.getEnableSaveDeletedMessages().Bool()) {
+            return false;
+        }
+
+        if (getSaveDeletedExclusion(dialogId)) {
+            return false;
+        }
+
+        if (userId != 0) {
+            if (getSaveDeletedExclusion(userId)) {
+                return false;
+            }
+            var fromUser = MessagesController.getInstance(accountId).getUser(userId);
+            if (fromUser != null) {
+                return !fromUser.bot || NaConfig.INSTANCE.getSaveDeletedMessageForBotUser().Bool();
+            } else {
+                final MessagesStorage messagesStorage = MessagesStorage.getInstance(accountId);
+                final CountDownLatch countDownLatch = new CountDownLatch(1);
+                final TLRPC.User[] user = {null};
+                messagesStorage.getStorageQueue().postRunnable(() -> {
+                    user[0] = messagesStorage.getUser(userId);
+                    countDownLatch.countDown();
+                });
+                try {
+                    countDownLatch.await();
+                } catch (Exception ignored) {
+                }
+                if (user[0] != null) {
+                    return !user[0].bot || NaConfig.INSTANCE.getSaveDeletedMessageForBotUser().Bool();
+                }
+            }
+        }
+
+        var user = MessagesController.getInstance(accountId).getUser(Math.abs(dialogId));
+        if (user == null) {
+            return true;
+        }
+
+        return !user.bot || NaConfig.INSTANCE.getSaveDeletedMessageForBot().Bool();
+    }
+
+    public static void setSaveDeletedExclusion(long chatId, boolean value) {
+        saveDeletedExclusions.put(Math.abs(chatId), value);
+        NekoConfig.getPreferences().edit().putBoolean(saveExclusionPrefix + Math.abs(chatId), value).apply();
+    }
+
+    public static boolean getSaveDeletedExclusion(long chatId) {
+        if (isSaveDeletedExclusionsLoaded) {
+            return Boolean.TRUE.equals(saveDeletedExclusions.getOrDefault(Math.abs(chatId), false));
+        } else {
+            return saveDeletedExclusions.computeIfAbsent(Math.abs(chatId), k -> NekoConfig.getPreferences().getBoolean(saveExclusionPrefix + Math.abs(chatId), false));
+        }
+    }
+
+    public static void loadAllExclusions() {
+        Utilities.stageQueue.postRunnable(() -> {
+            Map<String, ?> allEntries = NekoConfig.getPreferences().getAll();
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                if (entry.getKey().startsWith(saveExclusionPrefix)) {
+                    try {
+                        long chatId = Long.parseLong(entry.getKey().substring(saveExclusionPrefix.length()));
+                        if (entry.getValue() instanceof Boolean) {
+                            saveDeletedExclusions.put(chatId, (Boolean) entry.getValue());
+                        }
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+            isSaveDeletedExclusionsLoaded = true;
+        });
+    }
+
+    public TLRPC.Message getMessage() {
+        return message;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public long getDialogId() {
+        return dialogId;
+    }
+
+    public void setDialogId(long dialogId) {
+        if (dialogId == 0) {
+            return;
+        }
+        this.dialogId = dialogId;
+    }
+
+    public long getTopicId() {
+        return topicId;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public int getRequestCatchTime() {
+        return requestCatchTime;
+    }
+
+    public long getFromUserId() {
+        if (message == null || message.from_id == null) {
+            return 0;
+        }
+        return message.from_id.user_id;
+    }
+
+}

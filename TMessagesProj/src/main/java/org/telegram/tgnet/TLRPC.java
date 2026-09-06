@@ -57567,6 +57567,8 @@ public class TLRPC {
         public String translatedMessage; //custom
         public boolean translated; // custom
         public boolean hide; // custom
+        // ayuGram
+        public boolean ayuDeleted;
 
         private static Message fromConstructor(int constructor) {
             switch (constructor) {

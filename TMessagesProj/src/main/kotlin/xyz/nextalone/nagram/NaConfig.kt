@@ -1602,6 +1602,56 @@ object NaConfig {
             false
         )
 
+    // Save Deleted Messages
+    val enableSaveDeletedMessages =
+        addConfig(
+            "EnableSaveDeletedMessages",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val enableSaveEditsHistory =
+        addConfig(
+            "EnableSaveEditsHistory",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val saveLocalLastSeen =
+        addConfig(
+            "SaveLocalLastSeen",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val attachmentFolderSizeLimitPreset =
+        addConfig(
+            "AttachmentFolderSizeLimitPreset",
+            ConfigItem.configTypeInt,
+            3
+        )
+    val attachmentFolderPath =
+        addConfig(
+            "AttachmentFolderPath",
+            ConfigItem.configTypeString,
+            ""
+        )
+    val saveDeletedMessageForBot =
+        addConfig(
+            "SaveDeletedMessageForBot",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val saveDeletedMessageForBotUser =
+        addConfig(
+            "SaveDeletedMessageForBotUser",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val saveToChatSubfolder =
+        addConfig(
+            "SaveToChatSubfolder",
+            ConfigItem.configTypeBool,
+            false
+        )
+
     private fun addConfig(
         k: String,
         t: Int,

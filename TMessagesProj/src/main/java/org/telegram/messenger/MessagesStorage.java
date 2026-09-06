@@ -77,11 +77,17 @@ import java.util.function.Consumer;
 
 import me.vkryl.core.BitwiseUtils;
 
+import com.radolyn.ayugram.AyuConstants;
+import com.radolyn.ayugram.messages.AyuMessagesController;
+import com.radolyn.ayugram.messages.AyuSavePreferences;
+import com.radolyn.ayugram.utils.AyuMessageUtils;
+import com.radolyn.ayugram.utils.AyuState;
+
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.database.ObjectBoxKt;
-
+import xyz.nextalone.nagram.NaConfig;
 public class MessagesStorage extends BaseController {
 
     private DispatchQueue storageQueue;
@@ -4502,6 +4508,10 @@ public class MessagesStorage extends BaseController {
                         cursor2.dispose();
                         cursor2 = null;
 
+                        // --- AyuGram hook: save before bulk history clear (keep last)
+                        saveDeletedMessagesBeforeDialogClear(did, last_mid_i, last_mid);
+                        // --- AyuGram hook
+
                         database.executeFast("DELETE FROM messages_v2 WHERE uid = " + did + " AND mid != " + last_mid_i + " AND mid != " + last_mid).stepThis().dispose();
                         database.executeFast("DELETE FROM messages_topics WHERE uid = " + did + " AND mid != " + last_mid_i + " AND mid != " + last_mid).stepThis().dispose();
                         database.executeFast("DELETE FROM messages_holes WHERE uid = " + did).stepThis().dispose();
@@ -4527,6 +4537,10 @@ public class MessagesStorage extends BaseController {
                     cursor = null;
                     return;
                 }
+
+                // --- AyuGram hook: save before bulk history / dialog clear
+                saveDeletedMessagesBeforeDialogClear(did, 0, 0);
+                // --- AyuGram hook
 
                 database.executeFast("UPDATE dialogs SET unread_count = 0, unread_count_i = 0 WHERE did = " + did).stepThis().dispose();
                 database.executeFast("DELETE FROM messages_v2 WHERE uid = " + did).stepThis().dispose();
@@ -16327,6 +16341,15 @@ public class MessagesStorage extends BaseController {
                                     if (!sameMedia) {
                                         addFilesToDelete(oldMessage, filesToDelete, idsToDelete, namesToDelete, false);
                                     }
+                                    // --- AyuGram hook: save edits history
+                                    if (NaConfig.INSTANCE.getEnableSaveEditsHistory().Bool() && oldMessage != null && message != null) {
+                                        if (message.from_id != null && AyuMessagesController.shouldSaveEdit(oldMessage, message, sameMedia)) {
+                                            var prefs = new AyuSavePreferences(oldMessage, currentAccount);
+                                            prefs.setDialogId(dialogId);
+                                            AyuMessagesController.getInstance().onMessageEdited(prefs, message);
+                                        }
+                                    }
+                                    // --- AyuGram hook
                                     NativeByteBuffer customParams = cursor.byteBufferValue(6);
                                     MessageCustomParamsHelper.readLocalParams(message, customParams);
                                     if (customParams != null) {
@@ -18623,6 +18646,60 @@ public class MessagesStorage extends BaseController {
             }
         }
         return messageIds;
+    }
+
+    private void saveDeletedMessagesBeforeDialogClear(long dialogId, long keepMid1, long keepMid2) {
+        if (!NaConfig.INSTANCE.getEnableSaveDeletedMessages().Bool()) {
+            return;
+        }
+        SQLiteCursor cursor = null;
+        try {
+            cursor = database.queryFinalized("SELECT mid, data FROM messages_v2 WHERE uid = " + dialogId);
+            var ayuMessagesController = AyuMessagesController.getInstance();
+            ArrayList<Integer> savedIds = new ArrayList<>();
+            int catchTime = (int) (System.currentTimeMillis() / 1000);
+            while (cursor.next()) {
+                int mid = cursor.intValue(0);
+                if (keepMid1 != 0 && mid == keepMid1) {
+                    continue;
+                }
+                if (keepMid2 != 0 && mid == keepMid2) {
+                    continue;
+                }
+                if (AyuState.isDeletePermitted(dialogId, mid)) {
+                    continue;
+                }
+                NativeByteBuffer data = cursor.byteBufferValue(1);
+                if (data == null) {
+                    continue;
+                }
+                try {
+                    TLRPC.Message message = TLRPC.Message.TLdeserialize(data, data.readInt32(false), false);
+                    if (message != null) {
+                        message.readAttachPath(data, getUserConfig().clientUserId);
+                        message.dialog_id = dialogId;
+                        long topicId = AyuSavePreferences.resolveTopicId(currentAccount, message, dialogId);
+                        var prefs = new AyuSavePreferences(message, currentAccount, dialogId, topicId, message.id, catchTime);
+                        ayuMessagesController.onMessageDeleted(prefs, false);
+                        savedIds.add(message.id);
+                    }
+                } finally {
+                    data.reuse();
+                }
+            }
+            cursor.dispose();
+            cursor = null;
+            if (!savedIds.isEmpty()) {
+                final long notifyDialogId = dialogId;
+                AndroidUtilities.runOnUIThread(() -> getNotificationCenter().postNotificationName(AyuConstants.MESSAGES_DELETED_NOTIFICATION, notifyDialogId, savedIds));
+            }
+        } catch (Exception e) {
+            checkSQLException(e);
+        } finally {
+            if (cursor != null) {
+                cursor.dispose();
+            }
+        }
     }
 
     public void updateUnreadReactionsCount(long dialogId, long topicId, int count) {
