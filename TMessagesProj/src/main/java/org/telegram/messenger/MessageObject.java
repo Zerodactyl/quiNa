@@ -9923,6 +9923,10 @@ public class MessageObject {
         return messageOwner.realId != 0 ? messageOwner.realId : messageOwner.id;
     }
 
+    public int getFeedRealId() {
+        return searchType == 4 ? getRealId() : getId();
+    }
+
     public static long getMessageSize(TLRPC.Message message) {
         return getMediaSize(getMedia(message));
     }

@@ -500,6 +500,7 @@ public class ConnectionsManager extends BaseController {
         }
         final var onComplete = onCompleteOrig;
         // --- end request hook
+        object = com.exteragram.messenger.feed.FeedRequestNormalizer.normalize(currentAccount, object);
         try {
             NativeByteBuffer buffer = new NativeByteBuffer(object.getObjectSize());
             object.serializeToStream(buffer);

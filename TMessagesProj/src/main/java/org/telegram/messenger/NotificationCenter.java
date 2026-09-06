@@ -374,6 +374,9 @@ public class NotificationCenter {
     public static final int callTabsVisibleToggled = totalEvents++;
     public static final int contactsPermissionBadgeCheck = totalEvents++;
     public static final int mainTabsLayoutChanged = totalEvents++;
+    // feed
+    public static final int feedNeedReload = totalEvents++;
+    public static final int feedTabVisibleToggled = totalEvents++;
     public static final int guardBotDecisionResult = totalEvents++;
     public static final int webBrowserSettingsUpdate = totalEvents++;
     public static final int communityPendingRequestsUpdate = totalEvents++;

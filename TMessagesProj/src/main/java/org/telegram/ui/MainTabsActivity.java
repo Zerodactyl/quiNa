@@ -380,7 +380,11 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             tabs[INDEX_SETTINGS_SLIDE] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.SETTINGS, R.string.Settings);
         }
         tabs[INDEX_CHATS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CHATS, R.string.MainTabsChats);
-        tabs[INDEX_CONTACTS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CONTACTS, R.string.MainTabsContacts);
+        if (com.exteragram.messenger.ExteraConfig.getShowFeedTab()) {
+            tabs[INDEX_CONTACTS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.FEED, R.string.Feed);
+        } else {
+            tabs[INDEX_CONTACTS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CONTACTS, R.string.MainTabsContacts);
+        }
         tabs[INDEX_SETTINGS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.SETTINGS, R.string.Settings);
         tabs[INDEX_CALLS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CALLS, R.string.MainTabsCalls);
         tabs[INDEX_PROFILE] = GlassTabView.createAvatar(context, resourceProvider, currentAccount, R.string.MainTabsProfile);
@@ -1028,6 +1032,9 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             args.putBoolean("needPhonebook", true);
             args.putBoolean("needFinishFragment", false);
             args.putBoolean("hasMainTabs", true);
+            if (com.exteragram.messenger.ExteraConfig.getShowFeedTab()) {
+                return new com.exteragram.messenger.feed.ui.FeedActivity(args);
+            }
             return new ContactsActivity(args);
         } else if (position == POSITION_CALLS_OR_SETTINGS || position == POSITION_SETTINGS) {
             if (getUserConfig().showCallsTab) {
