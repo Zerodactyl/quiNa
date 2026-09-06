@@ -2757,7 +2757,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                         }
                                         checkAppUpdate(true, null, updateAlways);
                                     } else if (url.startsWith("tg:neko") || url.startsWith("tg://neko")) {
-                                        url = url.replace("tg:neko", "tg://t.me/nasettings").replace("tg://neko", "tg://t.me/nasettings");
+                                        url = url.replace("tg:neko", "tg://t.me/qnasettings").replace("tg://neko", "tg://t.me/qnasettings");
                                         data = Uri.parse(url);
                                         SettingsHelper.processDeepLink(this, data, fragment -> {
                                             AndroidUtilities.runOnUIThread(() -> presentFragment(fragment, false, false));
