@@ -391,4 +391,9 @@
     <string name="M3TabPill">Material 3 Expressive active tab pill</string>
     <string name="M3SpringPhysics">Material 3 Expressive spring touch physics</string>
     <string name="M3ExpressiveVoice">Material 3 Expressive voice waveform</string>
+    <string name="M3ExpressiveSwitch">Material 3 Expressive switches</string>
+    <string name="M3ExpressiveFab">Material 3 Expressive squircle FAB</string>
+    <string name="M3ExpressiveBubbles">Material 3 Expressive chat bubbles</string>
+    <string name="M3ExpressiveBottomSheet">Material 3 Expressive bottom sheets</string>
+    <string name="M3ExpressivePillSliders">Material 3 Expressive pill sliders</string>
 </resources>

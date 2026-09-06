@@ -73,7 +73,19 @@ public class FragmentFloatingButton extends FrameLayout implements FactorAnimato
 
         ScaleStateListAnimator.apply(this);
         if (!isSubButton) {
-            setOutlineProvider(ViewOutlineProviderImpl.BOUNDS_OVAL);
+            if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveFab().Bool()) {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    setOutlineProvider(new android.view.ViewOutlineProvider() {
+                        @Override
+                        public void getOutline(View view, android.graphics.Outline outline) {
+                            outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), AndroidUtilities.dp(18));
+                        }
+                    });
+                    setClipToOutline(true);
+                }
+            } else {
+                setOutlineProvider(ViewOutlineProviderImpl.BOUNDS_OVAL);
+            }
             setTranslationZ(dpf2(0.5f));
         }
 
@@ -166,10 +178,17 @@ public class FragmentFloatingButton extends FrameLayout implements FactorAnimato
         } else {
             imageView.setColorFilter(Theme.getColor(Theme.key_chats_actionIcon, resourcesProvider), PorterDuff.Mode.SRC_IN);
             progressView.setProgressColor(Theme.getColor(Theme.key_chats_actionIcon, resourcesProvider));
-            setBackground(Theme.createSimpleSelectorCircleDrawable(dp(48),
-                Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
-                Theme.getColor(Theme.key_featuredStickers_addButtonPressed, resourcesProvider)
-            ));
+            if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveFab().Bool()) {
+                setBackground(Theme.createSimpleSelectorRoundRectDrawable(dp(18),
+                    Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
+                    Theme.getColor(Theme.key_featuredStickers_addButtonPressed, resourcesProvider)
+                ));
+            } else {
+                setBackground(Theme.createSimpleSelectorCircleDrawable(dp(48),
+                    Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
+                    Theme.getColor(Theme.key_featuredStickers_addButtonPressed, resourcesProvider)
+                ));
+            }
         }
     }
 

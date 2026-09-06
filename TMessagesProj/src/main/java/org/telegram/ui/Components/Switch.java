@@ -35,6 +35,7 @@ import androidx.annotation.Keep;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.BaseCell;
+import xyz.nextalone.nagram.NaConfig;
 
 import me.vkryl.android.animator.BoolAnimator;
 
@@ -377,13 +378,13 @@ public class Switch extends View {
             return;
         }
 
-        int width = AndroidUtilities.dp(31);
+        boolean isM3 = NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool();
+        int width = AndroidUtilities.dp(isM3 ? 40 : 31);
         int thumb = AndroidUtilities.dp(20);
         int x = (getMeasuredWidth() - width) / 2;
-        float y = (getMeasuredHeight() - AndroidUtilities.dpf2(14)) / 2;
-        int tx = x + AndroidUtilities.dp(7) + (int) (AndroidUtilities.dp(17) * progress);
+        float y = (getMeasuredHeight() - AndroidUtilities.dpf2(isM3 ? 22 : 14)) / 2;
+        int tx = isM3 ? (x + AndroidUtilities.dp(8) + (int) (AndroidUtilities.dp(24) * progress)) : (x + AndroidUtilities.dp(7) + (int) (AndroidUtilities.dp(17) * progress));
         int ty = getMeasuredHeight() / 2;
-
 
         int color1;
         int color2;
@@ -445,9 +446,11 @@ public class Switch extends View {
             paint.setColor(color);
             paint2.setColor(color);
 
-            rectF.set(x, y, x + width, y + AndroidUtilities.dpf2(14));
-            canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(7), AndroidUtilities.dpf2(7), paint);
-            canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dpf2(10), paint);
+            rectF.set(x, y, x + width, y + AndroidUtilities.dpf2(isM3 ? 22 : 14));
+            canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(isM3 ? 11 : 7), AndroidUtilities.dpf2(isM3 ? 11 : 7), paint);
+            if (!isM3) {
+                canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dpf2(10), paint);
+            }
 
             if (a == 0 && rippleDrawable != null) {
                 rippleDrawable.setBounds(tx - AndroidUtilities.dp(18), ty - AndroidUtilities.dp(18), tx + AndroidUtilities.dp(18), ty + AndroidUtilities.dp(18));
@@ -494,7 +497,21 @@ public class Switch extends View {
             alpha = (int) (a1 + (a2 - a1) * colorProgress);
             paint.setColor(((alpha & 0xff) << 24) | ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff));
 
-            canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dp(8), paint);
+            float thumbRadius = isM3 ? AndroidUtilities.dp(6f + 3f * progress) : AndroidUtilities.dp(8);
+            canvasToDraw.drawCircle(tx, ty, thumbRadius, paint);
+            if (isM3 && progress > 0.4f) {
+                paint2.setColor(color2);
+                paint2.setStyle(Paint.Style.STROKE);
+                paint2.setStrokeWidth(AndroidUtilities.dpf2(1.6f));
+                paint2.setStrokeCap(Paint.Cap.ROUND);
+                paint2.setAlpha((int) (255 * (progress - 0.4f) / 0.6f));
+                Path checkPath = new Path();
+                checkPath.moveTo(tx - AndroidUtilities.dp(2.8f), ty);
+                checkPath.lineTo(tx - AndroidUtilities.dp(0.6f), ty + AndroidUtilities.dp(2.2f));
+                checkPath.lineTo(tx + AndroidUtilities.dp(3.2f), ty - AndroidUtilities.dp(2.2f));
+                canvasToDraw.drawPath(checkPath, paint2);
+                paint2.setStyle(Paint.Style.FILL);
+            }
 
             if (a == 0) {
                 if (iconDrawable != null) {

@@ -85,6 +85,11 @@ public class NekoXConfig {
     public static boolean m3TabPill = NaConfig.INSTANCE.getM3TabPill().Bool();
     public static boolean m3SpringPhysics = NaConfig.INSTANCE.getM3SpringPhysics().Bool();
     public static boolean m3ExpressiveVoice = NaConfig.INSTANCE.getM3ExpressiveVoice().Bool();
+    public static boolean m3ExpressiveSwitch = NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool();
+    public static boolean m3ExpressiveFab = NaConfig.INSTANCE.getM3ExpressiveFab().Bool();
+    public static boolean m3ExpressiveBubbles = NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool();
+    public static boolean m3ExpressiveBottomSheet = NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool();
+    public static boolean m3ExpressivePillSliders = NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
 
     public static boolean isM3ExpressiveAll() {
         return NaConfig.INSTANCE.getM3ExpressiveAll().Bool();
@@ -120,6 +125,26 @@ public class NekoXConfig {
 
     public static boolean isM3ExpressiveVoice() {
         return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveVoice().Bool();
+    }
+
+    public static boolean isM3ExpressiveSwitch() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool();
+    }
+
+    public static boolean isM3ExpressiveFab() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveFab().Bool();
+    }
+
+    public static boolean isM3ExpressiveBubbles() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool();
+    }
+
+    public static boolean isM3ExpressiveBottomSheet() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool();
+    }
+
+    public static boolean isM3ExpressivePillSliders() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
     }
 
     public static int autoUpdateReleaseChannel = preferences.getInt("autoUpdateReleaseChannel", 2);

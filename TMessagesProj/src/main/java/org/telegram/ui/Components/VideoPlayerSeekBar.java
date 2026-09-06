@@ -33,6 +33,7 @@ import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.Utilities;
+import xyz.nextalone.nagram.NaConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -341,8 +342,10 @@ public class VideoPlayerSeekBar {
 
     public void draw(Canvas canvas, View view) {
         rect.left = horizontalPadding + AndroidUtilities.lerp(thumbWidth / 2f, 0, transitionProgress);
-        rect.top = AndroidUtilities.lerp((height - lineHeight) / 2f, height - AndroidUtilities.dp(3) - smallLineHeight, transitionProgress);
-        rect.bottom = AndroidUtilities.lerp((height + lineHeight) / 2f, height - AndroidUtilities.dp(3), transitionProgress);
+        boolean isM3 = NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
+        float effectiveLineHeight = isM3 ? AndroidUtilities.dp(6) : lineHeight;
+        rect.top = AndroidUtilities.lerp((height - effectiveLineHeight) / 2f, height - AndroidUtilities.dp(3) - smallLineHeight, transitionProgress);
+        rect.bottom = AndroidUtilities.lerp((height + effectiveLineHeight) / 2f, height - AndroidUtilities.dp(3), transitionProgress);
 
         float thumbX = this.thumbX;
         animatedThumbX = Math.min(animatedThumbX, thumbX);
@@ -472,7 +475,8 @@ public class VideoPlayerSeekBar {
     private static Path tmpPath;
 
     private void drawProgressBar(Canvas canvas, RectF rect, Paint paint) {
-        float radius = AndroidUtilities.dp(AndroidUtilities.lerp(2, 1, transitionProgress));
+        boolean isM3 = NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
+        float radius = isM3 ? (rect.bottom - rect.top) / 2f : AndroidUtilities.dp(AndroidUtilities.lerp(2, 1, transitionProgress));
         if (timestamps == null || timestamps.isEmpty()) {
             canvas.drawRoundRect(rect, radius, radius, paint);
         } else {

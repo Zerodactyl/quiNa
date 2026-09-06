@@ -1553,6 +1553,36 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val m3ExpressiveSwitch =
+        addConfig(
+            "M3ExpressiveSwitch",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3ExpressiveFab =
+        addConfig(
+            "M3ExpressiveFab",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3ExpressiveBubbles =
+        addConfig(
+            "M3ExpressiveBubbles",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3ExpressiveBottomSheet =
+        addConfig(
+            "M3ExpressiveBottomSheet",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3ExpressivePillSliders =
+        addConfig(
+            "M3ExpressivePillSliders",
+            ConfigItem.configTypeBool,
+            false
+        )
 
     private fun addConfig(
         k: String,

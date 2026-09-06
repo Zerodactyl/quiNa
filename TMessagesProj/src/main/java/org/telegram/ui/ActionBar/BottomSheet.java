@@ -30,6 +30,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
+import android.graphics.RectF;
+import xyz.nextalone.nagram.NaConfig;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -1376,6 +1378,24 @@ public class BottomSheet extends Dialog implements BaseFragment.AttachedSheet {
                         topBulletinContainer.setTranslationY(-(container.getHeight() - containerView.getY()) + backgroundPaddingTop);
                     }
                     onContainerTranslationYChanged(translationY);
+                }
+
+                private final Paint m3HandlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                private final RectF m3HandleRect = new RectF();
+
+                @Override
+                protected void dispatchDraw(Canvas canvas) {
+                    super.dispatchDraw(canvas);
+                    if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool()) {
+                        m3HandlePaint.setColor(Theme.getColor(Theme.key_sheet_scrollUp, resourcesProvider));
+                        m3HandlePaint.setAlpha(120);
+                        float handleWidth = AndroidUtilities.dp(32);
+                        float handleHeight = AndroidUtilities.dp(4);
+                        float cx = getWidth() / 2f;
+                        float cy = backgroundPaddingTop + AndroidUtilities.dp(6);
+                        m3HandleRect.set(cx - handleWidth / 2f, cy - handleHeight / 2f, cx + handleWidth / 2f, cy + handleHeight / 2f);
+                        canvas.drawRoundRect(m3HandleRect, handleHeight / 2f, handleHeight / 2f, m3HandlePaint);
+                    }
                 }
             };
             containerView.setBackgroundDrawable(shadowDrawable);

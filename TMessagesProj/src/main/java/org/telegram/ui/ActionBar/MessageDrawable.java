@@ -26,6 +26,7 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
 import org.telegram.ui.Components.blur3.utils.NinePatchBuilder;
 
+import xyz.nextalone.nagram.NaConfig;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -324,7 +325,7 @@ public class MessageDrawable extends Drawable {
         } else if (overrideRounding > 0) {
             newRad = 0;
         } else {
-            newRad = dp(SharedConfig.bubbleRadius);
+            newRad = (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool()) ? dp(22) : dp(SharedConfig.bubbleRadius);
         }
         int idx;
         if (isTopNear && isBottomNear) {
@@ -442,7 +443,7 @@ public class MessageDrawable extends Drawable {
         if (gradientShader == null && !isSelected && crossfadeFromDrawable == null) {
             return null;
         }
-        int newRad = dp(SharedConfig.bubbleRadius);
+        int newRad = (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool()) ? dp(22) : dp(SharedConfig.bubbleRadius);
         int idx;
         if (isTopNear && isBottomNear) {
             idx = 3;
@@ -571,8 +572,13 @@ public class MessageDrawable extends Drawable {
             rad = dp(6);
             nearRad = dp(6);
         } else {
-            rad = dp(SharedConfig.bubbleRadius);
-            nearRad = dp(Math.min(6, SharedConfig.bubbleRadius));
+            if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool()) {
+                rad = dp(22);
+                nearRad = dp(6);
+            } else {
+                rad = dp(SharedConfig.bubbleRadius);
+                nearRad = dp(Math.min(6, SharedConfig.bubbleRadius));
+            }
         }
         int smallRad = dp(6);
 
@@ -634,8 +640,13 @@ public class MessageDrawable extends Drawable {
             rad = dp(6);
             nearRad = dp(6);
         } else {
-            rad = dp(SharedConfig.bubbleRadius);
-            nearRad = dp(Math.min(6, SharedConfig.bubbleRadius));
+            if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool()) {
+                rad = dp(22);
+                nearRad = dp(6);
+            } else {
+                rad = dp(SharedConfig.bubbleRadius);
+                nearRad = dp(Math.min(6, SharedConfig.bubbleRadius));
+            }
         }
         int smallRad = dp(6);
         int top = Math.max(bounds.top, 0);
