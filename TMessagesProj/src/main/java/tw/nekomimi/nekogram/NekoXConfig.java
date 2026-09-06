@@ -33,6 +33,7 @@ public class NekoXConfig {
 
     //  public static String FAQ_URL = "https://telegra.ph/NekoX-FAQ-03-31";
     public static String FAQ_URL = "https://git.disroot.org/armaltheus/quiNa#faq";
+    public static String GROUP_URL = "https://t.me/quina_group";
     public static long[] officialChats = {
 //            1305127566, // NekoX Updates
 //            1151172683, // NekoX Chat
@@ -41,6 +42,7 @@ public class NekoXConfig {
             1500637449, // quiNa
             1645699549, // quiNa Updates
             2001739482, // quiNa Tips
+            4429317863L, // quiNa Chat
     };
 
     public static long[] developers = {
@@ -49,11 +51,18 @@ public class NekoXConfig {
             784901712, // NextAlone
             457896977, // Queally
             782954985, // MaiTungTM
-            5412523572L, //blxueya
-            676660002, // mrwangzhe
+            1711019015,  // Lagrio
+            554072292,  // NahidaBuer
+            5412523572L, // blxueya
+            676660002, // xtao
             1068402676, // Kitsune
             6244360706L, // Sevtinge
+            625965913,   // YuKongA
             5382987111L,  // miaoqiqi
+            5555116287L,  // Natu
+            387785790,    // waifucon
+            812417693,  // lutit
+            7537970398L, // ncatt
     };
 
     public static final int TITLE_TYPE_TEXT = 0;
@@ -69,6 +78,26 @@ public class NekoXConfig {
     public static SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekox_config", Context.MODE_PRIVATE);
 
     public static boolean disableFlagSecure = NaConfig.INSTANCE.getDisableFlagSecure().Bool();
+    public static boolean m3ExpressiveProgress = NaConfig.INSTANCE.getM3ExpressiveProgress().Bool();
+    public static boolean m3ExpressiveDialogs = NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool();
+    public static boolean m3SectionCards = NaConfig.INSTANCE.getM3SectionCards().Bool();
+    public static boolean m3GlassMenu = NaConfig.INSTANCE.getM3GlassMenu().Bool();
+
+    public static boolean isM3ExpressiveProgress() {
+        return NaConfig.INSTANCE.getM3ExpressiveProgress().Bool();
+    }
+
+    public static boolean isM3ExpressiveDialogs() {
+        return NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool();
+    }
+
+    public static boolean isM3SectionCards() {
+        return NaConfig.INSTANCE.getM3SectionCards().Bool();
+    }
+
+    public static boolean isM3GlassMenu() {
+        return NaConfig.INSTANCE.getM3GlassMenu().Bool();
+    }
 
     public static int autoUpdateReleaseChannel = preferences.getInt("autoUpdateReleaseChannel", 2);
 //    public static String ignoredUpdateTag = preferences.getString("ignoredUpdateTag", "");
