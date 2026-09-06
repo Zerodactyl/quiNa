@@ -39,7 +39,6 @@ public class NekoXConfig {
 //            1151172683, // NekoX Chat
 //            1299578049, // NekoX Chat Channel
 //            1137038259, // NekoX APKs
-            1500637449, // quiNa
             4429317863L, // quiNa Chat
             3740648037L, // ncatt channel
     };
