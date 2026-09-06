@@ -56,7 +56,6 @@ public abstract class M3GlassMenuHelper {
                 Theme.getColor(Theme.key_actionBarDefaultSubmenuBackground), isDark ? 0.85f : 0.76f))
             .setStrokeColorTop(0, 0)
             .setStrokeColorBottom(0, 0)
-            .setStrokeColorFull(0, 0)
             .setStrokeWidth(0.0f, 0.0f);
     }
 

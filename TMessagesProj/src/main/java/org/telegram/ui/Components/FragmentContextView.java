@@ -151,6 +151,7 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
     private RLottieImageView muteButton;
     private RLottieDrawable muteDrawable;
     private ImageView closeButton;
+    private ActionBarMenuItem playbackSpeedButton;
     // quiNa: swipe music bar
     private float swipeStartX;
     private float swipeStartY;

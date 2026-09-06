@@ -191,6 +191,7 @@ android {
         buildConfigField "String", "OFFICIAL_VERSION", "\"" + officialVer + "\""
         buildConfigField "int", "OFFICIAL_VERSION_CODE", officialCode + ""
         buildConfigField "String", "APP_HASH", "\"" + appHash + "\""
+        buildConfigField "int", "APP_ID", appId
 
         externalNativeBuild {
             cmake {

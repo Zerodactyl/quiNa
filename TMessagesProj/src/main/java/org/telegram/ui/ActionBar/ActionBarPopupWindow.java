@@ -1122,6 +1122,7 @@ public class ActionBarPopupWindow extends PopupWindow {
     public static class GapView extends FrameLayout {
 
         Drawable shadowDrawable;
+        private boolean dividerVisible = true;
 
         public GapView(Context context, Theme.ResourcesProvider resourcesProvider) {
             this(context, resourcesProvider, Theme.key_actionBarDefaultSubmenuSeparator);
@@ -1140,11 +1141,15 @@ public class ActionBarPopupWindow extends PopupWindow {
         public void setColor(int color) {
             setBackgroundColor(color);
         }
+        public void setDividerVisible(boolean visible) {
+            this.dividerVisible = visible;
+            invalidate();
+        }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            if (shadowDrawable != null) {
+            if (dividerVisible && shadowDrawable != null) {
                 shadowDrawable.setBounds(0, 0, getWidth(), getHeight());
                 shadowDrawable.draw(canvas);
             }

@@ -584,13 +584,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         });
         o.addGap();
         if (NekoConfig.showGhostToggleInDrawer) {
-            final String msg = NekoConfig.isGhostModeActive() ? getString(R.string.GhostMode) : getString(R.string.GhostMode);
-            o.add(R.drawable.icon_ghost, msg, () -> presentFragment(new NekoGhostModeActivity()), () -> {
-                final String toggleMsg = NekoConfig.isGhostModeActive() ? getString(R.string.GhostModeDisabled) : getString(R.string.GhostModeEnabled);
-                NekoConfig.toggleGhostMode();
-                BulletinFactory.of(contentView, resourceProvider).createSuccessBulletin(toggleMsg).show();
-                NotificationCenter.getInstance(UserConfig.selectedAccount).postNotificationName(NotificationCenter.mainUserInfoChanged);
-            });
+            o.add(R.drawable.icon_ghost, getString(R.string.GhostMode), () -> presentFragment(new NekoGhostModeActivity()));
             o.addGap();
         }
         o.add(R.drawable.msg_settings, getString(R.string.NekoSettings), () -> presentFragment(new NekoSettingsActivity()));
