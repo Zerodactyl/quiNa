@@ -461,4 +461,24 @@
     <string name="SliderStyle">Slider Style</string>
     <string name="StyleModern">Modern</string>
     <string name="StyleMaterialDesign3">Material Design 3</string>
+    <string name="MainTabsCustomize">Customize Bottom Tabs</string>
+    <string name="MainTabsCustomizeDesc">Tap a tab to show or hide it. Long-press and drag to reorder.</string>
+    <string name="MainTabsShowTitles">Show Tab Titles</string>
+    <string name="MainTabsForceOpenChats">Always search in chats</string>
+    <string name="MainTabsForceOpenChatsDesc">When enabled, the search button always opens chat search. When disabled, it opens context search for the current screen (e.g., Settings or Contacts).</string>
+    <string name="MainTabsDisplayMode">Bottom Bar Display Mode</string>
+    <string name="MainTabsDisplayModeShow">Show</string>
+    <string name="MainTabsDisplayModeHide">Hide</string>
+    <string name="MainTabsDisplayModeFloating">Floating</string>
+    <string name="MainTabsCustomizeInfo">Customize bottom navigation bar</string>
+    <string name="HomeDrawer">Home Drawer</string>
+    <string name="DrawerElements">Drawer Elements</string>
+    <string name="MainTabsCustomizeDrawerLocked">When Home Drawer is enabled, Chats is pinned to the far left.</string>
+    <string name="MainMenuItems">Sidebar items</string>
+    <string name="MainMenuHiddenItems">Hidden items</string>
+    <string name="MainMenuAddDivider">Add divider</string>
+    <string name="MainMenuDivider">Divider</string>
+    <string name="MainMenuItemsInfo">Long-press and drag to reorder. Tap an item to hide it, or tap a hidden item to bring it back. Tap a divider to remove it.</string>
+
+
 </resources>

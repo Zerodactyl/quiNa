@@ -1301,6 +1301,48 @@ object NaConfig {
             ConfigItem.configTypeInt,
             0
         )
+    val mainTabsOrder =
+        addConfig(
+            "MainTabsOrder",
+            ConfigItem.configTypeString,
+            "CHATS,CONTACTS,SETTINGS,!CALLS,PROFILE"
+        )
+    val mainTabsShowTitles =
+        addConfig(
+            "MainTabsShowTitles",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val mainTabsDisplayMode =
+        addConfig(
+            "MainTabsDisplayMode",
+            ConfigItem.configTypeInt,
+            0
+        )
+    val mainTabsShowSearchButton =
+        addConfig(
+            "MainTabsShowSearchButton",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val mainTabsForceOpenChats =
+        addConfig(
+            "MainTabsForceOpenChats",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val mainTabsHideTitles =
+        addConfig(
+            "MainTabsHideTitles",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val mainTabsHideContacts =
+        addConfig(
+            "MainTabsHideContacts",
+            ConfigItem.configTypeBool,
+            false
+        )
     val hideTabBarPermissionWarnings =
         addConfig(
             "HideTabBarPermissionWarnings",
@@ -1385,6 +1427,126 @@ object NaConfig {
             "SidebarSettingsActivity",
             ConfigItem.configTypeBool,
             true
+        )
+    val sectionsSeparatedHeaders =
+        addConfig(
+            "sectionsSeparatedHeaders",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemMyProfile =
+        addConfig(
+            "DrawerItemMyProfile",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemSetEmojiStatus =
+        addConfig(
+            "DrawerItemSetEmojiStatus",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemNewGroup =
+        addConfig(
+            "DrawerItemNewGroup",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemNewChannel =
+        addConfig(
+            "DrawerItemNewChannel",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerItemContacts =
+        addConfig(
+            "DrawerItemContacts",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemCalls =
+        addConfig(
+            "DrawerItemCalls",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemRecentChats =
+        addConfig(
+            "DrawerItemRecentChats",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemSaved =
+        addConfig(
+            "DrawerItemSaved",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemSettings =
+        addConfig(
+            "DrawerItemSettings",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemNSettings =
+        addConfig(
+            "DrawerItemNSettings",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val drawerItemQrLogin =
+        addConfig(
+            "DrawerItemQrLogin",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerItemArchivedChats =
+        addConfig(
+            "DrawerItemArchivedChats",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerItemRestartApp =
+        addConfig(
+            "DrawerItemRestartApp",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerItemBrowser =
+        addConfig(
+            "DrawerItemBrowser",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerItemSessions =
+        addConfig(
+            "DrawerItemSessions",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val drawerItemGhost =
+        addConfig(
+            "DrawerItemGhost",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val mainMenuLayout =
+        addConfig(
+            "MainMenuLayout",
+            ConfigItem.configTypeString,
+            ""
+        )
+    val mainMenuHiddenItems =
+        addConfig(
+            "MainMenuHiddenItems",
+            ConfigItem.configTypeString,
+            ""
+        )
+    val showAddToBookmark =
+        addConfig(
+            "ShowAddToBookmark",
+            ConfigItem.configTypeBool,
+            false
         )
     val compactMessageMenuOptions =
         addConfig(

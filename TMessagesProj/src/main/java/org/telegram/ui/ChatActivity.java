@@ -495,7 +495,7 @@ public class ChatActivity extends BaseFragment implements
 
     private final WindowInsetsStateHolder windowInsetsStateHolder = new WindowInsetsStateHolder(this::checkInsets);
 
-    private BlurredBackgroundColorProviderThemed blurredBackgroundColorProvider;
+    public BlurredBackgroundColorProviderThemed blurredBackgroundColorProvider;
     private BlurredBackgroundColorProviderThemed blurredBackgroundColorProviderWhite;
 
     private final ReferenceList<View> glassAttachedViews = new ReferenceList<>();
@@ -505,9 +505,8 @@ public class ChatActivity extends BaseFragment implements
 
     private final @Nullable BlurredBackgroundSourceRenderNode glassBackgroundSourceRenderNode;
     private final @Nullable BlurredBackgroundSourceRenderNode glassBackgroundSourceFrostedRenderNode;
-    private final @NonNull BlurredBackgroundDrawableViewFactory glassBackgroundDrawableFactory;
+    public final @NonNull BlurredBackgroundDrawableViewFactory glassBackgroundDrawableFactory;
     private final @NonNull BlurredBackgroundDrawableViewFactory glassBackgroundDrawableFactoryFrosted;
-
     private final @NonNull BlurredBackgroundSourceWrapped navbarContentSourceWallpaper;
     private final @NonNull BlurredBackgroundDrawableViewFactory navbarContentDrawableFactory;
 
@@ -5014,6 +5013,13 @@ public class ChatActivity extends BaseFragment implements
             glassBackgroundDrawableFactory.create(chatInputViewsContainer, blurredBackgroundColorProvider));
         chatInputViewsContainer.setUnderKeyboardBackgroundDrawable(
             glassBackgroundDrawableFactoryFrosted.create(chatInputViewsContainer, blurredBackgroundColorProvider));
+
+        if (NekoConfig.iOSMessageInputField.Bool()) {
+            chatInputViewsContainer.setLeftBubbleDrawable(
+                glassBackgroundDrawableFactory.create(chatInputViewsContainer, blurredBackgroundColorProvider));
+            chatInputViewsContainer.setRightBubbleDrawable(
+                glassBackgroundDrawableFactory.create(chatInputViewsContainer, blurredBackgroundColorProvider));
+        }
 
 
         chatInputBubbleContainer = chatInputViewsContainer.getInputIslandBubbleContainer();

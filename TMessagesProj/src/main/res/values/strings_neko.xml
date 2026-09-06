@@ -74,6 +74,8 @@
     <string name="OpenArchiveOnPull">Open Archive on pulldown</string>
     <string name="DisablePullDownSearch">Disable Pull Down to Search</string>
     <string name="HideKeyboardOnChatScroll">Hide keyboard on chat scroll</string>
+    <string name="iOSMessageInputField">iOS-styled message input field</string>
+    <string name="iOSMessageInputFieldNotice">Moves the attachment icon to the left and splits buttons into separate bubbles. Overrides the attach-enter-menu mode while enabled</string>
     <string name="UserRestrictionsSendStickers2">Send Stickers</string>
     <string name="UserRestrictionsSendGifs">Send GIFs</string>
     <string name="ShowTabsOnForward">Show tabs on forward</string>

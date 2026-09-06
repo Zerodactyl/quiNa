@@ -93,6 +93,7 @@ public class NekoConfig {
     public static ConfigItem openArchiveOnPull = addConfig("OpenArchiveOnPull", configTypeBool, false);
     public static ConfigItem disablePullDownSearch = addConfig("DisablePullDownSearch", configTypeBool, false);
     public static ConfigItem hideKeyboardOnChatScroll = addConfig("HideKeyboardOnChatScroll", configTypeBool, false);
+    public static ConfigItem iOSMessageInputField = addConfig("iOSMessageInputField", configTypeBool, false);
     public static ConfigItem avatarBackgroundBlur = addConfig("BlurAvatarBackground", configTypeBool, false);
     public static ConfigItem avatarBackgroundDarken = addConfig("DarkenAvatarBackground", configTypeBool, false);
     public static ConfigItem useSystemEmoji = addConfig("EmojiUseDefault", configTypeBool, false);
@@ -204,6 +205,8 @@ public class NekoConfig {
     public static ConfigItem localPremium = addConfig("localPremium", configTypeBool, false);
 
     public static ConfigItem localeToDBC = addConfig("LocaleToDBC", configTypeBool, false);
+
+    public static ConfigItem navigationDrawerEnabled = addConfig("navigationDrawerEnabled", configTypeBool, false);
 
     static {
         loadConfig(false);

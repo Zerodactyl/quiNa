@@ -93,7 +93,8 @@ import tw.nekomimi.nekogram.BackButtonMenuRecent;
 import tw.nekomimi.nekogram.helpers.PasscodeHelper;
 import xyz.nextalone.nagram.MainTabsStyle;
 import xyz.nextalone.nagram.NaConfig;
-
+import org.telegram.ui.MainTabsConfigManager;
+import tw.nekomimi.nekogram.helpers.MainTabsHelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import org.telegram.ui.Components.BulletinFactory;
@@ -442,6 +443,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             tabsView.setViewVisible(tabs[INDEX_SETTINGS_SLIDE],  false);
         }
         checkUi_callTabVisible(getUserConfig().showCallsTab, false);
+        applyMainTabsOrdering();
 
         selectTab(viewPager.getCurrentPosition(), false);
 
@@ -1226,6 +1228,10 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             }
         } else if (id == NotificationCenter.contactsPermissionBadgeCheck) {
             checkContactsTabBadge();
+        } else if (id == NotificationCenter.mainTabsLayoutChanged) {
+            applyMainTabsOrdering();
+            checkContactsTabBadge();
+            for (int i = 0; i < tabs.length; i++) if (tabs[i] != null) tabs[i].setTitleVisible(!NaConfig.INSTANCE.getMainTabsHideTitles().Bool());
         }
     }
 
@@ -1248,7 +1254,8 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         globalObserversGroup = NotificationCenter.getGlobalInstance().createObserversGroup(this)
             .add(NotificationCenter.appUpdateAvailable)
             .add(NotificationCenter.appUpdateLoading)
-            .add(NotificationCenter.needSetDayNightTheme);
+            .add(NotificationCenter.needSetDayNightTheme)
+            .add(NotificationCenter.mainTabsLayoutChanged);
 
         return super.onFragmentCreate();
     }
@@ -1318,6 +1325,41 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         }
     }
 
+    private void applyMainTabsOrdering() {
+        if (tabsView == null || tabs == null) return;
+        String order = NaConfig.INSTANCE.getMainTabsOrder().String();
+        if (order == null || order.trim().isEmpty()) return;
+        // Guard with NaConfig check - only reorder if custom order differs from default handling
+        // Update title visibility
+        boolean hideTitles = NaConfig.INSTANCE.getMainTabsHideTitles().Bool();
+        for (int i = 0; i < tabs.length; i++) if (tabs[i] != null) tabs[i].setTitleVisible(!hideTitles);
+        // Reorder visual order of tabsView according to MainTabsConfigManager
+        try {
+            java.util.ArrayList<MainTabsConfigManager.TabState> enabled = MainTabsConfigManager.getEnabledTabs();
+            // Build map TabType -> tab view
+            java.util.HashMap<MainTabsConfigManager.TabType, android.view.View> typeToView = new java.util.HashMap<>();
+            typeToView.put(MainTabsConfigManager.TabType.CHATS, tabs[INDEX_CHATS]);
+            typeToView.put(MainTabsConfigManager.TabType.CONTACTS, tabs[INDEX_CONTACTS]);
+            typeToView.put(MainTabsConfigManager.TabType.SETTINGS, tabs[INDEX_SETTINGS]);
+            typeToView.put(MainTabsConfigManager.TabType.CALLS, tabs[INDEX_CALLS]);
+            typeToView.put(MainTabsConfigManager.TabType.PROFILE, tabs[INDEX_PROFILE]);
+            // Remove all enabled views and re-add in order
+            for (MainTabsConfigManager.TabState st : enabled) {
+                android.view.View v = typeToView.get(st.type);
+                if (v != null) {
+                    tabsView.removeView(v);
+                    tabsView.addView(v);
+                }
+            }
+            // Handle settings slide extra if present
+            if (isEnabledSettingsSlide() && tabs[INDEX_SETTINGS_SLIDE] != null) {
+                android.view.View slide = tabs[INDEX_SETTINGS_SLIDE];
+                tabsView.removeView(slide);
+                tabsView.addView(slide, 0);
+            }
+            tabsView.requestLayout();
+        } catch (Exception ignore) {}
+    }
     @Override
     public ArrayList<ThemeDescription> getThemeDescriptions() {
         ArrayList<ThemeDescription> themeDescriptions = super.getThemeDescriptions();

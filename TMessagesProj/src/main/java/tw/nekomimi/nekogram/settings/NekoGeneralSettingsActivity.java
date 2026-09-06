@@ -263,6 +263,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell hideTabBarPermissionWarningsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getHideTabBarPermissionWarnings()));
     private final AbstractConfigCell showRecentChatsOnTabLongPressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowRecentChatsOnTabLongPress()));
     private final AbstractConfigCell bottomBarSettingsLongPressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getBottomBarSettingsLongPress()));
+    private final AbstractConfigCell mainTabsCustomizeRow = cellGroup.appendCell(new ConfigCellCustom("MainTabsCustomize", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
+    private final AbstractConfigCell drawerElementsRow = cellGroup.appendCell(new ConfigCellCustom("DrawerElements", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
     private final AbstractConfigCell quickReadReactionsOnLongClickRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getQuickReadReactionsOnLongClick()));
     private final AbstractConfigCell filterMatchLinksRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getFilterMatchLinks()));
     private final AbstractConfigCell cleanTrackingParamsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getCleanTrackingParams()));
@@ -500,6 +502,10 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     presentFragment(new NekoLLMSettingsActivity());
                 } else if (position == cellGroup.rows.indexOf(lockedChatsRow)) {
                     handleLockedChatsRow();
+                } else if (position == cellGroup.rows.indexOf(mainTabsCustomizeRow)) {
+                    presentFragment(new MainTabsCustomizeActivity());
+                } else if (position == cellGroup.rows.indexOf(drawerElementsRow)) {
+                    presentFragment(new SidebarMenuActivity());
                 } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                     tw.nekomimi.nekogram.helpers.BackupHelper.INSTANCE.backupSettings(this);
                 } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
@@ -509,6 +515,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                 }
             }
         });
+
         listView.setOnItemLongClickListener((view, position, x, y) -> {
             var holder = listView.findViewHolderForAdapterPosition(position);
             if (holder != null && listAdapter.isEnabled(holder)) {
@@ -859,17 +866,19 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                             int count = 0;
                             try { count = ChatsPasswordHelper.getInstance(UserConfig.selectedAccount).getLockedChatsCount(); } catch (Exception ignored) {}
                             textCell.setTextAndValue(LocaleController.getString(R.string.SP_LockedChats), String.valueOf(count), divider);
+                        } else if (position == cellGroup.rows.indexOf(mainTabsCustomizeRow)) {
+                            textCell.setTextAndValue(getString(R.string.MainTabsCustomize), getString(R.string.MainTabsCustomizeInfo), divider);
+                        } else if (position == cellGroup.rows.indexOf(drawerElementsRow)) {
+                            textCell.setTextAndValue(getString(R.string.DrawerElements), "", divider);
                         } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                             textCell.setTextAndValue("Export .cherry", "Backup quiNa settings", divider);
                         } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
                             textCell.setTextAndValue("Import .cherry", "Restore from backup", divider);
                         }
-                    }
                 } else {
                     // Default binds
                     a.onBindViewHolder(holder);
                 }
-                // Other things
             }
         }
 
