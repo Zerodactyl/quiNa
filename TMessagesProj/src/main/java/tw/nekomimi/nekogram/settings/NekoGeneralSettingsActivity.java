@@ -484,6 +484,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                             LocaleController.getString(R.string.ProviderLLMTranslate),
                             LocaleController.getString(R.string.ProviderDeepLTranslate),
                             LocaleController.getString(R.string.ProviderDeepLFreeTranslate),
+                            "Yandex",
+                            "YouDao"
                     }, (i, __) -> {
                         NekoConfig.translationProvider.setConfigInt(i + 1);
                         updateRows();
@@ -852,6 +854,12 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                                     break;
                                 case Translator.providerDeepLFree:
                                     value = LocaleController.getString(R.string.ProviderDeepLFreeTranslate);
+                                    break;
+                                case Translator.providerYandex:
+                                    value = "Yandex";
+                                    break;
+                                case Translator.providerYouDao:
+                                    value = "YouDao";
                                     break;
                                 default:
                                     value = "Unknown";

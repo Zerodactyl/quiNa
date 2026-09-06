@@ -251,7 +251,9 @@ object AlertUtil {
                     LocaleController.getString(R.string.ProviderTranSmartTranslate),
                     LocaleController.getString(R.string.ProviderLLMTranslate),
                     LocaleController.getString(R.string.ProviderDeepLTranslate),
-                    LocaleController.getString(R.string.ProviderDeepLFreeTranslate)
+                    LocaleController.getString(R.string.ProviderDeepLFreeTranslate),
+                    "Yandex",
+                    "YouDao"
                 ).toList()
             )
 

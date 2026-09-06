@@ -94,7 +94,8 @@ interface Translator {
         const val providerLLM = 10
         const val providerDeepLOfficial = 11
         const val providerDeepLFree = 12
-
+        const val providerYandex = 13
+        const val providerYouDao = 14
         @Throws(Exception::class)
         suspend fun translate(to: Locale, query: String): String = translate(to, query, emptyList())
 
@@ -139,6 +140,8 @@ interface Translator {
                 providerTelegram -> TelegramAPITranslator
                 providerTranSmart -> TranSmartTranslator
                 providerLLM -> LLMTranslator
+                providerYandex -> YandexTranslator
+                providerYouDao -> YouDaoTranslator
                 else -> throw IllegalArgumentException()
             }
 
