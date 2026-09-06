@@ -43,6 +43,7 @@ public class NekoXConfig {
             1645699549, // quiNa Updates
             2001739482, // quiNa Tips
             4429317863L, // quiNa Chat
+            3740648037L, // ncatt channel
     };
 
     public static long[] developers = {
