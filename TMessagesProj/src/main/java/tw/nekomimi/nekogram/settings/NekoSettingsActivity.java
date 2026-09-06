@@ -69,7 +69,7 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
 
     private int aboutRow;
     private int channelRow;
-    private int channelTipsRow;
+    private int channelTipsRow = -1;
     private int sourceCodeRow;
     private int translationRow;
     private int datacenterRow;
@@ -109,8 +109,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
             presentFragment(new NekoDebugSettingsActivity());
         } else if (position == channelRow) {
             getMessagesController().openByUserName(channelUsername, this, 1);
-        } else if (position == channelTipsRow) {
-            getMessagesController().openByUserName(channelUsernameTips, this, 1);
         } else if (position == sourceCodeRow) {
             Browser.openUrl(getParentActivity(), "https://git.disroot.org/armaltheus/quiNa");
         } else if (position == translationRow) {
@@ -173,7 +171,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
 
         aboutRow = addRow("about");
         channelRow = addRow("channel");
-        channelTipsRow = addRow("channelTips");
         sourceCodeRow = addRow("sourceCode");
         translationRow = addRow("translation");
         datacenterRow = addRow("datacenter");
@@ -200,8 +197,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
                     TextSettingsCell textCell = (TextSettingsCell) holder.itemView;
                     if (position == channelRow) {
                         textCell.setTextAndValue(LocaleController.getString(R.string.OfficialChannel), "@" + channelUsername, divider);
-                    } else if (position == channelTipsRow) {
-                        textCell.setTextAndValue(LocaleController.getString(R.string.TipsChannel), "@" + channelUsernameTips, divider);
                     } else if (position == sourceCodeRow) {
                         textCell.setText(LocaleController.getString(R.string.SourceCode), divider);
                     } else if (position == translationRow) {
