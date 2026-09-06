@@ -12,6 +12,8 @@ import static org.telegram.messenger.AndroidUtilities.dp;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import xyz.nextalone.nagram.NaConfig;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 public class SeekBarWaveform {
 
     private static Paint paintInner;
+    private Paint m3VoicePaint;
     private static Paint paintOuter;
     private int thumbX = 0;
     private int thumbDX = 0;
@@ -448,7 +451,22 @@ public class SeekBarWaveform {
 
         canvas.drawRect(0, 0, width + strokeWidth, height, paintInner);
         if (loadingT < 1f) {
-            canvas.drawRect(0, 0, (this.progress * (width + strokeWidth)) * (1f - loadingT), height, paintOuter);
+            float progressWidth = (this.progress * (width + strokeWidth)) * (1f - loadingT);
+            canvas.drawRect(0, 0, progressWidth, height, paintOuter);
+            if (isPlaying && NaConfig.INSTANCE.getM3ExpressiveVoice().Bool() && progressWidth > AndroidUtilities.dp(6)) {
+                float wavePhase = (SystemClock.elapsedRealtime() % 1200L) / 1200f;
+                int waveAlpha = (int) (paintOuter.getAlpha() * 0.35f);
+                if (m3VoicePaint == null) {
+                    m3VoicePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                }
+                m3VoicePaint.setColor(Color.WHITE);
+                m3VoicePaint.setAlpha(waveAlpha);
+                float waveX = progressWidth * wavePhase;
+                canvas.drawCircle(waveX, height / 2f, AndroidUtilities.dp(6), m3VoicePaint);
+                if (parentView != null) {
+                    parentView.invalidate();
+                }
+            }
         }
 
         if (loadingT > 0f) {

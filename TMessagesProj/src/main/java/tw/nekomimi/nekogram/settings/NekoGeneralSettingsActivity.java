@@ -266,6 +266,10 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell m3ExpressiveDialogsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveDialogs()));
     private final AbstractConfigCell m3SectionCardsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3SectionCards()));
     private final AbstractConfigCell m3GlassMenuRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3GlassMenu()));
+    private final AbstractConfigCell m3WavySliderRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3WavySlider()));
+    private final AbstractConfigCell m3TabPillRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3TabPill()));
+    private final AbstractConfigCell m3SpringPhysicsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3SpringPhysics()));
+    private final AbstractConfigCell m3ExpressiveVoiceRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveVoice()));
     private final AbstractConfigCell customDialogsMenuRow = cellGroup.appendCell(new ConfigCellSelectBox(NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), null, null, () -> {
         if (getParentActivity() == null) return;
         showDialog(showConfigMenuAlert(getParentActivity(), NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), new ArrayList<>() {{

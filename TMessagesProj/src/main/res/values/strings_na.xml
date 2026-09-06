@@ -386,4 +386,8 @@
     <string name="DisableSaveDraftToCloud">Do not sync message drafts to cloud</string>
     <string name="ForceVideoNewRewindMethod">Force video use new seek method</string>
     <string name="TabStyleStroke">Tab indicator outline</string>
+    <string name="M3WavySlider">Material 3 Expressive wavy media scrubber</string>
+    <string name="M3TabPill">Material 3 Expressive active tab pill</string>
+    <string name="M3SpringPhysics">Material 3 Expressive spring touch physics</string>
+    <string name="M3ExpressiveVoice">Material 3 Expressive voice waveform</string>
 </resources>

@@ -36,6 +36,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
+import xyz.nextalone.nagram.NaConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
@@ -674,6 +675,32 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
 
     public void onPreBind() {
 
+    }
+    private final Paint m3PillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final RectF m3PillRect = new RectF();
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        if (NaConfig.INSTANCE.getM3TabPill().Bool()) {
+            float selectFraction = isSelectedAnimator.getFloatValue();
+            if (selectFraction > 0.01f) {
+                int pillColor = ColorUtils.setAlphaComponent(
+                    colorSelected != 0 ? colorSelected : Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider),
+                    (int) (55 * selectFraction)
+                );
+                m3PillPaint.setColor(pillColor);
+                float pillWidth = AndroidUtilities.dp(56) * (0.65f + 0.35f * selectFraction);
+                float pillHeight = AndroidUtilities.dp(30);
+                float cx = getWidth() / 2f;
+                float cy = (imageView.getTop() + imageView.getBottom()) / 2f;
+                if (cy <= 0) {
+                    cy = AndroidUtilities.dp(16);
+                }
+                m3PillRect.set(cx - pillWidth / 2f, cy - pillHeight / 2f, cx + pillWidth / 2f, cy + pillHeight / 2f);
+                canvas.drawRoundRect(m3PillRect, pillHeight / 2f, pillHeight / 2f, m3PillPaint);
+            }
+        }
+        super.dispatchDraw(canvas);
     }
 
     public void enableTextFreeMode() {

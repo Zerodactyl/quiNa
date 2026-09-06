@@ -36,6 +36,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.core.graphics.ColorUtils;
+import xyz.nextalone.nagram.NaConfig;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.Emoji;
@@ -654,8 +655,39 @@ public class SeekBarView extends FrameLayout {
         });
     }
 
+    private Path m3WavePath;
+
     private void drawProgressBar(Canvas canvas, RectF rect, Paint paint) {
         float radius = AndroidUtilities.dp(2);
+        if (paint == outerPaint1 && NaConfig.INSTANCE.getM3WavySlider().Bool() && !pressed && rect.width() > AndroidUtilities.dp(8)) {
+            if (m3WavePath == null) {
+                m3WavePath = new Path();
+            }
+            m3WavePath.reset();
+            float cy = rect.centerY();
+            float left = rect.left;
+            float right = rect.right;
+            float wavelength = AndroidUtilities.dp(20);
+            float speed = AndroidUtilities.dp(16);
+            float amplitude = AndroidUtilities.dp(1.8f);
+            float phase = (SystemClock.elapsedRealtime() % 100000L) / 1000f * speed;
+            float step = AndroidUtilities.dpf2(2);
+
+            m3WavePath.moveTo(left, cy);
+            for (float x = left; x <= right; x += step) {
+                float y = cy + (float) (amplitude * Math.sin(2 * Math.PI * (x - left + phase) / wavelength));
+                m3WavePath.lineTo(x, y);
+            }
+            m3WavePath.lineTo(right, cy);
+
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(rect.height());
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            canvas.drawPath(m3WavePath, paint);
+            paint.setStyle(Paint.Style.FILL);
+            postInvalidateOnAnimation();
+            return;
+        }
         if (timestamps == null || timestamps.isEmpty()) {
             canvas.drawRoundRect(rect, radius, radius, paint);
         } else {

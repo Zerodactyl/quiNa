@@ -1523,6 +1523,30 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val m3WavySlider =
+        addConfig(
+            "M3WavySlider",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3TabPill =
+        addConfig(
+            "M3TabPill",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3SpringPhysics =
+        addConfig(
+            "M3SpringPhysics",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3ExpressiveVoice =
+        addConfig(
+            "M3ExpressiveVoice",
+            ConfigItem.configTypeBool,
+            false
+        )
 
     private fun addConfig(
         k: String,

@@ -12,6 +12,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.view.MotionEvent;
+import android.view.animation.OvershootInterpolator;
+import xyz.nextalone.nagram.NaConfig;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -202,6 +205,17 @@ public class FragmentFloatingButton extends FrameLayout implements FactorAnimato
             setTranslationInternal = false;
             additionalTranslationY = translationY;
         }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (NaConfig.INSTANCE.getM3SpringPhysics().Bool()) {
+            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                animate().scaleX(0.92f).scaleY(0.92f).setDuration(120).setInterpolator(CubicBezierInterpolator.EASE_OUT).start();
+            } else if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
+                animate().scaleX(1.0f).scaleY(1.0f).setDuration(350).setInterpolator(new OvershootInterpolator(2.5f)).start();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override

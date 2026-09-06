@@ -80,6 +80,10 @@ public class NekoXConfig {
     public static boolean m3ExpressiveDialogs = NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool();
     public static boolean m3SectionCards = NaConfig.INSTANCE.getM3SectionCards().Bool();
     public static boolean m3GlassMenu = NaConfig.INSTANCE.getM3GlassMenu().Bool();
+    public static boolean m3WavySlider = NaConfig.INSTANCE.getM3WavySlider().Bool();
+    public static boolean m3TabPill = NaConfig.INSTANCE.getM3TabPill().Bool();
+    public static boolean m3SpringPhysics = NaConfig.INSTANCE.getM3SpringPhysics().Bool();
+    public static boolean m3ExpressiveVoice = NaConfig.INSTANCE.getM3ExpressiveVoice().Bool();
 
     public static boolean isM3ExpressiveProgress() {
         return NaConfig.INSTANCE.getM3ExpressiveProgress().Bool();
@@ -95,6 +99,22 @@ public class NekoXConfig {
 
     public static boolean isM3GlassMenu() {
         return NaConfig.INSTANCE.getM3GlassMenu().Bool();
+    }
+
+    public static boolean isM3WavySlider() {
+        return NaConfig.INSTANCE.getM3WavySlider().Bool();
+    }
+
+    public static boolean isM3TabPill() {
+        return NaConfig.INSTANCE.getM3TabPill().Bool();
+    }
+
+    public static boolean isM3SpringPhysics() {
+        return NaConfig.INSTANCE.getM3SpringPhysics().Bool();
+    }
+
+    public static boolean isM3ExpressiveVoice() {
+        return NaConfig.INSTANCE.getM3ExpressiveVoice().Bool();
     }
 
     public static int autoUpdateReleaseChannel = preferences.getInt("autoUpdateReleaseChannel", 2);
