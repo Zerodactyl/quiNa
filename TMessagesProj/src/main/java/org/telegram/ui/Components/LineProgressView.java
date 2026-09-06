@@ -205,20 +205,20 @@ public class LineProgressView extends View {
             canvas.drawCircle(width - stop / 2f, cy, Math.min(stop, thickness) / 2f, m3Paint);
         }
 
-        if (animatedProgressValue < 1) {
+        if (animatedProgressValue < 1 || (indicatorRight > 0 && animatedAlphaValue > 0)) {
             invalidate();
         }
     }
 
     private float getWaveAmplitude(float progress, float height, float thickness) {
         final float ramp = Math.max(0, Math.min(1, (progress - 0.05f) / 0.05f));
-        return Math.min(AndroidUtilities.dp(3) * ramp, Math.max(0, (height - thickness) / 2f));
+        return AndroidUtilities.dp(1.8f) * ramp;
     }
 
     private void buildWavePath(float right, float cy, float amplitude) {
         m3Path.reset();
-        final float wavelength = AndroidUtilities.dp(40);
-        final float speed = AndroidUtilities.dp(15);
+        final float wavelength = AndroidUtilities.dp(24);
+        final float speed = AndroidUtilities.dp(18);
         final float phase = (SystemClock.elapsedRealtime() % 100000L) / 1000f * speed;
         final float step = AndroidUtilities.dpf2(2);
         boolean first = true;

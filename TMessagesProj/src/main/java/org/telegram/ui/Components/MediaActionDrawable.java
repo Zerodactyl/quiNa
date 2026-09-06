@@ -18,6 +18,8 @@ import android.view.animation.DecelerateInterpolator;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.MessageDrawable;
 import org.telegram.ui.ActionBar.Theme;
+import tw.nekomimi.nekogram.helpers.M3CircularProgress;
+import xyz.nextalone.nagram.NaConfig;
 
 public class MediaActionDrawable extends Drawable {
 
@@ -48,6 +50,7 @@ public class MediaActionDrawable extends Drawable {
     private float scale = 1.0f;
     private DecelerateInterpolator interpolator = new DecelerateInterpolator();
 
+    private M3CircularProgress m3Progress;
     private boolean isMini;
 
     private float transitionAnimationTime = 400.0f;
@@ -565,7 +568,15 @@ public class MediaActionDrawable extends Drawable {
                     canvas.drawArc(rect, 0, 360, false, paint);
                     paint.setAlpha(alpha);
                 }
-                canvas.drawArc(rect, downloadRadOffset, rad, false, paint);
+                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+                    if (m3Progress == null) {
+                        m3Progress = new M3CircularProgress();
+                        m3Progress.setWavyValues(AndroidUtilities.dp(12), AndroidUtilities.dp(1.8f), AndroidUtilities.dp(6));
+                    }
+                    m3Progress.draw(canvas, rect, downloadRadOffset, rad, paint);
+                } else {
+                    canvas.drawArc(rect, downloadRadOffset, rad, false, paint);
+                }
             }
             if (progressScale != 1.0f) {
                 canvas.restore();
@@ -586,7 +597,15 @@ public class MediaActionDrawable extends Drawable {
                 float rad = Math.max(4, 360 * animatedDownloadProgress);
                 int diff = AndroidUtilities.dp(isMini ? 2 : 4);
                 rect.set(bounds.left + diff, bounds.top + diff, bounds.right - diff, bounds.bottom - diff);
-                canvas.drawArc(rect, downloadRadOffset, rad, false, paint);
+                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+                    if (m3Progress == null) {
+                        m3Progress = new M3CircularProgress();
+                        m3Progress.setWavyValues(AndroidUtilities.dp(12), AndroidUtilities.dp(1.8f), AndroidUtilities.dp(6));
+                    }
+                    m3Progress.draw(canvas, rect, downloadRadOffset, rad, paint);
+                } else {
+                    canvas.drawArc(rect, downloadRadOffset, rad, false, paint);
+                }
             }
         }
 

@@ -81,7 +81,7 @@ public abstract class BaseNekoSettingsActivity extends BaseFragment {
     protected HashMap<String, Integer> rowMap = new HashMap<>(20);
     protected HashMap<Integer, String> rowMapReverse = new HashMap<>(20);
 
-    public static final String settingsPrefix = "https://%s/nasettings/%s?p=and&r=%s";
+    public static final String settingsPrefix = "https://%s/qnasettings/%s?p=and&r=%s";
 
     @Override
     public boolean onFragmentCreate() {

@@ -35,7 +35,7 @@ public class SettingsHelper {
             return;
         }
         var segments = uri.getPathSegments();
-        if (segments.isEmpty() || segments.size() > 2 || !"nasettings".equals(segments.get(0))) {
+        if (segments.isEmpty() || segments.size() > 2 || (!"qnasettings".equals(segments.get(0)) && !"nasettings".equals(segments.get(0)))) {
             unknown.run();
             return;
         }
