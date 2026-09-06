@@ -6427,8 +6427,6 @@ public class NotificationsController extends BaseController implements Notificat
             case 1:
                 return R.drawable.notification_neko;
         }
-
-        return R.drawable.notification;
     }
 
     public void loadTopicsNotificationsExceptions(long dialogId, Consumer<HashSet<Integer>> consumer) {
