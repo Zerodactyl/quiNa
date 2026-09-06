@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.os.Build;
+import org.telegram.messenger.AndroidUtilities;
 import android.view.MotionEvent;
 import android.view.animation.OvershootInterpolator;
 import xyz.nextalone.nagram.NaConfig;
