@@ -27,6 +27,8 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ContactsController;
+import org.telegram.messenger.DialogObject;
+import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
@@ -34,6 +36,10 @@ import org.telegram.messenger.NotificationsService;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
+import org.telegram.tgnet.TLRPC;
+import org.telegram.ui.UsersSelectActivity;
+import tw.nekomimi.nekogram.helpers.BiometricHelper;
+import tw.nekomimi.nekogram.helpers.ChatsPasswordHelper;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.ui.ActionBar.ActionBarLayout;
 import org.telegram.ui.ActionBar.INavigationLayout;
@@ -52,8 +58,10 @@ import org.telegram.ui.Components.SeekBarView;
 import org.telegram.ui.Components.UndoView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import cn.hutool.core.util.StrUtil;
 import kotlin.Unit;
@@ -302,6 +310,16 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell disableAutoWebLoginRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableAutoWebLogin()));
     private final AbstractConfigCell sentryAnalyticsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getSentryAnalytics()));
     private final AbstractConfigCell disableQuoteForwardRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableQuoteForward()));
+    // Cherrygram biometric lock
+    private final AbstractConfigCell askBiometricsToOpenChatsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getAskBiometricsToOpenChats()));
+    private final AbstractConfigCell askBiometricsToOpenEncryptedRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getAskBiometricsToOpenEncrypted()));
+    private final AbstractConfigCell askBiometricsToOpenArchiveRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getAskBiometricsToOpenArchive()));
+    private final AbstractConfigCell hideArchiveRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getHideArchiveFromChatsList()));
+    private final AbstractConfigCell askPasscodeBeforeDeleteRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getAskPasscodeBeforeDelete()));
+    private final AbstractConfigCell lockedChatsRow = cellGroup.appendCell(new ConfigCellCustom("LockedChats", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
+    private final AbstractConfigCell headerBackup = cellGroup.appendCell(new ConfigCellHeader("Backup (.cherry)"));
+    private final AbstractConfigCell exportCherryRow = cellGroup.appendCell(new ConfigCellCustom("ExportCherry", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
+    private final AbstractConfigCell importCherryRow = cellGroup.appendCell(new ConfigCellCustom("ImportCherry", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
     private final AbstractConfigCell divider6 = cellGroup.appendCell(new ConfigCellDivider());
 
     private final AbstractConfigCell header7 = cellGroup.appendCell(new ConfigCellHeader(LocaleController.getString("General")));
@@ -480,6 +498,12 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     });
                 } else if (position == cellGroup.rows.indexOf(llmSettingsRow)) {
                     presentFragment(new NekoLLMSettingsActivity());
+                } else if (position == cellGroup.rows.indexOf(lockedChatsRow)) {
+                    handleLockedChatsRow();
+                } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
+                    tw.nekomimi.nekogram.helpers.BackupHelper.INSTANCE.backupSettings(this);
+                } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
+                    tw.nekomimi.nekogram.helpers.BackupHelper.INSTANCE.importSettings(this);
                 } else if (position == cellGroup.rows.indexOf(nameOrderRow)) {
                     LocaleController.getInstance().recreateFormatters();
                 }
@@ -597,6 +621,46 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
         cellGroup.setListAdapter(listView, listAdapter);
 
         return superView;
+    }
+
+    private void handleLockedChatsRow() {
+        Runnable showPicker = () -> AndroidUtilities.runOnUIThread(() -> {
+            try {
+                ChatsPasswordHelper helper = ChatsPasswordHelper.getInstance(UserConfig.selectedAccount);
+                ArrayList<String> lockedChatIds = helper.getArrayList(helper.getPasscodeArray());
+                ArrayList<Long> chatsList = new ArrayList<>();
+                for (String chatIdStr : lockedChatIds) {
+                    try {
+                        long chatId = Long.parseLong(chatIdStr);
+                        TLRPC.User user = MessagesController.getInstance(UserConfig.selectedAccount).getUser(chatId);
+                        TLRPC.Chat chat = MessagesController.getInstance(UserConfig.selectedAccount).getChat(-chatId);
+                        if (user != null) chatsList.add(user.id);
+                        else if (chat != null) chatsList.add(-chat.id);
+                    } catch (Exception e) { FileLog.e(e); }
+                }
+                UsersSelectActivity fragment = new UsersSelectActivity(true, chatsList, 0);
+                fragment.setDelegate((ids, type) -> {
+                    Set<Long> chatIds = new HashSet<>(ids);
+                    Set<String> lockedChats = new HashSet<>(helper.getArrayList(helper.getPasscodeArray()));
+                    lockedChats.clear();
+                    if (!chatIds.isEmpty()) {
+                        for (Long id : chatIds) {
+                            if (DialogObject.isUserDialog(id) || DialogObject.isChatDialog(id)) {
+                                lockedChats.add(String.valueOf(id));
+                            }
+                        }
+                    }
+                    helper.saveArrayList(new ArrayList<>(lockedChats), helper.getPasscodeArray());
+                    if (listAdapter != null) listAdapter.notifyDataSetChanged();
+                });
+                presentFragment(fragment);
+            } catch (Exception e) { FileLog.e(e); }
+        }, 300);
+        if (BiometricHelper.checkBiometricAvailable()) {
+            BiometricHelper.prompt(getParentActivity(), showPicker, showPicker);
+        } else {
+            showPicker.run();
+        }
     }
 
     private void requestKey(Intent data) {
@@ -791,6 +855,14 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                             textCell.setTextAndValue(LocaleController.getString("TransInputToLang", R.string.TransInputToLang), NekoXConfig.formatLang(NekoConfig.translateInputLang.String()), divider);
                         } else if (position == cellGroup.rows.indexOf(llmSettingsRow)) {
                             textCell.setTextAndValue(LocaleController.getString("LLMTranslatorSettings", R.string.LLMTranslatorSettings), "", divider);
+                        } else if (position == cellGroup.rows.indexOf(lockedChatsRow)) {
+                            int count = 0;
+                            try { count = ChatsPasswordHelper.getInstance(UserConfig.selectedAccount).getLockedChatsCount(); } catch (Exception ignored) {}
+                            textCell.setTextAndValue(LocaleController.getString(R.string.SP_LockedChats), String.valueOf(count), divider);
+                        } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
+                            textCell.setTextAndValue("Export .cherry", "Backup quiNa settings", divider);
+                        } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
+                            textCell.setTextAndValue("Import .cherry", "Restore from backup", divider);
                         }
                     }
                 } else {

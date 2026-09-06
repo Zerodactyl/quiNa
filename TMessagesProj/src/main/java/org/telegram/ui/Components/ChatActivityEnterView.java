@@ -5130,6 +5130,19 @@ public class ChatActivityEnterView extends FrameLayout implements
             menuPopupLayout.addView(cell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT, 0, 48 * a++, 0, 0));
         }
 
+        if (NaConfig.INSTANCE.getShowCopyFileRef().Bool() && !ChatActivity.fileRefClipboard.isEmpty()) {
+            cell = new ActionBarMenuSubItem(getContext(), false, true);
+            cell.setTextAndIcon(LocaleController.getString(R.string.PasteFileRef), R.drawable.msg_copy);
+            cell.setOnClickListener(v -> {
+                if (menuPopupWindow != null && menuPopupWindow.isShowing()) {
+                    menuPopupWindow.dismiss();
+                }
+                sendFileRefsFromClipboard();
+            });
+            cell.setMinimumWidth(AndroidUtilities.dp(196));
+            menuPopupLayout.addView(cell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT, 0, 48 * a++, 0, 0));
+        }
+
         addChatExtraButtons(chatId, a, menuPopupLayout);
 
         menuPopupLayout.setupRadialSelectors(Theme.getColor(Theme.key_dialogButtonSelector));
@@ -8702,6 +8715,9 @@ public class ChatActivityEnterView extends FrameLayout implements
     }
 
     public boolean processSendingText(CharSequence text, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long payStars, SendMessageInternalParams internalParams) {
+        if (text != null && NaConfig.INSTANCE.getPatchAndCleanupLinks().Bool()) {
+            text = tw.nekomimi.nekogram.helpers.UrlCleanerHelper.cleanTextUrls(text.toString());
+        }
         boolean withMarkdown = internalParams.withMarkdown == null ? !NaConfig.INSTANCE.getDisableMarkdown().Bool() : internalParams.withMarkdown;
         boolean withGame = internalParams.withGame;
         Boolean canUsePangu = internalParams.canUsePangu;
@@ -8861,6 +8877,90 @@ public class ChatActivityEnterView extends FrameLayout implements
             params.replyQuote = delegate.getReplyQuote();
         }
     }
+
+    public void sendFileRefsFromClipboard() {
+        if (ChatActivity.fileRefClipboard == null || ChatActivity.fileRefClipboard.isEmpty()) {
+            return;
+        }
+        if (editingMessageObject != null) {
+            ChatActivity.FileRefClipboardItem item = null;
+            for (int i = 0; i < ChatActivity.fileRefClipboard.size(); i++) {
+                ChatActivity.FileRefClipboardItem checkItem = ChatActivity.fileRefClipboard.get(i);
+                if (checkItem.document != null || checkItem.photo != null) {
+                    item = checkItem;
+                    break;
+                }
+            }
+            if (item == null) return;
+            if (delegate != null) delegate.beforeMessageSend(null, true, 0);
+            CharSequence text = messageEditText == null ? "" : messageEditText.getTextToUse();
+            if (editingMessageObject.type != MessageObject.TYPE_EMOJIS) {
+                text = AndroidUtilities.getTrimmedString(text);
+            }
+            CharSequence[] message = new CharSequence[]{text};
+            java.util.ArrayList<TLRPC.MessageEntity> entities = org.telegram.messenger.MediaDataController.getInstance(currentAccount).getEntities(message, supportsSendingNewEntities());
+            editingMessageObject.editingMessage = message[0];
+            editingMessageObject.editingMessageEntities = entities;
+            if (item.document != null) {
+                String path = FileLoader.getInstance(currentAccount).getPathToAttach(item.document, true).toString();
+                SendMessagesHelper.getInstance(currentAccount).editMessage(editingMessageObject, null, null, item.document, path, null, null, false, editingMessageObject.hasMediaSpoilers(), null);
+            } else if (item.photo != null) {
+                SendMessagesHelper.getInstance(currentAccount).editMessage(editingMessageObject, item.photo, null, null, null, null, null, false, editingMessageObject.hasMediaSpoilers(), null);
+            }
+            if (delegate != null) delegate.onMessageSend(null, true, 0, 0, 0);
+            if (parentFragment != null) parentFragment.pressedNoPreview = false;
+            if (messageSendPreview != null) messageSendPreview.dismiss(false);
+            setEditingMessageObject(null, null, false);
+            return;
+        }
+        if (replyingQuote != null && parentFragment != null && replyingQuote.outdated) {
+            parentFragment.showQuoteMessageUpdate();
+            return;
+        }
+        if (delegate != null) delegate.beforeMessageSend(null, true, 0);
+        MessageObject replyToTopMsg = getThreadMessage();
+        if (replyToTopMsg == null && replyingTopMessage != null) replyToTopMsg = replyingTopMessage;
+        int validItemsCount = 0;
+        for (int i = 0; i < ChatActivity.fileRefClipboard.size(); i++) {
+            ChatActivity.FileRefClipboardItem item = ChatActivity.fileRefClipboard.get(i);
+            if (item.document != null || item.photo != null) validItemsCount++;
+        }
+        boolean groupMedia = validItemsCount > 1 && !DialogObject.isEncryptedDialog(dialog_id);
+        long groupId = 0;
+        int sentItemsCount = 0;
+        for (int i = 0; i < ChatActivity.fileRefClipboard.size(); i++) {
+            ChatActivity.FileRefClipboardItem item = ChatActivity.fileRefClipboard.get(i);
+            SendMessagesHelper.SendMessageParams params;
+            String caption = (messageEditText != null && messageEditText.getText() == null) ? null : messageEditText.getText().toString();
+            if (item.document != null) {
+                String path = FileLoader.getInstance(currentAccount).getPathToAttach(item.document, true).toString();
+                params = SendMessagesHelper.SendMessageParams.of(item.document, null, path, dialog_id, replyingMessageObject, replyToTopMsg, caption, null, null, null, true, 0, 0, 0, item.document, null, false);
+            } else if (item.photo != null) {
+                params = SendMessagesHelper.SendMessageParams.of(item.photo, null, dialog_id, replyingMessageObject, replyToTopMsg, caption, null, null, null, true, 0, 0, 0, item.photo, false);
+            } else continue;
+            params.quick_reply_shortcut = parentFragment != null ? parentFragment.quickReplyShortcut : null;
+            params.quick_reply_shortcut_id = parentFragment != null ? parentFragment.getQuickReplyId() : 0;
+            params.payStars = 0;
+            params.monoForumPeer = getSendMonoForumPeerId();
+            params.suggestionParams = getSendMessageSuggestionParams();
+            if (groupMedia) {
+                if (sentItemsCount % 10 == 0) groupId = org.telegram.messenger.Utilities.random.nextLong();
+                if (params.params == null) params.params = new java.util.HashMap<>();
+                params.params.put("groupId", "" + groupId);
+                if (sentItemsCount % 10 == 9 || sentItemsCount == validItemsCount - 1) params.params.put("final", "1");
+            }
+            if (params.params == null) params.params = new java.util.HashMap<>();
+            params.params.put("send_by_ref", "1");
+            applyStoryToSendMessageParams(params);
+            SendMessagesHelper.getInstance(currentAccount).sendMessage(params);
+            sentItemsCount++;
+        }
+        if (delegate != null) delegate.onMessageSend(null, true, 0, 0, 0);
+        if (parentFragment != null) parentFragment.pressedNoPreview = false;
+        if (messageSendPreview != null) messageSendPreview.dismiss(false);
+        if (messageEditText != null) messageEditText.setText("");
+    }
+
 
     private boolean supportsSendingNewEntities() {
         TLRPC.EncryptedChat encryptedChat = parentFragment != null ? parentFragment.getCurrentEncryptedChat() : null;

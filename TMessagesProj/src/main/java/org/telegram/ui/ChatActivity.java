@@ -395,6 +395,8 @@ import tw.nekomimi.nekogram.utils.EnvUtil;
 import tw.nekomimi.nekogram.utils.PGPUtil;
 import tw.nekomimi.nekogram.utils.ProxyUtil;
 import tw.nekomimi.nekogram.utils.TelegramUtil;
+import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.Components.Bulletin;
 import xyz.nextalone.nagram.NaConfig;
 import xyz.nextalone.nagram.helper.DoubleTap;
 import xyz.nextalone.nagram.helper.MessageHelper;
@@ -470,6 +472,9 @@ public class ChatActivity extends BaseFragment implements
     public final static int nkbtn_setReminder = 2029;
     public final static int nkbtn_sticker_copy = 2031;
     public final static int nkbtn_sticker_copy_png = 2032;
+    public final static int nkbtn_copy_fref = 2036;
+
+
 
 
     public int shareAlertDebugMode = DEBUG_SHARE_ALERT_MODE_NORMAL;
@@ -1356,8 +1361,24 @@ public class ChatActivity extends BaseFragment implements
 
     public final static int OPTION_COPY_PHOTO = 150;
     public final static int OPTION_COPY_PHOTO_AS_STICKER = 151;
+    public final static int OPTION_COPY_REF = 69696;
+
 
     private boolean isChannelBottomMuteView = false;
+
+    public static class FileRefClipboardItem {
+        public final TLRPC.TL_document document;
+        public final TLRPC.TL_photo photo;
+        public FileRefClipboardItem(TLRPC.TL_document document) {
+            this.document = document;
+            this.photo = null;
+        }
+        public FileRefClipboardItem(TLRPC.TL_photo photo) {
+            this.document = null;
+            this.photo = photo;
+        }
+    }
+    public static ArrayList<FileRefClipboardItem> fileRefClipboard = new ArrayList<>();
 
     private final static int[] allowedNotificationsDuringChatListAnimations = new int[]{
             NotificationCenter.messagesRead,
@@ -3901,6 +3922,25 @@ public class ChatActivity extends BaseFragment implements
         }
         actionBarBackgroundPaint.setColor(getThemedColor(Theme.key_actionBarDefault));
         sharedResources = new ChatMessageSharedResources(context);
+        // Cherrygram per-chat biometric lock gate
+        try {
+            long did = dialog_id;
+            tw.nekomimi.nekogram.helpers.ChatsPasswordHelper helper = tw.nekomimi.nekogram.helpers.ChatsPasswordHelper.getInstance(currentAccount);
+            boolean need = false;
+            if (did != 0) {
+                if (org.telegram.messenger.DialogObject.isUserDialog(did) || org.telegram.messenger.DialogObject.isChatDialog(did)) {
+                    need = helper.isChatLocked(did) && helper.shouldRequireBiometricsToOpenChats();
+                } else {
+                    int encId = org.telegram.messenger.DialogObject.getEncryptedChatId(did);
+                    need = encId != 0 && helper.shouldRequireBiometricsToOpenEncryptedChats() && helper.isEncryptedChat(did);
+                }
+            }
+            if (need && tw.nekomimi.nekogram.helpers.BiometricHelper.checkBiometricAvailable() && getParentActivity() != null) {
+                tw.nekomimi.nekogram.helpers.BiometricHelper.prompt(getParentActivity(), null, () -> org.telegram.messenger.AndroidUtilities.runOnUIThread(() -> {
+                    try { finishFragment(); } catch (Exception ignored) {}
+                }));
+            }
+        } catch (Exception ignored) {}
 
         //ArrayList<ChatMessageCell> chatMessagesCache = chatMessageCellsCache.get(currentAccount);
         //if (chatMessagesCache == null) {
@@ -10829,6 +10869,10 @@ public class ChatActivity extends BaseFragment implements
         if (NekoConfig.showMessageDetails.Bool()) {
             actionModeOtherItem.addSubItem(nkbtn_detail,R.drawable.msg_info,LocaleController.getString("MessageDetails", R.string.MessageDetails));
         }
+        if (NaConfig.INSTANCE.getShowCopyFileRef().Bool() && !noforward) {
+            actionModeOtherItem.addSubItem(nkbtn_copy_fref, R.drawable.msg_copy, LocaleController.getString(R.string.CopyFileRef));
+        }
+
 
         actionMode.setItemVisibility(nkactionbarbtn_reply, ChatObject.canSendMessages(currentChat) && (selectedMessagesIds[0].size() + selectedMessagesIds[1].size() == 1) && !NaConfig.INSTANCE.getDisableActionBarButtonReply().Bool() ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(edit, canEditMessagesCount == 1 && (selectedMessagesIds[0].size() + selectedMessagesIds[1].size() == 1) && !NaConfig.INSTANCE.getDisableActionBarButtonEdit().Bool() ? View.VISIBLE : View.GONE);
@@ -35327,6 +35371,10 @@ public class ChatActivity extends BaseFragment implements
                 });
                 break;
             }
+            case OPTION_COPY_REF: {
+                copyFileReferences();
+                break;
+            }
             case OPTION_HIDE_SPONSORED_MESSAGE: {
                 hideAds();
                 break;
@@ -35388,6 +35436,9 @@ public class ChatActivity extends BaseFragment implements
                 break;
             }
             default: {
+                if (tw.nekomimi.nekogram.helpers.ChatMenuInjector.handleOption(this, option, selectedObject)) {
+                    break;
+                }
                 nkbtn_onclick(option);
                 break;
             }
@@ -45914,6 +45965,8 @@ public class ChatActivity extends BaseFragment implements
             hideTitleItem.setVisibility(android.view.View.GONE);
         } else if (id == nkbtn_detail) {
             presentFragment(new MessageDetailsActivity(getSelectedMessages().get(0)));
+        } else if (id == nkbtn_copy_fref) {
+            copyFileReferences();
         } else if (id == nkbtn_sharemessage) {
             var selected = getSelectedMessages();
             if (selected.isEmpty()) return;
@@ -45940,6 +45993,37 @@ public class ChatActivity extends BaseFragment implements
         } else if (id == nkheaderbtn_reload_messages) {
             getMessagesStorage().deleteDialog(dialog_id, 2);
             presentFragment(ChatActivity.of(dialog_id), true);
+        }
+    }
+
+    private void copyFileReferences() {
+        ArrayList<MessageObject> msgs = getSelectedMessages();
+        if (msgs == null || msgs.isEmpty()) {
+            if (selectedObject == null) return;
+            msgs = new ArrayList<>();
+            msgs.add(selectedObject);
+            if (selectedObjectGroup != null && selectedObjectGroup.messages != null) {
+                msgs.clear();
+                msgs.addAll(selectedObjectGroup.messages);
+            }
+        }
+        fileRefClipboard.clear();
+        for (int i = 0; i < msgs.size(); i++) {
+            MessageObject msg = msgs.get(i);
+            if (msg == null) continue;
+            TLRPC.Document doc = msg.getDocument();
+            if (doc instanceof TLRPC.TL_document) {
+                fileRefClipboard.add(new FileRefClipboardItem((TLRPC.TL_document) doc));
+                continue;
+            }
+            if (msg.messageOwner != null && msg.messageOwner.media != null && msg.messageOwner.media.photo instanceof TLRPC.TL_photo) {
+                fileRefClipboard.add(new FileRefClipboardItem((TLRPC.TL_photo) msg.messageOwner.media.photo));
+            }
+        }
+        if (fileRefClipboard.isEmpty()) {
+            BulletinFactory.of(this).createErrorBulletin(getString(R.string.CopyFileRefFailed)).show();
+        } else {
+            BulletinFactory.of(this).createSimpleBulletin(R.raw.info, formatString(R.string.CopyFileRefDone, fileRefClipboard.size())).show();
         }
     }
 
@@ -48287,11 +48371,20 @@ public class ChatActivity extends BaseFragment implements
                             items.add(LocaleController.getString(R.string.SaveToMusic));
                             options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                             icons.add(R.drawable.msg_download);
+                            if (NaConfig.INSTANCE.getShowCopyFileRef().Bool() && !selectedObject.isVoiceOnce() && !selectedObject.isRoundOnce()) {
+                                items.add(getString(R.string.CopyFileRef));
+                                options.add(OPTION_COPY_REF);
+                                icons.add(R.drawable.msg_copy);
+                            }
                         } else if (selectedObject.isDocument() && !noforwardsOrPaidMedia) {
                             items.add(LocaleController.getString(R.string.SaveToDownloads));
                             options.add(OPTION_SAVE_TO_DOWNLOADS_OR_MUSIC);
                             icons.add(R.drawable.msg_download);
-                        }
+                            if (NaConfig.INSTANCE.getShowCopyFileRef().Bool() && !selectedObject.isVoiceOnce() && !selectedObject.isRoundOnce()) {
+                                items.add(getString(R.string.CopyFileRef));
+                                options.add(OPTION_COPY_REF);
+                                icons.add(R.drawable.msg_copy);
+                            }
                     }
                 } else if (type == 3 && !noforwardsOrPaidMedia) {
                     if (selectedObject.messageOwner.media instanceof TLRPC.TL_messageMediaWebPage && MessageObject.isNewGifDocument(selectedObject.messageOwner.media.webpage.document)) {
@@ -48620,6 +48713,13 @@ public class ChatActivity extends BaseFragment implements
                     options.add(nkbtn_hide);
                     icons.add(R.drawable.msg_disable);
                 }
+                if (NaConfig.INSTANCE.getShowCopyFileRef().Bool() && !noforwardsOrPaidMedia && !selectedObject.isVoiceOnce() && !selectedObject.isRoundOnce() && (selectedObject.isDocument() || selectedObject.isVideo() || selectedObject.isPhoto() || selectedObject.isMusic() || selectedObject.getDocument() != null)) {
+                    if (!options.contains(OPTION_COPY_REF)) {
+                        items.add(getString(R.string.CopyFileRef));
+                        options.add(OPTION_COPY_REF);
+                        icons.add(R.drawable.msg_copy);
+                    }
+                }
                 boolean canViewStats = false;
                 if (message.messageOwner.views > 0 || message.messageOwner.forwards > 0) {
                     if (message.messageOwner.fwd_from != null && message.messageOwner.fwd_from.channel_post != 0) {
@@ -48896,6 +48996,12 @@ public class ChatActivity extends BaseFragment implements
                 }
             }
         }
+        // Cherrygram ports: quick actions behind toggles (1-line hooks)
+        try {
+            tw.nekomimi.nekogram.helpers.ChatMenuInjector.injectClearFromCache(items, options, icons, selectedObject);
+            tw.nekomimi.nekogram.helpers.ChatMenuInjector.injectForwardWoAuthor(selectedObject, chatMode, items, options, icons);
+            tw.nekomimi.nekogram.helpers.ChatMenuInjector.injectViewJSON(this, false, items, options, icons);
+        } catch (Exception ignored) {}
 
         if (showWelcomeMessageRevertOption(primaryMessage)) {
             items.add(getString(R.string.WelcomeMessageRevert));

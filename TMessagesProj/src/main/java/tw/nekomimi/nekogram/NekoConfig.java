@@ -64,6 +64,7 @@ public class NekoConfig {
     public static ConfigItem smoothKeyboard = addConfig("DebugMenuEnableSmoothKeyboard", configTypeBool, false);// fake
 
     public static ConfigItem typeface = addConfig("TypefaceUseDefault", configTypeBool, false);
+    public static ConfigItem forceFontWeightFallback = addConfig("forceFontWeightFallback", configTypeBool, false);
     public static ConfigItem nameOrder = addConfig("NameOrder", configTypeInt, 1);
     public static ConfigItem mapPreviewProvider = addConfig("MapPreviewProvider", configTypeInt, 0);
     public static ConfigItem transparentStatusBar = addConfig("TransparentStatusBar", configTypeBool, true);

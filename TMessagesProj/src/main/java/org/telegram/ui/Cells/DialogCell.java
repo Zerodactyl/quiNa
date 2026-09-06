@@ -1342,6 +1342,13 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             message.updateTranslation();
         }
         CharSequence msgText = message != null ? message.messageText : null;
+        if (message != null) {
+            try {
+                if (tw.nekomimi.nekogram.helpers.ChatsPasswordHelper.getInstance(currentAccount).isChatLocked(message)) {
+                    msgText = tw.nekomimi.nekogram.helpers.ChatsPasswordHelper.getInstance(currentAccount).replaceStringToSpoilers(msgText != null ? msgText.toString() : null, false);
+                }
+            } catch (Exception ignored) {}
+        }
         if (msgText instanceof Spannable) {
             Spannable sp = new SpannableStringBuilder(msgText);
             for (Object span : sp.getSpans(0, sp.length(), URLSpanNoUnderlineBold.class))

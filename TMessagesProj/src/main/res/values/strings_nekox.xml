@@ -296,4 +296,13 @@
     <string name="SearchRecentFiles">Search Recent Files</string>
     <string name="NoFilesFoundInfo">There are no matches with **%1$s** in current directory.</string>
     <string name="EmojiUseDefault">Use system default emoji</string>
+    <string name="PatchAndCleanupLinks">Clean URLs in chats</string>
+    <string name="PatchAndCleanupLinksDesc">Like replacing all Twitter-related domains to twitter.com and some of the tracking queries</string>
+    <string name="CopyFileRef">Copy File Reference</string>
+    <string name="CopyFileRefDone">Copied %1$d files</string>
+    <string name="CopyFileRefFailed">Failed to copy file reference</string>
+    <string name="PasteFileRef">Send Files by Reference</string>
+    <string name="AttachCopiedFileRef">Attach copied files and update message?\n(Note: Only the first file can be attached.)</string>
+    <string name="BlacklistUrlQueryTitle">Blacklist specified GET query(s)</string>
+    <string name="BlacklistUrlQueryAdd">Blacklist Query</string>
 </resources>

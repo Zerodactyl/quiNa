@@ -7040,6 +7040,13 @@ public class MediaDataController extends BaseController {
     }
 
     public static void addTextStyleRuns(MessageObject msg, Spannable text, int allowedFlags) {
+        // Cherrygram per-chat biometric lock → spoiler masking
+        try {
+            if (tw.nekomimi.nekogram.helpers.ChatsPasswordHelper.getInstance(msg.currentAccount).isChatLocked(msg) || tw.nekomimi.nekogram.helpers.ChatsPasswordHelper.getInstance(msg.currentAccount).isEncryptedChat(msg)) {
+                addTextStyleRuns(tw.nekomimi.nekogram.helpers.ChatsPasswordHelper.getInstance(msg.currentAccount).checkLockedChatsEntities(msg), msg.messageText, text, allowedFlags);
+                return;
+            }
+        } catch (Exception ignored) {}
         addTextStyleRuns(msg.messageOwner.entities, msg.messageText, text, allowedFlags);
     }
 

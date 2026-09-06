@@ -224,4 +224,11 @@
     <string name="UpdateInstallingRelaunch">The app will relaunch when the update completes.</string>
     <string name="UpdateInstalledNotification">Update installation finished, tap to launch the app.</string>
     <string name="UpdateFailedToInstall">Failed to install update: %d</string>
+    <string name="PatchAndCleanupLinks">Clean URLs in chats</string>
+    <string name="PatchAndCleanupLinksDesc">Like replacing all Twitter-related domains to twitter.com and some of the tracking queries</string>
+    <string name="CopyFileRef">Copy File Reference</string>
+    <string name="CopyFileRefDone">Copied %1$d files</string>
+    <string name="CopyFileRefFailed">Failed to copy file reference</string>
+    <string name="PasteFileRef">Send Files by Reference</string>
+    <string name="AttachCopiedFileRef">Attach copied files and update message?\n(Note: Only the first file can be attached.)</string>
 </resources>

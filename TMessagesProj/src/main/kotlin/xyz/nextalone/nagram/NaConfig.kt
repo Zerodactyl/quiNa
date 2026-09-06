@@ -7,8 +7,10 @@ import org.telegram.messenger.LocaleController
 import org.telegram.messenger.R
 import tw.nekomimi.nekogram.config.ConfigItem
 import tw.nekomimi.nekogram.config.ConfigItemKeyLinked
+import tw.nekomimi.nekogram.config.ConfigItemKeyLinkedGroup
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
+import java.util.ArrayList
 import androidx.core.net.toUri
 
 
@@ -150,6 +152,18 @@ object NaConfig {
             "DoubleTapAction",
             ConfigItem.configTypeInt,
             0
+        )
+    val doubleTapActionOut =
+        addConfig(
+            "DoubleTapActionOut",
+            ConfigItem.configTypeInt,
+            8
+        )
+    val doubleTapSeekDuration =
+        addConfig(
+            "doubleTapSeekDuration",
+            ConfigItem.configTypeInt,
+            1
         )
     val showCopyPhoto =
         addConfig(
@@ -423,6 +437,12 @@ object NaConfig {
             "ChatDecoration",
             ConfigItem.configTypeInt,
             0
+        )
+    val stickerShape =
+        addConfig(
+            "StickerShape",
+            ConfigItem.configTypeInt,
+            1
         )
     val doNotUnarchiveBySwipe =
         addConfig(
@@ -784,7 +804,7 @@ object NaConfig {
         addConfig(
             "DisableTrendingFlags",
             ConfigItem.configTypeInt,
-            0
+            0x1C0
         )
     val disableStarsSubscription =
         addConfig(
@@ -905,6 +925,65 @@ object NaConfig {
             16,
             false
     )
+    val disableTrendingFeaturedStickersGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingFeaturedStickers",
+            listOf(disableFeaturedStickers)
+        )
+    val disableTrendingFeaturedGifsGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingFeaturedGifs",
+            listOf(disableFeaturedGifs)
+        )
+    val disableTrendingFeaturedEmojisGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingFeaturedEmojis",
+            listOf(disableFeatuerdEmojis)
+        )
+    val disableTrendingPremiumHintsGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingPremiumHints",
+            listOf(
+                disablePremiumUpgrade,
+                disablePremiumExpiring,
+                disablePremiumRestore,
+                disablePremiumChristmas,
+                disableStarsSubscription
+            )
+        )
+    val disableTrendingBirthdayGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingBirthday",
+            listOf(disableBirthdayContact)
+        )
+    val disableTrendingEmojiTagsGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingEmojiTags",
+            listOf(
+                disableFavoriteSearchEmojiTags,
+                disablePremiumFavoriteEmojiTags,
+                disableShortcutTagActions
+            )
+        )
+    val disableTrendingChannelPremiumBannerGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingChannelPremiumBanner",
+            listOf(disableNonPremiumChannelChatShow)
+        )
+    val disableTrendingPhoneShareGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingPhoneShare",
+            listOf(disablePhoneSharePrompt)
+        )
+    val disableTrendingGiftsPremiumGroup =
+        ConfigItemKeyLinkedGroup(
+            "DisableTrendingGiftsPremium",
+            listOf(
+                disableGifts,
+                disableEmptyStarButton,
+                disablePremiumSendTodo
+            )
+        )
     val disableRepeatInChannel =
         addConfig(
             "DisableRepeatInChannel",
@@ -1391,6 +1470,41 @@ object NaConfig {
             ConfigItem.configTypeBool,
             true
         )
+    val patchAndCleanupLinks =
+        addConfig(
+            "PatchAndCleanupLinks",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val customGetQueryBlacklist =
+        addConfig(
+            "CustomGetQueryBlacklist",
+            ConfigItem.configTypeString,
+            ""
+        )
+    var customGetQueryBlacklistData: ArrayList<String> = ArrayList()
+    fun applyCustomGetQueryBlacklist() {
+        val queries = customGetQueryBlacklist.String().split(",")
+        customGetQueryBlacklistData.clear()
+        for (q in queries) {
+            val trimmed = q.trim()
+            if (trimmed.isNotEmpty()) {
+                customGetQueryBlacklistData.add(trimmed)
+            }
+        }
+    }
+    fun replaceCustomGetQueryBlacklist(newList: Collection<String>) {
+        customGetQueryBlacklistData.clear()
+        customGetQueryBlacklistData.addAll(newList)
+        val str = customGetQueryBlacklistData.joinToString(",")
+        customGetQueryBlacklist.setConfigString(str)
+    }
+    val showCopyFileRef =
+        addConfig(
+            "ShowCopyFileRef",
+            ConfigItem.configTypeBool,
+            false
+        )
     val addCommaAfterMention =
         addConfig(
             "AddCommaAfterMention",
@@ -1651,6 +1765,86 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    // Cherrygram Per-chat Biometric Lock
+    val askBiometricsToOpenChats =
+        addConfig(
+            "AskBiometricsToOpenChats",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val askBiometricsToOpenEncrypted =
+        addConfig(
+            "AskBiometricsToOpenEncrypted",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val askBiometricsToOpenArchive =
+        addConfig(
+            "AskBiometricsToOpenArchive",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val askPasscodeBeforeDelete =
+        addConfig(
+            "AskPasscodeBeforeDelete",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val allowSystemPasscode =
+        addConfig(
+            "AllowSystemPasscode",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val hideArchiveFromChatsList =
+        addConfig(
+            "HideArchiveFromChatsList",
+            ConfigItem.configTypeBool,
+            false
+        )
+    // Cherrygram Message Menu quick actions
+    val showClearFromCache =
+        addConfig(
+            "ShowClearFromCache",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val showForwardWithoutAuthor =
+        addConfig(
+            "ShowForwardWithoutAuthor",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val showViewJSON =
+        addConfig(
+            "ShowViewJSON",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val avatarCorners =
+        addConfig(
+            "avatarCorners",
+            ConfigItem.configTypeFloat,
+            28.0f
+        )
+    val singleCornerRadius =
+        addConfig(
+            "singleCornerRadius",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val switchStyle =
+        addConfig(
+            "SwitchStyle",
+            ConfigItem.configTypeInt,
+            1
+        )
+    val sliderStyle =
+        addConfig(
+            "SliderStyle",
+            ConfigItem.configTypeInt,
+            2
+        )
 
     private fun addConfig(
         k: String,
@@ -1792,6 +1986,9 @@ object NaConfig {
                     o.changedFromKeyLinked(o.keyLinked.Int())
                 }
             }
+            try {
+                applyCustomGetQueryBlacklist()
+            } catch (_: Exception) {}
             configLoaded =
                 true
         }
