@@ -4,11 +4,16 @@ on:
   push:
     branches:
       - dev
+      - main
     paths-ignore:
       - '**.md'
       - '.github/**'
       - '!.github/workflows/debug.yml'
-
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: 'Upload: If want ignore'
+        required: false
 jobs:
   ffmpeg:
     name: Native Build (FFmpeg)
