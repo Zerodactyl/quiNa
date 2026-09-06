@@ -214,10 +214,14 @@ android {
         unitTests.includeAndroidResources = true
     }
 
+    boolean hasReleaseSigning = keystorePwd != null && !keystorePwd.toString().isEmpty() &&
+                                alias != null && !alias.toString().isEmpty() &&
+                                pwd != null && !pwd.toString().isEmpty()
+
     signingConfigs {
         // F-Droid reproducible: F-Droid rebuilds with its own keystore; keep passwords
         // out of VCS (local.properties/env) so fdroid build can inject its own.
-        if (keystorePwd && alias && pwd) {
+        if (hasReleaseSigning) {
             release {
                 storeFile project.file("release.keystore")
                 storePassword keystorePwd
@@ -234,7 +238,11 @@ android {
             jniDebuggable true
             multiDexEnabled true
             zipAlignEnabled true
-            signingConfig (keystorePwd && alias && pwd) ? signingConfigs.release : signingConfigs.debug
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
 
         release {
@@ -246,7 +254,11 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             matchingFallbacks = ["release", "debug"]
-            signingConfig (keystorePwd && alias && pwd) ? signingConfigs.release : signingConfigs.debug
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
     }
     flavorDimensions "version"
