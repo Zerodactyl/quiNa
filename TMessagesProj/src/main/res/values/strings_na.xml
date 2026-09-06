@@ -396,4 +396,7 @@
     <string name="M3ExpressiveBubbles">Material 3 Expressive chat bubbles</string>
     <string name="M3ExpressiveBottomSheet">Material 3 Expressive bottom sheets</string>
     <string name="M3ExpressivePillSliders">Material 3 Expressive pill sliders</string>
+    <string name="M3QuoteCard">Material 3 Expressive quote card</string>
+    <string name="M3TactileHaptics">Material 3 Expressive tactile haptics</string>
+    <string name="M3FloatingSearchBar">Material 3 Expressive floating search bar</string>
 </resources>

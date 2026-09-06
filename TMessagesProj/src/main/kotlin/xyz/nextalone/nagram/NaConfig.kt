@@ -1583,6 +1583,24 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val m3QuoteCard =
+        addConfig(
+            "M3QuoteCard",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3TactileHaptics =
+        addConfig(
+            "M3TactileHaptics",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val m3FloatingSearchBar =
+        addConfig(
+            "M3FloatingSearchBar",
+            ConfigItem.configTypeBool,
+            false
+        )
 
     private fun addConfig(
         k: String,

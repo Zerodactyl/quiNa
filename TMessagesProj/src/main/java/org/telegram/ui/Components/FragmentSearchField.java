@@ -42,6 +42,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Adapters.FiltersView;
 import org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable;
 
+import xyz.nextalone.nagram.NaConfig;
 import java.util.ArrayList;
 
 import me.vkryl.android.AnimatorUtils;
@@ -205,7 +206,8 @@ public class FragmentSearchField extends FrameLayout implements FactorAnimator.T
     }
 
     public void setupBlurredBackground(BlurredBackgroundDrawable drawable) {
-        drawable.setRadius(dp(20));
+        boolean isM3 = NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3FloatingSearchBar().Bool();
+        drawable.setRadius(dp(isM3 ? 28 : 20));
         drawable.setPadding(dp(4));
         blurredBackgroundDrawable = drawable;
     }
@@ -270,9 +272,11 @@ public class FragmentSearchField extends FrameLayout implements FactorAnimator.T
     @Override
     public void updateColors() {
         final boolean isDark = resourcesProvider != null ? resourcesProvider.isDark() : Theme.isCurrentThemeDark();
+        boolean isM3 = NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3FloatingSearchBar().Bool();
+        int searchRadius = dp(isM3 ? 28 : 20);
         bg = isSectionBackground ?
-            Theme.createRoundRectDrawableShadowed(dp(20), getThemedColor(Theme.key_windowBackgroundWhite)) :
-            Theme.createRoundRectDrawable(dp(20), isWhiteBackground ? getThemedColor(Theme.key_windowBackgroundWhite) : getThemedColor(Theme.key_windowBackgroundWhiteBlackText, isDark ? 0.07f : 0.05f));
+            Theme.createRoundRectDrawableShadowed(searchRadius, getThemedColor(Theme.key_windowBackgroundWhite)) :
+            Theme.createRoundRectDrawable(searchRadius, isWhiteBackground ? getThemedColor(Theme.key_windowBackgroundWhite) : getThemedColor(Theme.key_windowBackgroundWhiteBlackText, isDark ? (isM3 ? 0.12f : 0.07f) : (isM3 ? 0.08f : 0.05f)));
         searchIcon.setColorFilter(getThemedColor(Theme.key_windowBackgroundWhiteBlackText, 0.6f), PorterDuff.Mode.MULTIPLY);
         closeIcon.setColorFilter(getThemedColor(Theme.key_windowBackgroundWhiteBlackText, 0.6f), PorterDuff.Mode.MULTIPLY);
         closeIcon.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), 1, dp(17)));

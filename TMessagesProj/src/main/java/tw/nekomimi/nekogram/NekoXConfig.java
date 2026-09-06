@@ -90,6 +90,9 @@ public class NekoXConfig {
     public static boolean m3ExpressiveBubbles = NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool();
     public static boolean m3ExpressiveBottomSheet = NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool();
     public static boolean m3ExpressivePillSliders = NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
+    public static boolean m3QuoteCard = NaConfig.INSTANCE.getM3QuoteCard().Bool();
+    public static boolean m3TactileHaptics = NaConfig.INSTANCE.getM3TactileHaptics().Bool();
+    public static boolean m3FloatingSearchBar = NaConfig.INSTANCE.getM3FloatingSearchBar().Bool();
 
     public static boolean isM3ExpressiveAll() {
         return NaConfig.INSTANCE.getM3ExpressiveAll().Bool();
@@ -145,6 +148,18 @@ public class NekoXConfig {
 
     public static boolean isM3ExpressivePillSliders() {
         return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
+    }
+
+    public static boolean isM3QuoteCard() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3QuoteCard().Bool();
+    }
+
+    public static boolean isM3TactileHaptics() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3TactileHaptics().Bool();
+    }
+
+    public static boolean isM3FloatingSearchBar() {
+        return NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3FloatingSearchBar().Bool();
     }
 
     public static int autoUpdateReleaseChannel = preferences.getInt("autoUpdateReleaseChannel", 2);

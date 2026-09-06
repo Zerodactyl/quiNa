@@ -348,8 +348,9 @@ public class SeekBarView extends FrameLayout {
         if (delegate != null) {
             delegate.onSeekBarDrag(stop, progress);
         }
-        if (separatorsCount > 1) {
-            int value = Math.round((separatorsCount - 1) * progress);
+        if (separatorsCount > 1 || ((NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3TactileHaptics().Bool()) && !stop)) {
+            int intervals = separatorsCount > 1 ? separatorsCount - 1 : 20;
+            int value = Math.round(intervals * progress);
             if (!stop && value != lastValue) {
                 AndroidUtilities.vibrateCursor(this);
             }

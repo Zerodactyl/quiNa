@@ -623,10 +623,18 @@ public class ReplyMessageLine {
     }
 
     public void drawBackground(Canvas canvas, RectF rect, float leftRad, float rightRad, float bottomRad, float alpha, boolean hasQuote, boolean emojiOnly) {
-        radii[0] = radii[1] = Math.max(AndroidUtilities.dp((int) Math.floor(SharedConfig.bubbleRadius / 3f)), AndroidUtilities.dp(leftRad));
-        radii[2] = radii[3] = AndroidUtilities.dp(rightRad);
-        radii[4] = radii[5] = AndroidUtilities.dp(bottomRad);
-        radii[6] = radii[7] = Math.max(AndroidUtilities.dp((int) Math.floor(SharedConfig.bubbleRadius / 3f)), AndroidUtilities.dp(bottomRad));
+        if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3QuoteCard().Bool()) {
+            float m3Radius = AndroidUtilities.dp(12);
+            radii[0] = radii[1] = m3Radius;
+            radii[2] = radii[3] = m3Radius;
+            radii[4] = radii[5] = m3Radius;
+            radii[6] = radii[7] = m3Radius;
+        } else {
+            radii[0] = radii[1] = Math.max(AndroidUtilities.dp((int) Math.floor(SharedConfig.bubbleRadius / 3f)), AndroidUtilities.dp(leftRad));
+            radii[2] = radii[3] = AndroidUtilities.dp(rightRad);
+            radii[4] = radii[5] = AndroidUtilities.dp(bottomRad);
+            radii[6] = radii[7] = Math.max(AndroidUtilities.dp((int) Math.floor(SharedConfig.bubbleRadius / 3f)), AndroidUtilities.dp(bottomRad));
+        }
         drawBackground(canvas, rect, alpha, hasQuote, emojiOnly);
     }
 
