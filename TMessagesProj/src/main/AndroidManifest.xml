@@ -13,7 +13,7 @@
     </queries>
 
 
-    <uses-sdk tools:overrideLibrary="io.nekohasekai.ss_rust,io.nekohasekai.ssr_libev,com.google.mlkit.vision.segmentation.subject" />
+    <uses-sdk tools:overrideLibrary="io.nekohasekai.ss_rust,io.nekohasekai.ssr_libev,com.google.mlkit.vision.segmentation.subject,androidx.room,androidx.room.runtime" />
 
     <supports-screens android:anyDensity="true"
                       android:largeScreens="true"

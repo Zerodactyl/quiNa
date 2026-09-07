@@ -1,18 +1,36 @@
 package tw.nekomimi.nekogram.helpers;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.Base64;
+import androidx.core.content.FileProvider;
 
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.SQLite.SQLiteException;
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BaseController;
+import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.NativeByteBuffer;
 import org.telegram.tgnet.TLRPC;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Locale;
-
 
 public class MessageHelper extends BaseController {
 
@@ -124,5 +142,96 @@ public class MessageHelper extends BaseController {
             default:
                 return "Unknown";
         }
+    }
+
+    private static final CharsetDecoder utf8Decoder = StandardCharsets.UTF_8.newDecoder()
+            .onMalformedInput(CodingErrorAction.REPORT)
+            .onUnmappableCharacter(CodingErrorAction.REPORT);
+
+    public static String getTextOrBase64(byte[] data) {
+        try {
+            return utf8Decoder.decode(ByteBuffer.wrap(data)).toString();
+        } catch (CharacterCodingException e) {
+            return Base64.encodeToString(data, Base64.NO_PADDING | Base64.NO_WRAP);
+        }
+    }
+
+    public static String getPathToMessage(MessageObject messageObject) {
+        if (messageObject == null || messageObject.messageOwner == null) return null;
+        if (!TextUtils.isEmpty(messageObject.messageOwner.attachPath)) {
+            File f = new File(messageObject.messageOwner.attachPath);
+            if (f.exists()) return f.getAbsolutePath();
+        }
+        File f = FileLoader.getInstance(messageObject.currentAccount).getPathToMessage(messageObject.messageOwner);
+        if (f != null && f.exists()) return f.getAbsolutePath();
+        return null;
+    }
+
+    public static void addFileToClipboard(File file, Runnable callback) {
+        try {
+            Context context = ApplicationLoader.applicationContext;
+            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            Uri uri = FileProvider.getUriForFile(context, ApplicationLoader.getApplicationId() + ".provider", file);
+            ClipData clip = ClipData.newUri(context.getContentResolver(), "label", uri);
+            clipboard.setPrimaryClip(clip);
+            if (callback != null) callback.run();
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+    }
+
+    public static void addMessageToClipboard(MessageObject selectedObject, Runnable callback) {
+        String path = getPathToMessage(selectedObject);
+        if (!TextUtils.isEmpty(path)) {
+            File file = new File(path);
+            if (file.exists()) {
+                addFileToClipboard(file, callback);
+            }
+        }
+    }
+
+    public static void addMessageToClipboardAsSticker(MessageObject selectedObject, Runnable callback) {
+        String path = getPathToMessage(selectedObject);
+        try {
+            if (!TextUtils.isEmpty(path)) {
+                Bitmap image = BitmapFactory.decodeFile(path);
+                if (image != null) {
+                    File file2 = path.endsWith(".jpg") ? new File(path.replace(".jpg", ".webp")) : new File(path + ".webp");
+                    try (FileOutputStream stream = new FileOutputStream(file2)) {
+                        if (Build.VERSION.SDK_INT >= 30) {
+                            image.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, stream);
+                        } else {
+                            image.compress(Bitmap.CompressFormat.WEBP, 100, stream);
+                        }
+                    } finally {
+                        image.recycle();
+                    }
+                    addFileToClipboard(file2, callback);
+                }
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static boolean shouldKeepOriginalForManualTranslation(int translatorMode) {
+        return false;
+    }
+
+    public static boolean shouldKeepOriginalForDisplay(int translatorMode, boolean manualTranslated, boolean autoTranslated) {
+        return false;
+    }
+
+    public static String buildTranslatedDisplayText(CharSequence originalText, TLRPC.TL_textWithEntities translatedText, boolean keepOriginal) {
+        return buildTranslatedDisplayText(originalText, translatedText != null ? translatedText.text : null, keepOriginal);
+    }
+
+    public static String buildTranslatedDisplayText(CharSequence originalText, String translatedText, boolean keepOriginal) {
+        if (TextUtils.isEmpty(translatedText)) {
+            return originalText == null ? "" : originalText.toString();
+        }
+        if (!keepOriginal || TextUtils.isEmpty(originalText)) {
+            return translatedText;
+        }
+        return originalText + "\n\n" + translatedText;
     }
 }

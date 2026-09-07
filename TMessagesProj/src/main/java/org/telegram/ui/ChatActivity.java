@@ -897,8 +897,8 @@ public class ChatActivity extends BaseFragment implements
     public MessagePreviewParams messagePreviewParams;
     public MessageSuggestionParams messageSuggestionParams;
     private CharSequence formwardingNameText;
-    private MessageObject forwardingMessage;
-    private MessageObject.GroupedMessages forwardingMessageGroup;
+    public MessageObject forwardingMessage;
+    public MessageObject.GroupedMessages forwardingMessageGroup;
     private MessageObject.GroupedMessages replyingQuoteGroup;
     public MessageObject replyingTopMessage;
     private ReplyQuote replyingQuote;
@@ -48391,6 +48391,7 @@ public class ChatActivity extends BaseFragment implements
                                 options.add(OPTION_COPY_REF);
                                 icons.add(R.drawable.msg_copy);
                             }
+                        }
                     }
                 } else if (type == 3 && !noforwardsOrPaidMedia) {
                     if (selectedObject.messageOwner.media instanceof TLRPC.TL_messageMediaWebPage && MessageObject.isNewGifDocument(selectedObject.messageOwner.media.webpage.document)) {
@@ -49993,5 +49994,60 @@ public class ChatActivity extends BaseFragment implements
 
         abstract void drawChatBackgroundElements(Canvas canvas, @Nullable RectF position);
         abstract void drawChatForegroundElements(Canvas canvas, @Nullable RectF position);
+    }
+
+    public boolean isFeedSearch() {
+        return chatMode == MODE_SEARCH && searchType == 4;
+    }
+
+    public int getBulletinTopOffset() {
+        return AndroidUtilities.statusBarHeight + org.telegram.ui.ActionBar.ActionBar.getCurrentActionBarHeight();
+    }
+
+    public int getBulletinBottomOffset() {
+        return 0;
+    }
+
+    public void setGlassSourceInvalidationCallback(Runnable callback) {
+    }
+
+    public void setFeedChannelsChangedCallback(Runnable callback) {
+    }
+
+    public void saveFeedScrollPosition() {
+    }
+
+    public void reloadFeed() {
+    }
+
+    public void loadNewerFeed(boolean preserveScroll) {
+    }
+
+    public void onFeedChannelsChanged(boolean truncated) {
+    }
+
+    public void applyFeedConfigChange() {
+    }
+
+    public void hideFeedChannelWithUndo(long dialogId, String title) {
+    }
+
+    public org.telegram.ui.Components.blur3.source.BlurredBackgroundSourceRenderNode getGlassSource() {
+        return LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS) ? glassBackgroundSourceRenderNode : glassBackgroundSourceFrostedRenderNode;
+    }
+
+    public void reattachCurrentFeedVideoTexture() {
+    }
+
+    public void setFeedViewportActive(boolean active) {
+    }
+
+    public void markFeedAsRead() {
+    }
+
+    public void refreshFeedUnreadDivider() {
+    }
+
+    public void reconcileFeedList() {
     }
 }

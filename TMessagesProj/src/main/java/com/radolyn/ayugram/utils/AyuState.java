@@ -28,7 +28,7 @@ public class AyuState {
     }
 
     public static boolean getAllowReadPacket() {
-        return NekoConfig.sendReadMessagePackets.Bool() || allowReadPacket.process();
+        return NekoConfig.sendReadMessagePackets || allowReadPacket.process();
     }
 
     public static void setHideSelection(boolean val, int resetAfter) {

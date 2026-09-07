@@ -180,7 +180,7 @@ public class SetupNowPlayingActivity extends BaseFragment {
     private void showBulletin(String message) {
         try {
             if (getParentActivity() != null) {
-                org.telegram.ui.Components.BulletinFactory.of(this).createSimpleBulletin(R.drawable.msg_info_remix, message).show();
+                org.telegram.ui.Components.BulletinFactory.of(this).createSimpleBulletin(R.drawable.msg_info, message).show();
             }
         } catch (Exception e) {
             FileLog.e(e);

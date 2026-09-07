@@ -1689,6 +1689,7 @@ public class DatabaseMigrationHelper {
             version = 177;
         }
         if (version == 177) {
+            executeNoException(database, "CREATE TABLE IF NOT EXISTS dialog_filter_neko(id INTEGER PRIMARY KEY, ord INTEGER, unread_count INTEGER, flags INTEGER, title TEXT, emoticon TEXT, color INTEGER DEFAULT -1, entities BLOB, noanimate INTEGER, type INTEGER DEFAULT 0, local INTEGER DEFAULT 0)");
             executeNoException(database, "ALTER TABLE dialog_filter_neko ADD COLUMN type INTEGER default 0");
             executeNoException(database, "ALTER TABLE dialog_filter_neko ADD COLUMN local INTEGER default 0");
             database.executeFast("PRAGMA user_version = 178").stepThis().dispose();

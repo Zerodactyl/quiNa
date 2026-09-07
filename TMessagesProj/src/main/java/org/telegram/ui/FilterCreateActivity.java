@@ -826,14 +826,6 @@ public class FilterCreateActivity extends BaseFragment {
                     progressDialog.show();
                 }
                 final AlertDialog progressDialogFinal = progressDialog;
-                if (filter.local) {
-            // NagramX: local folders live only on this device, apply them without an RPC
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
-            processAddFilter(filter, newFilterFlags, newFilterEmoticon, newFilterName, newFilterNameEntities, newFilterNoanimate, newFilterColor, newAlwaysShow, newNeverShow, creatingNew, atBegin, hasUserChanged, resetUnreadCounter, fragment, onFinish);
-            return;
-        }
         TLRPC.TL_messages_updateDialogFilter req = new TLRPC.TL_messages_updateDialogFilter();
                 req.id = filter.id;
                 getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {

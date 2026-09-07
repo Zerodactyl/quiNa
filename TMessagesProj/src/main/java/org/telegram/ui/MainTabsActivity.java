@@ -1102,6 +1102,12 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         default BlurredBackgroundSourceRenderNode getGlassSource() {
             return null;
         }
+
+        default void onParentBecomeFullyVisible() {
+        }
+
+        default void setParentTabsGlassInvalidationCallback(Runnable callback) {
+        }
     }
 
     @Override
@@ -1319,8 +1325,8 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         final float scale = lerp(0.85f, 1f, factor);
 
         tabsViewWrapper.setTranslationY(lerp(hiddenY, normalY, factor));
-        tabsView.setClickable(factor > 1);
-        tabsView.setEnabled(factor > 1);
+        tabsView.setClickable(factor >= 0.5f);
+        tabsView.setEnabled(factor >= 0.5f);
         tabsView.setAlpha(factor);
         tabsView.setVisibility(factor > 0 ? View.VISIBLE : View.GONE);
     }
@@ -1356,6 +1362,13 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
                 if (v != null) {
                     tabsView.removeView(v);
                     tabsView.addView(v);
+                    boolean visible = true;
+                    if (st.type == MainTabsConfigManager.TabType.CALLS) {
+                        visible = getUserConfig().showCallsTab;
+                    } else if (st.type == MainTabsConfigManager.TabType.SETTINGS && getUserConfig().showCallsTab) {
+                        visible = false;
+                    }
+                    tabsView.setViewVisible(v, visible, false);
                 }
             }
             // Handle settings slide extra if present
@@ -1363,6 +1376,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
                 android.view.View slide = tabs[INDEX_SETTINGS_SLIDE];
                 tabsView.removeView(slide);
                 tabsView.addView(slide, 0);
+                tabsView.setViewVisible(slide, false, false);
             }
             tabsView.requestLayout();
         } catch (Exception ignore) {}

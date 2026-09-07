@@ -3,7 +3,6 @@ package xyz.nextalone.nagram.helper
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import org.telegram.messenger.R
-import org.telegram.ui.Adapters.DrawerLayoutAdapter
 import xyz.nextalone.nagram.NaConfig
 
 /**
@@ -18,10 +17,9 @@ import xyz.nextalone.nagram.NaConfig
  * migrated into the new model so existing user settings are preserved.
  */
 object DrawerMenuHelper {
-
     const val DIVIDER = -1
 
-    // Stock Telegram drawer ids (used as literals inside DrawerLayoutAdapter).
+    // Stock Telegram drawer ids
     const val ID_NEW_GROUP = 2
     const val ID_NEW_CHANNEL = 4
     const val ID_CONTACTS = 6
@@ -31,6 +29,18 @@ object DrawerMenuHelper {
     const val ID_EMOJI_STATUS = 15
     const val ID_MY_PROFILE = 16
 
+    // Custom drawer ids
+    const val nkbtnGhostMode = 1000
+    const val nkbtnSettings = 1001
+    const val nkbtnQrLogin = 1002
+    const val nkbtnArchivedChats = 1003
+    const val nkbtnRestartApp = 1004
+    const val nkbtnBrowser = 1005
+    const val nkbtnSessions = 1006
+    const val nkbtnBookmarks = 1007
+    const val nkbtnRecentChats = 1008
+    const val nkbtnMainTabsCustomize = 1009
+    const val nkbtnFeed = 1010
     class Entry(
         val id: Int,
         @field:StringRes @param:StringRes val labelRes: Int,
@@ -40,25 +50,25 @@ object DrawerMenuHelper {
     /** Every configurable row, in canonical (stock) order. Dividers are not entries. */
     @JvmStatic
     val entries: List<Entry> = listOf(
-        Entry(DrawerLayoutAdapter.nkbtnGhostMode, R.string.GhostMode, R.drawable.ayu_ghost),
+        Entry(nkbtnGhostMode, R.string.GhostMode, R.drawable.ayu_ghost),
         Entry(ID_MY_PROFILE, R.string.MyProfile, R.drawable.left_status_profile),
         Entry(ID_EMOJI_STATUS, R.string.SetEmojiStatus, R.drawable.msg_status_set),
-        Entry(DrawerLayoutAdapter.nkbtnArchivedChats, R.string.ArchivedChats, R.drawable.msg_archive),
+        Entry(nkbtnArchivedChats, R.string.ArchivedChats, R.drawable.msg_archive),
         Entry(ID_NEW_GROUP, R.string.NewGroup, R.drawable.msg_groups),
         Entry(ID_NEW_CHANNEL, R.string.NewChannel, R.drawable.msg_channel),
         Entry(ID_CONTACTS, R.string.Contacts, R.drawable.msg_contacts),
         Entry(ID_CALLS, R.string.Calls, R.drawable.msg_calls),
-        Entry(DrawerLayoutAdapter.nkbtnRecentChats, R.string.RecentChats, R.drawable.msg_recent),
+        Entry(nkbtnRecentChats, R.string.RecentChats, R.drawable.msg_recent),
         Entry(ID_SAVED, R.string.SavedMessages, R.drawable.msg_saved),
-        Entry(DrawerLayoutAdapter.nkbtnBookmarks, R.string.BookmarksManager, R.drawable.msg_fave),
+        Entry(nkbtnBookmarks, R.string.BookmarksManager, R.drawable.msg_fave),
         Entry(ID_SETTINGS, R.string.Settings, R.drawable.msg_settings_old),
-        Entry(DrawerLayoutAdapter.nkbtnSettings, R.string.NekoSettings, R.drawable.nagramx_outline),
-        Entry(DrawerLayoutAdapter.nkbtnBrowser, R.string.InappBrowser, R.drawable.web_browser),
-        Entry(DrawerLayoutAdapter.nkbtnQrLogin, R.string.ImportLogin, R.drawable.msg_qrcode),
-        Entry(DrawerLayoutAdapter.nkbtnSessions, R.string.Devices, R.drawable.msg2_devices),
-        Entry(DrawerLayoutAdapter.nkbtnMainTabsCustomize, R.string.MainTabsCustomize, R.drawable.tabs_reorder),
-        Entry(DrawerLayoutAdapter.nkbtnFeed, R.string.Feed, R.drawable.ic_feed),
-        Entry(DrawerLayoutAdapter.nkbtnRestartApp, R.string.RestartApp, R.drawable.msg_retry)
+        Entry(nkbtnSettings, R.string.NekoSettings, R.drawable.nagramx_outline),
+        Entry(nkbtnBrowser, R.string.InappBrowser, R.drawable.web_browser),
+        Entry(nkbtnQrLogin, R.string.ImportLogin, R.drawable.msg_qrcode),
+        Entry(nkbtnSessions, R.string.Devices, R.drawable.msg2_devices),
+        Entry(nkbtnMainTabsCustomize, R.string.MainTabsCustomize, R.drawable.tabs_reorder),
+        Entry(nkbtnFeed, R.string.Feed, R.drawable.ic_feed),
+        Entry(nkbtnRestartApp, R.string.RestartApp, R.drawable.msg_retry)
     )
 
     @JvmStatic
@@ -70,19 +80,19 @@ object DrawerMenuHelper {
     /** Stock layout: what a fresh install shows, dividers included. */
     @JvmStatic
     fun defaultLayout(): MutableList<Int> = mutableListOf(
-        DrawerLayoutAdapter.nkbtnGhostMode, DIVIDER,
+        nkbtnGhostMode, DIVIDER,
         ID_MY_PROFILE, ID_EMOJI_STATUS, ID_NEW_GROUP, ID_CONTACTS, ID_CALLS,
-        DrawerLayoutAdapter.nkbtnRecentChats, ID_SAVED, ID_SETTINGS, DIVIDER,
-        DrawerLayoutAdapter.nkbtnSettings
+        nkbtnRecentChats, ID_SAVED, ID_SETTINGS, DIVIDER,
+        nkbtnSettings
     )
 
     @JvmStatic
     fun defaultHidden(): MutableList<Int> = mutableListOf(
-        DrawerLayoutAdapter.nkbtnArchivedChats, ID_NEW_CHANNEL,
-        DrawerLayoutAdapter.nkbtnBookmarks, DrawerLayoutAdapter.nkbtnBrowser,
-        DrawerLayoutAdapter.nkbtnQrLogin, DrawerLayoutAdapter.nkbtnSessions,
-        DrawerLayoutAdapter.nkbtnMainTabsCustomize, DrawerLayoutAdapter.nkbtnRestartApp,
-        DrawerLayoutAdapter.nkbtnFeed
+        nkbtnArchivedChats, ID_NEW_CHANNEL,
+        nkbtnBookmarks, nkbtnBrowser,
+        nkbtnQrLogin, nkbtnSessions,
+        nkbtnMainTabsCustomize, nkbtnRestartApp,
+        nkbtnFeed
     )
 
     // --- persistence -------------------------------------------------------
@@ -166,36 +176,35 @@ object DrawerMenuHelper {
 
         fun put(id: Int, show: Boolean) = (if (show) visible else hidden).add(id)
 
-        put(DrawerLayoutAdapter.nkbtnGhostMode, NaConfig.drawerItemGhost.Bool())
+        put(nkbtnGhostMode, NaConfig.drawerItemGhost.Bool())
         put(ID_MY_PROFILE, NaConfig.drawerItemMyProfile.Bool())
         put(ID_EMOJI_STATUS, NaConfig.drawerItemSetEmojiStatus.Bool())
-        put(DrawerLayoutAdapter.nkbtnArchivedChats, NaConfig.drawerItemArchivedChats.Bool())
+        put(nkbtnArchivedChats, NaConfig.drawerItemArchivedChats.Bool())
         put(ID_NEW_GROUP, NaConfig.drawerItemNewGroup.Bool())
         put(ID_NEW_CHANNEL, NaConfig.drawerItemNewChannel.Bool())
         put(ID_CONTACTS, NaConfig.drawerItemContacts.Bool())
         put(ID_CALLS, NaConfig.drawerItemCalls.Bool())
-        put(DrawerLayoutAdapter.nkbtnRecentChats, NaConfig.drawerItemRecentChats.Bool())
+        put(nkbtnRecentChats, NaConfig.drawerItemRecentChats.Bool())
         put(ID_SAVED, NaConfig.drawerItemSaved.Bool())
-        put(DrawerLayoutAdapter.nkbtnBookmarks, NaConfig.showAddToBookmark.Bool())
+        put(nkbtnBookmarks, NaConfig.showAddToBookmark.Bool())
         put(ID_SETTINGS, NaConfig.drawerItemSettings.Bool())
-        put(DrawerLayoutAdapter.nkbtnSettings, NaConfig.drawerItemNSettings.Bool())
-        put(DrawerLayoutAdapter.nkbtnBrowser, NaConfig.drawerItemBrowser.Bool())
-        put(DrawerLayoutAdapter.nkbtnQrLogin, NaConfig.drawerItemQrLogin.Bool())
-        put(DrawerLayoutAdapter.nkbtnSessions, NaConfig.drawerItemSessions.Bool())
-        put(DrawerLayoutAdapter.nkbtnRestartApp, NaConfig.drawerItemRestartApp.Bool())
+        put(nkbtnSettings, NaConfig.drawerItemNSettings.Bool())
+        put(nkbtnBrowser, NaConfig.drawerItemBrowser.Bool())
+        put(nkbtnQrLogin, NaConfig.drawerItemQrLogin.Bool())
+        put(nkbtnSessions, NaConfig.drawerItemSessions.Bool())
+        put(nkbtnRestartApp, NaConfig.drawerItemRestartApp.Bool())
 
         // Introduced after the legacy toggles; default to hidden, the manager can enable it.
-        if (!hidden.contains(DrawerLayoutAdapter.nkbtnMainTabsCustomize)) {
-            hidden.add(DrawerLayoutAdapter.nkbtnMainTabsCustomize)
+        if (!hidden.contains(nkbtnMainTabsCustomize)) {
+            hidden.add(nkbtnMainTabsCustomize)
         }
 
         // Re-insert the structural dividers so the migrated drawer keeps the stock look:
         // one right after Ghost, one right before Neko settings.
-        val ghostIndex = visible.indexOf(DrawerLayoutAdapter.nkbtnGhostMode)
+        val ghostIndex = visible.indexOf(nkbtnGhostMode)
         if (ghostIndex >= 0) visible.add(ghostIndex + 1, DIVIDER)
-        val nSettingsIndex = visible.indexOf(DrawerLayoutAdapter.nkbtnSettings)
+        val nSettingsIndex = visible.indexOf(nkbtnSettings)
         if (nSettingsIndex >= 0) visible.add(nSettingsIndex, DIVIDER)
-
         save(visible, hidden)
     }
 

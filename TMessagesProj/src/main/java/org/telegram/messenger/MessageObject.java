@@ -4305,6 +4305,10 @@ public class MessageObject {
         }*/
         return 0;
     }
+    public boolean isAyuDeleted() {
+        return messageOwner != null && messageOwner.ayuDeleted;
+    }
+
 
     private TLRPC.Photo getPhotoWithId(TLRPC.WebPage webPage, long id) {
         if (webPage == null || webPage.cached_page == null) {

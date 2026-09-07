@@ -1386,6 +1386,15 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
     public void setUserAvatar(TLRPC.User user) {
         setUserAvatar(user, false);
     }
+    public void setFeedAvatar() {
+        avatarDrawable.setInfo(UserConfig.getInstance(currentAccount).getClientUserId());
+        avatarDrawable.setAvatarType(AvatarDrawable.AVATAR_TYPE_SAVED);
+        avatarDrawable.setCustomIcon(getContext().getResources().getDrawable(R.drawable.ic_feed_filled));
+        if (avatarImageView != null) {
+            avatarImageView.setImage(null, null, avatarDrawable, null);
+        }
+    }
+
 
     public void setUserAvatar(TLRPC.User user, boolean showSelf) {
         avatarDrawable.setInfo(currentAccount, user);

@@ -268,11 +268,7 @@ object NkmrConfig {
                         putValue(editor, key, value)
                     }
                 }
-                if (commit) {
-                    return editor.commit()
-                }
-                editor.apply()
-                return true
+                return editor.commit()
             }
         }
     }

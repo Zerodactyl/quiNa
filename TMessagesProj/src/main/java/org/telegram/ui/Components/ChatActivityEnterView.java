@@ -617,6 +617,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
             if (child instanceof SimpleTextView && isPremiumMode) {
                 SimpleTextView simpleTextView = (SimpleTextView) child;
+                int oldColor = simpleTextView.getTextPaint().getColor();
                 canvas.save();
                 canvas.scale(0.8f, 0.8f);
                 canvas.translate(-dp(iosInputStyle ? 4 : 12), dp(6));
@@ -2880,7 +2881,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             attachButton.setScaleType(ImageView.ScaleType.CENTER);
             if (isIOSInputStyle()) {
                 attachBubble = new FrameLayout(context);
-                attachButton.setImageResource(R.drawable.msg_input_attach2_solar);
+                attachButton.setImageResource(R.drawable.msg_input_attach2);
                 attachButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_actionBarActionModeDefaultIcon), PorterDuff.Mode.MULTIPLY));
                 attachBubble.addView(attachButton, LayoutHelper.createFrame(38, 38, Gravity.CENTER));
                 textFieldContainer.addView(attachBubble, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.BOTTOM | Gravity.LEFT, 0, 0, 0, 0));
@@ -8937,7 +8938,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
             }
             if (item == null) return;
-            if (delegate != null) delegate.beforeMessageSend(null, true, 0);
+            if (delegate != null) delegate.beforeMessageSend(null, true, 0, 0, 0);
             CharSequence text = messageEditText == null ? "" : messageEditText.getTextToUse();
             if (editingMessageObject.type != MessageObject.TYPE_EMOJIS) {
                 text = AndroidUtilities.getTrimmedString(text);
@@ -8953,7 +8954,6 @@ public class ChatActivityEnterView extends FrameLayout implements
                 SendMessagesHelper.getInstance(currentAccount).editMessage(editingMessageObject, item.photo, null, null, null, null, null, false, editingMessageObject.hasMediaSpoilers(), null);
             }
             if (delegate != null) delegate.onMessageSend(null, true, 0, 0, 0);
-            if (parentFragment != null) parentFragment.pressedNoPreview = false;
             if (messageSendPreview != null) messageSendPreview.dismiss(false);
             setEditingMessageObject(null, null, false);
             return;
@@ -8962,7 +8962,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             parentFragment.showQuoteMessageUpdate();
             return;
         }
-        if (delegate != null) delegate.beforeMessageSend(null, true, 0);
+        if (delegate != null) delegate.beforeMessageSend(null, true, 0, 0, 0);
         MessageObject replyToTopMsg = getThreadMessage();
         if (replyToTopMsg == null && replyingTopMessage != null) replyToTopMsg = replyingTopMessage;
         int validItemsCount = 0;
@@ -9001,7 +9001,6 @@ public class ChatActivityEnterView extends FrameLayout implements
             sentItemsCount++;
         }
         if (delegate != null) delegate.onMessageSend(null, true, 0, 0, 0);
-        if (parentFragment != null) parentFragment.pressedNoPreview = false;
         if (messageSendPreview != null) messageSendPreview.dismiss(false);
         if (messageEditText != null) messageEditText.setText("");
     }

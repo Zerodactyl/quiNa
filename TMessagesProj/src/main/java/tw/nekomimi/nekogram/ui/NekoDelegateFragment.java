@@ -397,8 +397,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
             prepareMessageCellForSnapshot(messageCell);
             final Bitmap snapshotBefore = shouldCaptureSnapshot(messageCell) ? captureCellSnapshot(messageCell) : null;
 
-            getTranslateController().removeAsTranslatingItem(messageObject);
-            getTranslateController().removeAsManualTranslate(messageObject);
             messageObject.messageOwner.translated = false;
             messageObject.messageOwner.translatedPoll = null;
             messageObject.messageOwner.translatedToLanguage = null;
@@ -417,8 +415,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
             prepareMessageCellForSnapshot(messageCell);
             final Bitmap snapshotBefore = shouldCaptureSnapshot(messageCell) ? captureCellSnapshot(messageCell) : null;
 
-            getTranslateController().removeAsTranslatingItem(messageObject);
-            getTranslateController().removeAsManualTranslate(messageObject);
             messageObject.messageOwner.translated = false;
             messageObject.messageOwner.translatedMessage = null;
             messageObject.messageOwner.translatedText = null;
@@ -444,8 +440,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
             final TLRPC.TL_messageMediaPoll mediaPoll = (TLRPC.TL_messageMediaPoll) MessageObject.getMedia(messageObject.messageOwner);
             final TranslateController.PollText pollText = TranslateController.PollText.fromPoll(mediaPoll);
 
-            getTranslateController().addAsTranslatingItem(messageObject);
-            getTranslateController().addAsManualTranslate(messageObject);
             messageCell.invalidate();
 
             Translator.translatePoll(resolvedTargetLocale, pollText, new Translator.Companion.TranslateCallBack3() {
@@ -454,7 +448,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
                     if (messageCell.getMessageObject() != messageObject) {
                         return;
                     }
-                    getTranslateController().removeAsTranslatingItem(messageObject);
 
                     prepareMessageCellForSnapshot(messageCell);
                     final Bitmap snapshotBefore = shouldCaptureSnapshot(messageCell) ? captureCellSnapshot(messageCell) : null;
@@ -473,8 +466,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
                     if (messageCell.getMessageObject() != messageObject) {
                         return;
                     }
-                    getTranslateController().removeAsTranslatingItem(messageObject);
-                    getTranslateController().removeAsManualTranslate(messageObject);
                     messageCell.invalidate();
                     if (getParentActivity() != null) {
                         AlertUtil.showTransFailedDialog(getParentActivity(), unsupported, message, () -> toggleOrTranslate(messageCell, messageObject, resolvedTargetLocale));
@@ -490,8 +481,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
             entities = new ArrayList<>();
         }
 
-        getTranslateController().addAsTranslatingItem(messageObject);
-        getTranslateController().addAsManualTranslate(messageObject);
         messageCell.invalidate();
 
         Translator.translate(resolvedTargetLocale, originalText, entities, new Translator.Companion.TranslateCallBack2() {
@@ -500,7 +489,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
                 if (messageCell.getMessageObject() != messageObject) {
                     return;
                 }
-                getTranslateController().removeAsTranslatingItem(messageObject);
 
                 String translatedText = finalText.text;
                 if (TextUtils.isEmpty(translatedText)) {
@@ -536,8 +524,6 @@ public abstract class NekoDelegateFragment extends BaseFragment implements Notif
                 if (messageCell.getMessageObject() != messageObject) {
                     return;
                 }
-                getTranslateController().removeAsTranslatingItem(messageObject);
-                getTranslateController().removeAsManualTranslate(messageObject);
                 messageCell.invalidate();
                 if (getParentActivity() != null) {
                     AlertUtil.showTransFailedDialog(getParentActivity(), unsupported, message, () -> toggleOrTranslate(messageCell, messageObject, resolvedTargetLocale));

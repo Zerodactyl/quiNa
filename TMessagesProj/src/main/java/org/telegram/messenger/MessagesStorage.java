@@ -2582,7 +2582,21 @@ public class MessagesStorage extends BaseController {
 
                 usersToLoad.add(getUserConfig().getClientUserId());
 
-                filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, emoticon, color, entities, noanimate, type, local FROM dialog_filter_neko WHERE 1");
+                try {
+                    database.executeFast("CREATE TABLE IF NOT EXISTS dialog_filter_neko(id INTEGER PRIMARY KEY, ord INTEGER, unread_count INTEGER, flags INTEGER, title TEXT, emoticon TEXT, color INTEGER DEFAULT -1, entities BLOB, noanimate INTEGER, type INTEGER DEFAULT 0, local INTEGER DEFAULT 0)").stepThis().dispose();
+                    database.executeFast("ALTER TABLE dialog_filter_neko ADD COLUMN type INTEGER default 0").stepThis().dispose();
+                } catch (Exception ignore) {}
+                try {
+                    database.executeFast("ALTER TABLE dialog_filter_neko ADD COLUMN local INTEGER default 0").stepThis().dispose();
+                } catch (Exception ignore) {}
+
+                boolean hasTypeAndLocal = true;
+                try {
+                    filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, emoticon, color, entities, noanimate, type, local FROM dialog_filter_neko WHERE 1");
+                } catch (Exception e) {
+                    hasTypeAndLocal = false;
+                    filtersCursor = database.queryFinalized("SELECT id, ord, unread_count, flags, title, emoticon, color, entities, noanimate FROM dialog_filter_neko WHERE 1");
+                }
 
                 boolean updateCounters = false;
                 boolean hasDefaultFilter = false;
@@ -2602,8 +2616,10 @@ public class MessagesStorage extends BaseController {
                         buff.reuse();
                     }
                     filter.title_noanimate = filtersCursor.intValue(8) == 1;
-                    filter.type = filtersCursor.intValue(9);
-                    filter.local = filtersCursor.intValue(10) == 1;
+                    if (hasTypeAndLocal) {
+                        filter.type = filtersCursor.intValue(9);
+                        filter.local = filtersCursor.intValue(10) == 1;
+                    }
                     dialogFilters.add(filter);
                     dialogFiltersMap.put(filter.id, filter);
                     filtersById.put(filter.id, filter);

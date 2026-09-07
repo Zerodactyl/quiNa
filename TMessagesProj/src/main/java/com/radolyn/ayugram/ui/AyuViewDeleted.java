@@ -76,7 +76,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import kotlin.Unit;
 import tw.nekomimi.nekogram.helpers.MessageHelper;
 import tw.nekomimi.nekogram.ui.MessageDetailsActivity;
 import tw.nekomimi.nekogram.ui.NekoDelegateFragment;
@@ -257,12 +256,14 @@ public class AyuViewDeleted extends NekoDelegateFragment {
     @Override
     public View createView(Context context) {
         var peer = getMessagesController().getUserOrChat(dialogId);
-        String name = switch (peer) {
-            case null -> getString(R.string.ViewDeleted);
-            case TLRPC.User user -> user.first_name;
-            case TLRPC.Chat chat -> chat.title;
-            default -> getString(R.string.ViewDeleted);
-        };
+        String name;
+        if (peer instanceof TLRPC.User) {
+            name = ((TLRPC.User) peer).first_name;
+        } else if (peer instanceof TLRPC.Chat) {
+            name = ((TLRPC.Chat) peer).title;
+        } else {
+            name = getString(R.string.ViewDeleted);
+        }
 
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
@@ -754,7 +755,7 @@ public class AyuViewDeleted extends NekoDelegateFragment {
                         }
                     }
                     if (!TextUtils.isEmpty(path)) {
-                        MediaController.saveFile(msg, path, getParentActivity(), msg.isVideo() ? 1 : 0, null, null, uri -> {
+                        MediaController.saveFile(path, getParentActivity(), msg.isVideo() ? 1 : 0, null, null, uri -> {
                             if (getParentActivity() != null) {
                                 BulletinFactory.of(this).createDownloadBulletin(
                                         msg.isVideo() ? BulletinFactory.FileType.VIDEO : BulletinFactory.FileType.PHOTO,
@@ -789,14 +790,7 @@ public class AyuViewDeleted extends NekoDelegateFragment {
                     if (msg.messageOwner != null && (msg.messageOwner.translated || msg.messageOwner.translatedPoll != null)) {
                         return true;
                     }
-                    Translator.showTargetLangSelect(cell, false, false, (locale) -> {
-                        if (scrimPopupWindow != null) {
-                            scrimPopupWindow.dismiss();
-                            scrimPopupWindow = null;
-                        }
-                        toggleOrTranslate((ChatMessageCell) v, msg, locale);
-                        return Unit.INSTANCE;
-                    });
+                    Translator.showTargetLangSelect(cell, false, false, null);
                     return true;
                 });
             }

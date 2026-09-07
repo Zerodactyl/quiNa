@@ -106,6 +106,7 @@ public class MainTabsCustomizeActivity extends BaseNekoXSettingsActivity {
 
     @Override
     protected void onCustomCellClick(View view, int position, float x, float y) {
+        AbstractConfigCell row = position >= 0 && position < cellGroup.rows.size() ? cellGroup.rows.get(position) : null;
         if (row == showTabTitlesRow) {
             boolean hide = NaConfig.INSTANCE.getMainTabsHideTitles().toggleConfigBool();
             boolean checked = !hide;

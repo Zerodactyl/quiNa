@@ -48,7 +48,7 @@ object BackupHelper {
     }
 
     fun importSettings(fragment: BaseFragment) {
-        val importActivity = DocumentSelectActivity().apply {
+        val importActivity = DocumentSelectActivity(false).apply {
             setMaxSelectedFiles(1)
             setAllowPhoto(false)
             setDelegate(object : DocumentSelectActivity.DocumentSelectActivityDelegate {

@@ -128,6 +128,31 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
         }
     }
 
+    protected void addRowsToMap(CellGroup cellGroup) {
+        addRowsToMap();
+    }
+
+    protected RecyclerListView.SelectionAdapter getListAdapter() {
+        return listAdapter;
+    }
+
+    protected CellGroup getCellGroup() {
+        return cellGroup;
+    }
+
+    protected void setupDefaultListeners() {
+    }
+
+    protected void onCustomCellClick(View view, int position, float x, float y) {
+    }
+
+    protected String getSettingsPrefix() {
+        return "";
+    }
+
+    protected void styleTextInfoPrivacyCell(TextInfoPrivacyCell cell) {
+    }
+
     protected String getRowKey(int position) {
         if (rowMapReverse.containsKey(position)) {
             return rowMapReverse.get(position);
@@ -382,6 +407,13 @@ public class BaseNekoXSettingsActivity extends BaseFragment {
             view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
 
             return new RecyclerListView.Holder(view);
+        }
+
+        protected void onBindCustomViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        }
+
+        protected View onCreateCustomViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return null;
         }
     }
 

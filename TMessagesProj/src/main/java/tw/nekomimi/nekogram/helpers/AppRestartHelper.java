@@ -25,6 +25,9 @@ public final class AppRestartHelper extends Activity {
     }
 
     public static void triggerRebirth(Context context, Intent... nextIntents) {
+        try {
+            xyz.nextalone.nagram.NkmrConfig.preferences.edit().commit();
+        } catch (Exception ignored) {}
         nextIntents[0].addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
         Intent intent = new Intent(context, AppRestartHelper.class);
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);

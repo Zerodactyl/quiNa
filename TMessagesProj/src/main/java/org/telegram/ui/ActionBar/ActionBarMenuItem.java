@@ -2745,6 +2745,15 @@ public class ActionBarMenuItem extends FrameLayout {
         lazyList.clear();
     }
 
+    public static FrameLayout addColoredGap(ActionBarPopupWindow.ActionBarPopupWindowLayout windowLayout, Theme.ResourcesProvider resourcesProvider) {
+        CombinedDrawable shadowDrawable = new CombinedDrawable(new android.graphics.drawable.ColorDrawable(Theme.getColor(Theme.key_actionBarDefaultSubmenuSeparator, resourcesProvider)), Theme.getThemedDrawable(windowLayout.getContext(), R.drawable.greydivider, Theme.getColor(Theme.key_windowBackgroundGrayShadow, resourcesProvider)));
+        shadowDrawable.setFullsize(true);
+        FrameLayout gap = new FrameLayout(windowLayout.getContext());
+        gap.setBackground(shadowDrawable);
+        windowLayout.addView(gap, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 8));
+        return gap;
+    }
+
     public static ActionBarMenuSubItem addItem(ViewGroup windowLayout, int icon, CharSequence text, boolean needCheck, Theme.ResourcesProvider resourcesProvider) {
         return addItem(false, false, windowLayout, icon, text, needCheck, resourcesProvider);
     }

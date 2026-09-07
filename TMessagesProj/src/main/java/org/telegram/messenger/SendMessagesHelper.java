@@ -7511,6 +7511,24 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         }
         return 0;
     }
+    public ArrayList<Integer> getSendingMessageIds(long did) {
+        ArrayList<Integer> ids = new ArrayList<>();
+        HashSet<Integer> uniqueIds = new HashSet<>();
+        for (int a = 0; a < sendingMessages.size(); a++) {
+            TLRPC.Message message = sendingMessages.valueAt(a);
+            if (message.dialog_id == did && uniqueIds.add(message.id)) {
+                ids.add(message.id);
+            }
+        }
+        for (int a = 0; a < uploadMessages.size(); a++) {
+            TLRPC.Message message = uploadMessages.valueAt(a);
+            if (message.dialog_id == did && uniqueIds.add(message.id)) {
+                ids.add(message.id);
+            }
+        }
+        return ids;
+    }
+
 
     protected void putToUploadingMessages(MessageObject obj) {
         if (obj == null || obj.getId() > 0 || obj.scheduled) {

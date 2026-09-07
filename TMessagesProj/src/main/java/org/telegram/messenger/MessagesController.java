@@ -14602,9 +14602,6 @@ public class MessagesController extends BaseController implements NotificationCe
                     TLRPC.Dialog value = new_dialogs_dict.valueAt(a);
                     TLRPC.Dialog currentDialog = dialogs_dict.get(key);
                     ArrayList<MessageObject> newMsgs = new_dialogMessage.get(value.id);
-                    if (ayuOfficialDialogIds != null) {
-                        ayuOfficialDialogIds.add(key);
-                    }
                     if (currentDialog == null) {
                         if (BuildVars.LOGS_ENABLED) {
                             FileLog.d("processDialogsUpdate dialog null");
@@ -21756,21 +21753,20 @@ public class MessagesController extends BaseController implements NotificationCe
             // --- AyuGram hook: save before local delete
             if (NaConfig.INSTANCE.getEnableSaveDeletedMessages().Bool()) {
                 var ayuMessagesController = AyuMessagesController.getInstance();
-                var deletedMessagesFinal = deletedMessages;
+                var ayuDeletedMessages = deletedMessages;
                 getMessagesStorage().getStorageQueue().postRunnable(() -> {
                     var notificationsToSend = new androidx.collection.LongSparseArray<ArrayList<Integer>>();
-                    long currentTime = System.currentTimeMillis();
-                    for (int a = 0, size = deletedMessagesFinal.size(); a < size; a++) {
-                        long dialogId = deletedMessagesFinal.keyAt(a);
-                        ArrayList<Integer> messageIds = deletedMessagesFinal.valueAt(a);
-                        if (messageIds == null || messageIds.isEmpty()) continue;
+                    long ayuCurrentTime = System.currentTimeMillis();
+                    for (int a = 0, size = ayuDeletedMessages.size(); a < size; a++) {
+                        long dialogId = ayuDeletedMessages.keyAt(a);
+                        ArrayList<Integer> messageIds = ayuDeletedMessages.valueAt(a);
                         var topicId = 0; // resolved per message below if needed
                         var messagesToSave = tw.nekomimi.nekogram.helpers.MessageHelper.getInstance(currentAccount).getMessagesStorageMessages(dialogId, messageIds);
                         if (messagesToSave != null && !messagesToSave.isEmpty()) {
                             for (var msg : messagesToSave) {
                                 if (AyuState.isDeletePermitted(dialogId, msg.id)) continue;
                                 long tId = AyuSavePreferences.resolveTopicId(currentAccount, msg, dialogId);
-                                var prefs = new AyuSavePreferences(msg, currentAccount, dialogId, tId, msg.id, (int)(currentTime / 1000));
+                                var prefs = new AyuSavePreferences(msg, currentAccount, dialogId, tId, msg.id, (int)(ayuCurrentTime / 1000));
                                 ayuMessagesController.onMessageDeleted(prefs);
                             }
                             ArrayList<Integer> ids = notificationsToSend.get(dialogId);

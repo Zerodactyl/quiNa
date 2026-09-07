@@ -210,6 +210,10 @@ public class MessageDetailsActivity extends BaseFragment implements Notification
         }
     }
 
+    public MessageDetailsActivity(MessageObject messageObject, Object unused) {
+        this(messageObject);
+    }
+
     public MessageDetailsActivity(MessageObject messageObject) {
         this.messageObject = messageObject;
         if (messageObject.messageOwner.peer_id != null && messageObject.messageOwner.peer_id.channel_id != 0) {

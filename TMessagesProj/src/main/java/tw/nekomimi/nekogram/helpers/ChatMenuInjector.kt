@@ -21,7 +21,7 @@ object ChatMenuInjector {
         selectedObject: MessageObject?
     ) {
         if (selectedObject == null) return
-        if (!NaConfig.INSTANCE.getShowClearFromCache().Bool()) return
+        if (!NaConfig.showClearFromCache.Bool()) return
         if (selectedObject.type == MessageObject.TYPE_TEXT && selectedObject.caption == null) return
         items.add(LocaleController.getString(R.string.ClearFromCache))
         options.add(OPTION_CLEAR_FROM_CACHE)
@@ -37,7 +37,7 @@ object ChatMenuInjector {
         icons: ArrayList<Int?>
     ) {
         if (selectedObject == null) return
-        if (!NaConfig.INSTANCE.getShowForwardWithoutAuthor().Bool()) return
+        if (!NaConfig.showForwardWithoutAuthor.Bool()) return
         if (selectedObject.isSponsored) return
         if (chatMode == ChatActivity.MODE_QUICK_REPLIES || chatMode == ChatActivity.MODE_SCHEDULED) return
         if (selectedObject.isLiveLocation) return
@@ -56,7 +56,7 @@ object ChatMenuInjector {
         options: ArrayList<Int?>,
         icons: ArrayList<Int?>
     ) {
-        val show = force || (chatActivity != null && NaConfig.INSTANCE.getShowViewJSON().Bool())
+        val show = force || (chatActivity != null && NaConfig.showViewJSON.Bool())
         if (show) {
             items.add("JSON")
             options.add(OPTION_VIEW_JSON)

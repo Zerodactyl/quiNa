@@ -472,7 +472,6 @@
     <string name="MainTabsDisplayModeFloating">Floating</string>
     <string name="MainTabsCustomizeInfo">Customize bottom navigation bar</string>
     <string name="HomeDrawer">Home Drawer</string>
-    <string name="DrawerElements">Drawer Elements</string>
     <string name="MainTabsCustomizeDrawerLocked">When Home Drawer is enabled, Chats is pinned to the far left.</string>
     <string name="MainMenuItems">Sidebar items</string>
     <string name="MainMenuHiddenItems">Hidden items</string>
@@ -486,7 +485,6 @@
     <string name="NowPlayingNothingPlaying">Nothing playing</string>
     <string name="NowPlayingNotWhitelistedInfo">Your card is only visible on this device. Whitelisted supporters\' cards are visible to everyone.</string>
     <string name="NowPlayingBindSuccess">Bound successfully</string>
-    <string name="ShowFullAbout">Always Expand User Bio</string>
     <string name="ReplaceBlockedMyInfo">Replace Info of Users Who Blocked Me</string>
     <string name="ReplaceBlockedMyInfoDescription">Show users who blocked you with a gray avatar placeholder.</string>
     <string name="BuiltInFolders">Built-in Folders</string>
@@ -516,5 +514,32 @@
     <string name="FeedShownChannels">Shown in feed</string>
     <string name="FeedUnreadCounter">Unread Post Counter</string>
     <string name="HideFeedTab">Hide Feed Tab</string>
+    <string name="BookmarksManager">Bookmarks</string>
+    <string name="RestartApp">Restart App</string>
+    <string name="CopySticker">Copy Sticker</string>
+    <string name="ViewDeleted">Deleted Messages</string>
+    <string name="GhostModeGlobalSettings">Ghost Mode</string>
+    <string name="GhostModeGlobalSettingsDescription">Ghost mode settings apply to all accounts</string>
+    <string name="SuggestGhostModeBeforeStoryTitle">Enable Ghost Mode?</string>
+    <string name="SuggestGhostModeBeforeStoryMessage">Enable Ghost Mode before viewing this story?</string>
+    <string name="SuggestGhostModeBeforeStoryEnable">Enable</string>
+    <string name="SuggestGhostModeBeforeStorySkip">Skip</string>
+    <string name="ForceForwardStatusPreparingMedia">Preparing media…</string>
+    <string name="ForceForwardStatusSentCount">Sent %1$d of %2$d</string>
+    <string name="ForceForwardStatusChunkCount">Chunk %1$d of %2$d</string>
+    <string name="ForceForwardStatusForwarding">Forwarding…</string>
+    <string name="ForceForwardStatusWaitingDownloads">Waiting for downloads…</string>
+    <string name="ForceForwardStatusStarting">Starting…</string>
+    <string name="ForceForwardFailed">Forward failed</string>
+    <string name="ForceForwardStatusStickerCopy">Copying sticker…</string>
+    <string name="ForceForwardStatusTextCopy">Copying text…</string>
+    <string name="ForceForwardStatusMediaGroup">Sending media group…</string>
+    <string name="ForceForwardStatusDocumentGroup">Sending document group…</string>
+    <string name="ForceForwardStatusMediaCopy">Copying media…</string>
+    <string name="ForceForwardStatusDocumentCopy">Copying document…</string>
+    <string name="ForceForwardStatusPhotoCopy">Copying photo…</string>
+    <string name="ForceForwardStatusTextFallback">Copying text…</string>
+    <string name="ForceForwardSomeSkipped">Some messages were skipped</string>
+    <string name="UnsupportedMessageMessage">Update to view this part of the message</string>
 
 </resources>

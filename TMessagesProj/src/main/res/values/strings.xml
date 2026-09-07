@@ -11249,11 +11249,7 @@
     <string name="WithoutAuthor">Without Author</string>
     <string name="CG_ImportSettings">Import Settings</string>
     <string name="CG_RestartToApplyShort">Restart to apply</string>
-    <string name="SelectChats">Select Chats</string>
     <string name="FilteredChats">Filtered Chats</string>
-    <string name="FilterChats">Filtered Chats</string>
-    <string name="ArchivedChats">Archived Chats</string>
     <string name="CG_ClearedFromCache">Cleared from cache</string>
     <string name="CG_PhotoCopied">Photo copied</string>
-    <string name="PhotoCopied">Photo copied</string>
 </resources>

@@ -534,6 +534,33 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
 
         // Cells: Set OnSettingChanged Callbacks
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
+            if (key.equals(NaConfig.INSTANCE.getM3ExpressiveAll().getKey())) {
+                boolean all = (boolean) newValue;
+                NaConfig.INSTANCE.getM3ExpressiveProgress().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressiveDialogs().setConfigBool(all);
+                NaConfig.INSTANCE.getM3SectionCards().setConfigBool(all);
+                NaConfig.INSTANCE.getM3GlassMenu().setConfigBool(all);
+                NaConfig.INSTANCE.getM3WavySlider().setConfigBool(all);
+                NaConfig.INSTANCE.getM3TabPill().setConfigBool(all);
+                NaConfig.INSTANCE.getM3SpringPhysics().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressiveVoice().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressiveSwitch().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressiveFab().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressiveBubbles().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressiveBottomSheet().setConfigBool(all);
+                NaConfig.INSTANCE.getM3ExpressivePillSliders().setConfigBool(all);
+                NaConfig.INSTANCE.getM3QuoteCard().setConfigBool(all);
+                NaConfig.INSTANCE.getM3TactileHaptics().setConfigBool(all);
+                NaConfig.INSTANCE.getM3FloatingSearchBar().setConfigBool(all);
+                if (listView != null) {
+                    listView.post(() -> {
+                        if (listAdapter != null) {
+                            listAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+                tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
+            } else
             if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
                 ConnectionsManager.ipStrategy = -1;
                 for (int a : SharedConfig.activeAccounts) {
@@ -880,18 +907,19 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                             try { count = ChatsPasswordHelper.getInstance(UserConfig.selectedAccount).getLockedChatsCount(); } catch (Exception ignored) {}
                             textCell.setTextAndValue(LocaleController.getString(R.string.SP_LockedChats), String.valueOf(count), divider);
                         } else if (position == cellGroup.rows.indexOf(mainTabsCustomizeRow)) {
-                            textCell.setTextAndValue(getString(R.string.MainTabsCustomize), getString(R.string.MainTabsCustomizeInfo), divider);
+                            textCell.setTextAndValue(LocaleController.getString(R.string.MainTabsCustomize), LocaleController.getString(R.string.MainTabsCustomizeInfo), divider);
                         } else if (position == cellGroup.rows.indexOf(drawerElementsRow)) {
-                            textCell.setTextAndValue(getString(R.string.DrawerElements), "", divider);
+                            textCell.setTextAndValue(LocaleController.getString(R.string.DrawerElements), "", divider);
                         } else if (position == cellGroup.rows.indexOf(nowPlayingRow)) {
                             int svc = NaConfig.INSTANCE.getNowPlayingServiceType().Int();
-                            String serviceName = svc == 1 ? "Last.fm" : (svc == 2 ? "Stats.fm" : getString(R.string.Disable));
-                            textCell.setTextAndValue(getString(R.string.NowPlaying), serviceName, divider);
+                            String serviceName = svc == 1 ? "Last.fm" : (svc == 2 ? "Stats.fm" : LocaleController.getString(R.string.Disable));
+                            textCell.setTextAndValue(LocaleController.getString(R.string.NowPlaying), serviceName, divider);
                         } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                             textCell.setTextAndValue("Export .cherry", "Backup quiNa settings", divider);
                         } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
                             textCell.setTextAndValue("Import .cherry", "Restore from backup", divider);
                         }
+                    }
                 } else {
                     // Default binds
                     a.onBindViewHolder(holder);

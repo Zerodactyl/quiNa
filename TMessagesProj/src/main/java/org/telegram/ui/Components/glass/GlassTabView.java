@@ -416,6 +416,17 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
             imageView.playAnimation();
         }
     }
+    public void setTitleVisible(boolean visible) {
+        if (textView != null) {
+            textView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+    public void setIcon(int resId) {
+        if (imageView != null) {
+            imageView.setImageResource(resId);
+        }
+    }
+
 
     public static GlassTabView createMainTab(Context context, Theme.ResourcesProvider resourcesProvider, TabAnimation tabAnimation, @StringRes int stringRes) {
         GlassTabView tab = new GlassTabView(context);

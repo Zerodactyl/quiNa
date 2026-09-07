@@ -29843,4 +29843,12 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         }
         return text;
     }
+
+    protected boolean shouldShowAyuDeletedMark(MessageObject messageObject) {
+        return true;
+    }
+
+    protected boolean shouldTranslucentDeleted() {
+        return NaConfig.INSTANCE.getTranslucentDeletedMessages().Bool();
+    }
 }

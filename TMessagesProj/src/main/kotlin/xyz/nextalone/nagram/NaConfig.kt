@@ -1927,6 +1927,90 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
+    val saveReadDate =
+        addConfig(
+            "SaveReadDate",
+            ConfigItem.configTypeBool,
+            false
+        )
+    val messageSavingSaveMedia =
+        addConfig(
+            "MessageSavingSaveMedia",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val saveMediaInPrivateChats =
+        addConfig(
+            "SaveMediaInPrivateChats",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val saveMediaInPublicChannels =
+        addConfig(
+            "SaveMediaInPublicChannels",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val saveMediaInPrivateChannels =
+        addConfig(
+            "SaveMediaInPrivateChannels",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val saveMediaInPublicGroups =
+        addConfig(
+            "SaveMediaInPublicGroups",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val saveMediaInPrivateGroups =
+        addConfig(
+            "SaveMediaInPrivateGroups",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val saveMediaOnCellularDataLimit =
+        addConfig(
+            "SaveMediaOnCellularDataLimit",
+            ConfigItem.configTypeLong,
+            16L * 1024L * 1024L
+        )
+    val saveMediaOnWiFiLimit =
+        addConfig(
+            "SaveMediaOnWiFiLimit",
+            ConfigItem.configTypeLong,
+            64L * 1024L * 1024L
+        )
+    val regexChatFiltersData =
+        addConfig(
+            "RegexChatFiltersData",
+            ConfigItem.configTypeString,
+            "[]"
+        )
+    val regexFiltersExcludedEntriesData =
+        addConfig(
+            "RegexFiltersExcludedEntriesData",
+            ConfigItem.configTypeString,
+            "[]"
+        )
+    val translatorMode =
+        addConfig(
+            "TranslatorMode",
+            ConfigItem.configTypeInt,
+            0
+        )
+    val translucentDeletedMessages =
+        addConfig(
+            "TranslucentDeletedMessages",
+            ConfigItem.configTypeBool,
+            true
+        )
+    val silentMessageByDefault =
+        addConfig(
+            "SilentMessageByDefault",
+            ConfigItem.configTypeBool,
+            false
+        )
     // Cherrygram Per-chat Biometric Lock
     val askBiometricsToOpenChats =
         addConfig(
@@ -2031,12 +2115,6 @@ object NaConfig {
             ConfigItem.configTypeBool,
             false
         )
-    val showFullAbout =
-        addConfig(
-            "ShowFullAbout",
-            ConfigItem.configTypeBool,
-            true
-        )
     val builtInFolders =
         addConfig(
             "BuiltInFolders",
@@ -2065,7 +2143,7 @@ object NaConfig {
         t: ConfigItem,
         d: Int,
         e: Any?
-    ): ConfigItem {
+    ): ConfigItemKeyLinked {
         val a =
             ConfigItemKeyLinked(
                 k,
@@ -2190,6 +2268,9 @@ object NaConfig {
                 true
         }
     }
+    fun init() {
+    }
+
 
     init {
         loadConfig(

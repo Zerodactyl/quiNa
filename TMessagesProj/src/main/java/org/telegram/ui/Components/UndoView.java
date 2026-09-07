@@ -187,6 +187,7 @@ public class UndoView extends FrameLayout {
     public final static int ACTION_CLEAR_DATES = 81;
 
     public final static int ACTION_NEED_RESATRT = 100;
+    public final static int ACTION_NEED_RESTART = ACTION_NEED_RESATRT;
 
     public final static int ACTION_PREVIEW_MEDIA_DESELECTED = 82;
     public static int ACTION_RINGTONE_ADDED = 83;

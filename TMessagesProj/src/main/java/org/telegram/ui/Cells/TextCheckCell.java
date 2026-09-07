@@ -124,7 +124,7 @@ public class TextCheckCell extends FrameLayout {
 
         checkBox = new Switch(context, resourcesProvider);
         checkBox.setColors(Theme.key_switchTrack, Theme.key_switchTrackChecked, Theme.key_windowBackgroundWhite, Theme.key_windowBackgroundWhite);
-        addView(checkBox, LayoutHelper.createFrame(37, 20, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.CENTER_VERTICAL, 22, 0, 22, 0));
+        addView(checkBox, LayoutHelper.createFrame(38, 22, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.CENTER_VERTICAL, 22, 0, 22, 0));
 
         setClipChildren(false);
         isRTL = LocaleController.isRTL;
@@ -165,8 +165,17 @@ public class TextCheckCell extends FrameLayout {
     }
 
     public void setTextAndCheck(CharSequence text, boolean checked, boolean divider) {
+        setTextAndCheck(text, checked, divider, false);
+    }
+
+    public void setTextAndCheck(CharSequence text, boolean checked, boolean divider, boolean isNekoCell) {
         AvatarSpan.checkSpansParent(text, this);
         textView.setText(text);
+        if (isNekoCell) {
+            textView.setLines(0);
+            textView.setMaxLines(0);
+            textView.setSingleLine(false);
+        }
         isMultiline = false;
         if (checkBox != null) {
             checkBox.setVisibility(View.VISIBLE);
@@ -199,7 +208,7 @@ public class TextCheckCell extends FrameLayout {
         addView(valueTextView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.TOP, LocaleController.isRTL ? 64 : padding, 36, LocaleController.isRTL ? padding : 64, 0));
 
         removeView(checkBox);
-        addView(checkBox, LayoutHelper.createFrame(37, 20, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.CENTER_VERTICAL, 22, 0, 22, 0));
+        addView(checkBox, LayoutHelper.createFrame(38, 22, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.CENTER_VERTICAL, 22, 0, 22, 0));
     }
 
     public void setColors(int key, int switchKey, int switchKeyChecked, int switchThumb, int switchThumbChecked) {
@@ -229,6 +238,10 @@ public class TextCheckCell extends FrameLayout {
     }
 
     public void setTextAndValueAndCheck(String text, String value, boolean checked, boolean multiline, boolean divider) {
+        setTextAndValueAndCheck(text, value, checked, multiline, divider, false);
+    }
+
+    public void setTextAndValueAndCheck(String text, String value, boolean checked, boolean multiline, boolean divider, boolean isNekoCell) {
         AvatarSpan.checkSpansParent(text, this);
         textView.setText(text);
         valueTextView.setText(value);
@@ -243,6 +256,12 @@ public class TextCheckCell extends FrameLayout {
         valueTextView.setVisibility(VISIBLE);
         isMultiline = multiline;
         if (multiline) {
+            if (isNekoCell) {
+                if (!TextUtils.isEmpty(value)) {
+                    textView.setMaxLines(1);
+                    textView.setEllipsize(TextUtils.TruncateAt.END);
+                }
+            }
             valueTextView.setLines(0);
             valueTextView.setMaxLines(0);
             valueTextView.setSingleLine(false);
@@ -302,11 +321,17 @@ public class TextCheckCell extends FrameLayout {
             if (valueTextView.getVisibility() == VISIBLE) {
                 animators.add(ObjectAnimator.ofFloat(valueTextView, View.ALPHA, value ? 1.0f : 0.5f));
             }
+            if (imageView != null && imageView.getVisibility() == VISIBLE) {
+                animators.add(ObjectAnimator.ofFloat(imageView, View.ALPHA, value ? 1.0f : 0.5f));
+            }
         } else {
             textView.setAlpha(value ? 1.0f : 0.5f);
             (checkBox != null ? checkBox : checkBoxSquare).setAlpha(value ? 1.0f : 0.5f);
             if (valueTextView.getVisibility() == VISIBLE) {
                 valueTextView.setAlpha(value ? 1.0f : 0.5f);
+            }
+            if (imageView != null && imageView.getVisibility() == VISIBLE) {
+                imageView.setAlpha(value ? 1.0f : 0.5f);
             }
         }
     }
@@ -471,5 +496,56 @@ public class TextCheckCell extends FrameLayout {
         imageView.setImageResource(resId);
         imageView.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
         imageView.setBackground(Theme.createRoundRectDrawable(AndroidUtilities.dp(9), color));
+    }
+
+    public void setIcon(int resId) {
+        if (imageView == null) {
+            imageView = new RLottieImageView(getContext());
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            addView(imageView, LayoutHelper.createFrame(24, 24, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.CENTER_VERTICAL, 21, 0, 21, 0));
+        } else {
+            LayoutParams layoutParams = (LayoutParams) imageView.getLayoutParams();
+            layoutParams.width = AndroidUtilities.dp(24);
+            layoutParams.height = AndroidUtilities.dp(24);
+            layoutParams.gravity = (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.CENTER_VERTICAL;
+            layoutParams.leftMargin = AndroidUtilities.dp(21);
+            layoutParams.rightMargin = AndroidUtilities.dp(21);
+            layoutParams.topMargin = 0;
+            layoutParams.bottomMargin = 0;
+            imageView.setLayoutParams(layoutParams);
+        }
+        padding = AndroidUtilities.dp(71);
+        MarginLayoutParams textParams = (MarginLayoutParams) textView.getLayoutParams();
+        textParams.leftMargin = LocaleController.isRTL ? textParams.leftMargin : padding;
+        textParams.rightMargin = LocaleController.isRTL ? padding : textParams.rightMargin;
+        MarginLayoutParams valueParams = (MarginLayoutParams) valueTextView.getLayoutParams();
+        valueParams.leftMargin = LocaleController.isRTL ? valueParams.leftMargin : padding;
+        valueParams.rightMargin = LocaleController.isRTL ? padding : valueParams.rightMargin;
+        imageView.setVisibility(VISIBLE);
+        imageView.setPadding(0, 0, 0, 0);
+        imageView.setBackground(null);
+        imageView.setImageResource(resId);
+        imageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteGrayIcon, resourcesProvider), PorterDuff.Mode.MULTIPLY));
+        imageView.setAlpha(isEnabled() ? 1.0f : 0.5f);
+    }
+
+    public void removeIcon() {
+        if (imageView != null) {
+            imageView.setVisibility(GONE);
+        }
+        padding = 21;
+        int paddingPx = AndroidUtilities.dp(padding);
+        MarginLayoutParams textParams = (MarginLayoutParams) textView.getLayoutParams();
+        if (LocaleController.isRTL) {
+            textParams.rightMargin = paddingPx;
+        } else {
+            textParams.leftMargin = paddingPx;
+        }
+        MarginLayoutParams valueParams = (MarginLayoutParams) valueTextView.getLayoutParams();
+        if (LocaleController.isRTL) {
+            valueParams.rightMargin = paddingPx;
+        } else {
+            valueParams.leftMargin = paddingPx;
+        }
     }
 }

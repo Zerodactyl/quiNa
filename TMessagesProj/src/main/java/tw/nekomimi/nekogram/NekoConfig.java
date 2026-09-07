@@ -26,6 +26,9 @@ import static tw.nekomimi.nekogram.config.ConfigItem.*;
 public class NekoConfig {
 
     public static final SharedPreferences preferences = NkmrConfig.preferences;
+    public static SharedPreferences getPreferences() {
+        return preferences;
+    }
     public static final Object sync = new Object();
     public static boolean sendReadMessagePackets;
     public static boolean sendOnlinePackets;
@@ -207,6 +210,7 @@ public class NekoConfig {
     public static ConfigItem localeToDBC = addConfig("LocaleToDBC", configTypeBool, false);
 
     public static ConfigItem navigationDrawerEnabled = addConfig("navigationDrawerEnabled", configTypeBool, false);
+    public static ConfigItem useScheduledMessages = addConfig("useScheduledMessages", configTypeBool, false);
 
     static {
         loadConfig(false);

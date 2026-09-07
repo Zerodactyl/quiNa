@@ -11,6 +11,7 @@ package org.telegram.ui.Components;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -18,7 +19,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -28,21 +28,35 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.util.StateSet;
-import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.animation.OvershootInterpolator;
 
 import androidx.annotation.Keep;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.R;
+import org.telegram.messenger.Utilities;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.BaseCell;
-import xyz.nextalone.nagram.NaConfig;
 
+import tw.nekomimi.nekogram.NekoConfig;
+import xyz.nextalone.nagram.NaConfig;
 import me.vkryl.android.animator.BoolAnimator;
 
 public class Switch extends View {
     private final BoolAnimator animatorIconVisibility = new BoolAnimator(this, CubicBezierInterpolator.EASE_OUT_QUINT, 380L, true);
+
+    public static final int SWITCH_STYLE_DEFAULT = 0;
+    public static final int SWITCH_STYLE_MD3 = 1;
+    public static final int SWITCH_STYLE_ONEUI = 2;
+
+    public static boolean isMd3() {
+        return NaConfig.INSTANCE.getSwitchStyle().Int() == SWITCH_STYLE_MD3
+            || NaConfig.INSTANCE.getM3ExpressiveAll().Bool()
+            || NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool();
+    }
 
     private RectF rectF;
 
@@ -54,6 +68,9 @@ public class Switch extends View {
     private boolean isChecked;
     private Paint paint;
     private Paint paint2;
+    private Paint paint3;
+    private Paint paint4;
+    private Paint paint5;
 
     private int drawIconType;
     private float iconProgress = 1.0f;
@@ -88,15 +105,19 @@ public class Switch extends View {
     private Theme.ResourcesProvider resourcesProvider;
 
     private int overrideColorProgress;
+    private float overrideAlpha = 1.0f;
 
     public interface OnCheckedChangeListener {
         void onCheckedChanged(Switch view, boolean isChecked);
     }
 
+    private final Drawable checkDrawable;
+
     public Switch(Context context) {
         this(context, null);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public Switch(Context context, Theme.ResourcesProvider resourcesProvider) {
         super(context);
         this.resourcesProvider = resourcesProvider;
@@ -104,11 +125,19 @@ public class Switch extends View {
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint3 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint4 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint5 = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint2.setStyle(Paint.Style.STROKE);
         paint2.setStrokeCap(Paint.Cap.ROUND);
         paint2.setStrokeWidth(AndroidUtilities.dp(2));
 
-        setHapticFeedbackEnabled(true);
+        checkDrawable = getResources().getDrawable(R.drawable.floating_check).mutate();
+        if (checkDrawable != null) {
+            checkDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(trackCheckedColorKey, resourcesProvider), PorterDuff.Mode.MULTIPLY));
+        }
+
+        setHapticFeedbackEnabled(!NekoConfig.disableVibration.Bool());
     }
 
     @Keep
@@ -158,7 +187,7 @@ public class Switch extends View {
     }
 
     public void setDrawRipple(boolean value) {
-        if (Build.VERSION.SDK_INT < 21 || value == drawRipple) {
+        if (value == drawRipple) {
             return;
         }
         drawRipple = value;
@@ -238,7 +267,12 @@ public class Switch extends View {
 
     private void animateToCheckedState(boolean newCheckedState) {
         checkAnimator = ObjectAnimator.ofFloat(this, "progress", newCheckedState ? 1 : 0);
-        checkAnimator.setDuration(200);
+        if (isMd3()) {
+            checkAnimator.setDuration(150);
+            checkAnimator.setInterpolator(new OvershootInterpolator(1.5f));
+        } else {
+            checkAnimator.setDuration(200);
+        }
         checkAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -264,12 +298,17 @@ public class Switch extends View {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         attachedToWindow = true;
+        int currentStyle = NaConfig.INSTANCE.getSwitchStyle().Int();
+        if ((currentStyle == SWITCH_STYLE_ONEUI || isMd3()) && getParent() instanceof ViewGroup) {
+            ((ViewGroup) getParent()).setClipChildren(false);
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         attachedToWindow = false;
+        destroyBitmaps();
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
@@ -287,9 +326,11 @@ public class Switch extends View {
                 animateToCheckedState(checked);
                 if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3TactileHaptics().Bool()) {
                     try {
-                        performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                        performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP, android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                     } catch (Exception ignored) {}
                 }
+            } else {
+                cancelCheckAnimator();
                 setProgress(checked ? 1.0f : 0.0f);
             }
             if (onCheckedChangeListener != null) {
@@ -299,11 +340,12 @@ public class Switch extends View {
         setDrawIconType(iconType, animated);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void setIcon(int icon) {
         if (icon != 0) {
             iconDrawable = getResources().getDrawable(icon).mutate();
             if (iconDrawable != null) {
-                iconDrawable.setColorFilter(new PorterDuffColorFilter(lastIconColor = Theme.getColor(isChecked ? trackCheckedColorKey : trackColorKey, resourcesProvider), PorterDuff.Mode.SRC_IN));
+                iconDrawable.setColorFilter(new PorterDuffColorFilter(lastIconColor = Theme.getColor(isChecked ? trackCheckedColorKey : trackColorKey, resourcesProvider), PorterDuff.Mode.MULTIPLY));
             }
         } else {
             iconDrawable = null;
@@ -335,19 +377,84 @@ public class Switch extends View {
         return isChecked;
     }
 
+    private int getOverlayPadding() {
+        return isMd3() ? AndroidUtilities.dp(5) : 0;
+    }
+
+    private void checkBitmaps() {
+        if (overrideColorProgress == 0) {
+            return;
+        }
+        int overlayPadding = getOverlayPadding();
+        int bitmapW = getMeasuredWidth() + overlayPadding * 4;
+        int bitmapH = getMeasuredHeight() + overlayPadding * 4;
+        if (bitmapsCreated && overlayBitmap != null && overlayBitmap[0] != null &&
+                (overlayBitmap[0].getWidth() != bitmapW || overlayBitmap[0].getHeight() != bitmapH)) {
+            destroyBitmaps();
+        }
+        if (bitmapsCreated || bitmapW <= 0 || bitmapH <= 0) {
+            return;
+        }
+        try {
+            overlayBitmap = new Bitmap[2];
+            overlayCanvas = new Canvas[2];
+            for (int a = 0; a < 2; a++) {
+                overlayBitmap[a] = Bitmap.createBitmap(bitmapW, bitmapH, Bitmap.Config.ARGB_8888);
+                overlayCanvas[a] = new Canvas(overlayBitmap[a]);
+            }
+            overlayMaskBitmap = Bitmap.createBitmap(bitmapW, bitmapH, Bitmap.Config.ARGB_8888);
+            overlayMaskCanvas = new Canvas(overlayMaskBitmap);
+
+            overlayEraserPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            overlayEraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
+            overlayMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            overlayMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+            bitmapsCreated = true;
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private void destroyBitmaps() {
+        if (bitmapsCreated) {
+            if (overlayBitmap != null) {
+                for (int a = 0; a < overlayBitmap.length; a++) {
+                    if (overlayBitmap[a] != null) {
+                        overlayBitmap[a].recycle();
+                        overlayBitmap[a] = null;
+                    }
+                }
+                overlayBitmap = null;
+            }
+            if (overlayMaskBitmap != null) {
+                overlayMaskBitmap.recycle();
+                overlayMaskBitmap = null;
+            }
+        }
+        overlayCanvas = null;
+        overlayMaskCanvas = null;
+        bitmapsCreated = false;
+    }
+
     public void setOverrideColor(int override) {
         if (overrideColorProgress == override) {
             return;
         }
-        if (overlayBitmap == null) {
+        int overlayPadding = getOverlayPadding();
+        int bitmapW = getMeasuredWidth() + overlayPadding * 4;
+        int bitmapH = getMeasuredHeight() + overlayPadding * 4;
+        if (bitmapW <= 0 || bitmapH <= 0) {
+            return;
+        }
+        if (overlayBitmap == null || overlayBitmap[0].getWidth() != bitmapW || overlayBitmap[0].getHeight() != bitmapH) {
             try {
                 overlayBitmap = new Bitmap[2];
                 overlayCanvas = new Canvas[2];
                 for (int a = 0; a < 2; a++) {
-                    overlayBitmap[a] = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                    overlayBitmap[a] = Bitmap.createBitmap(bitmapW, bitmapH, Bitmap.Config.ARGB_8888);
                     overlayCanvas[a] = new Canvas(overlayBitmap[a]);
                 }
-                overlayMaskBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                overlayMaskBitmap = Bitmap.createBitmap(bitmapW, bitmapH, Bitmap.Config.ARGB_8888);
                 overlayMaskCanvas = new Canvas(overlayMaskBitmap);
 
                 overlayEraserPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -378,21 +485,67 @@ public class Switch extends View {
     }
 
     @Override
+    public void setAlpha(float alpha) {
+        if (isMd3()) {
+            if (overrideAlpha != alpha) {
+                overrideAlpha = alpha;
+                invalidate();
+            }
+        } else {
+            super.setAlpha(alpha);
+        }
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         if (getVisibility() != VISIBLE) {
             return;
         }
 
-        boolean isM3 = NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool();
-        int width = AndroidUtilities.dp(isM3 ? 40 : 31);
+        if (overrideColorProgress != 0) {
+            checkBitmaps();
+            if (!bitmapsCreated) {
+                overrideColorProgress = 0;
+            }
+        }
+
+        int switchStyle = NaConfig.INSTANCE.getSwitchStyle().Int();
+        boolean isOneUiStyle = switchStyle == SWITCH_STYLE_ONEUI;
+        boolean isMd3Style = isMd3();
+
+        int width = AndroidUtilities.dp(31);
         int thumb = AndroidUtilities.dp(20);
-        int x = (getMeasuredWidth() - width) / 2;
-        float y = (getMeasuredHeight() - AndroidUtilities.dpf2(isM3 ? 22 : 14)) / 2;
-        int tx = isM3 ? (x + AndroidUtilities.dp(8) + (int) (AndroidUtilities.dp(24) * progress)) : (x + AndroidUtilities.dp(7) + (int) (AndroidUtilities.dp(17) * progress));
+        int x;
+        float y;
+        int tx;
+
+        if (isOneUiStyle) {
+            width = AndroidUtilities.dp(30.5f);
+            thumb = AndroidUtilities.dp(17.5f);
+            x = (getMeasuredWidth() - width) / 2;
+            y = getMeasuredHeight() / 2f - thumb / 2f;
+
+            float start = x + thumb / 2f;
+            float end = x + width - thumb / 2f;
+            tx = (int) (start + (end - start) * progress + AndroidUtilities.dp(1 + progress));
+        } else if (isMd3Style) {
+            int trackHeightPx = AndroidUtilities.dp(26);
+            x = 0;
+            y = (getMeasuredHeight() - trackHeightPx) / 2f;
+            tx = (getMeasuredWidth() - width) / 2 + AndroidUtilities.dp(8) + (int) (AndroidUtilities.dp(16) * progress);
+        } else {
+            x = (getMeasuredWidth() - width) / 2;
+            y = (getMeasuredHeight() - AndroidUtilities.dpf2(14)) / 2;
+            tx = x + AndroidUtilities.dp(7) + (int) (AndroidUtilities.dp(17) * progress);
+        }
         int ty = getMeasuredHeight() / 2;
+
 
         int color1;
         int color2;
+        int color3;
+        int color4;
+        int color5;
         float colorProgress;
         int r1;
         int r2;
@@ -415,23 +568,29 @@ public class Switch extends View {
             Canvas canvasToDraw = a == 0 ? canvas : overlayCanvas[0];
 
             if (a == 1) {
+                int op = getOverlayPadding();
                 overlayBitmap[0].eraseColor(0);
                 paint.setColor(0xff000000);
                 overlayMaskCanvas.drawRect(0, 0, overlayMaskBitmap.getWidth(), overlayMaskBitmap.getHeight(), paint);
-                overlayMaskCanvas.drawCircle(overlayCx - getX(), overlayCy - getY(), overlayRad, overlayEraserPaint);
+                overlayMaskCanvas.drawCircle(overlayCx - getX() + op * 2, overlayCy - getY() + op * 2, overlayRad, overlayEraserPaint);
+                canvasToDraw.translate(op * 2, op * 2);
             }
             if (overrideColorProgress == 1) {
                 colorProgress = a == 0 ? 0 : 1;
             } else if (overrideColorProgress == 2) {
                 colorProgress = a == 0 ? 1 : 0;
             } else {
-                colorProgress = progress;
+                colorProgress = Utilities.clamp01(progress);
             }
 
             color1 = processColor(Theme.getColor(trackColorKey, resourcesProvider));
             color2 = processColor(Theme.getColor(trackCheckedColorKey, resourcesProvider));
+            color3 = Color.WHITE;
+            color4 = 0xffb8b8b8;
+            color5 = 0xff5a5a5a;
+
             if (a == 0 && iconDrawable != null && lastIconColor != (isChecked ? color2 : color1)) {
-                iconDrawable.setColorFilter(new PorterDuffColorFilter(lastIconColor = (isChecked ? color2 : color1), PorterDuff.Mode.SRC_IN));
+                iconDrawable.setColorFilter(new PorterDuffColorFilter(lastIconColor = (isChecked ? color2 : color1), PorterDuff.Mode.MULTIPLY));
             }
 
             r1 = Color.red(color1);
@@ -447,13 +606,40 @@ public class Switch extends View {
             green = (int) (g1 + (g2 - g1) * colorProgress);
             blue = (int) (b1 + (b2 - b1) * colorProgress);
             alpha = (int) (a1 + (a2 - a1) * colorProgress);
+            if (isMd3Style) {
+                alpha = (int) (alpha * overrideAlpha);
+            }
             color = ((alpha & 0xff) << 24) | ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
             paint.setColor(color);
             paint2.setColor(color);
+            paint3.setColor(color3);
+            paint4.setColor(color4);
+            paint5.setColor(color5);
 
-            rectF.set(x, y, x + width, y + AndroidUtilities.dpf2(isM3 ? 22 : 14));
-            canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(isM3 ? 11 : 7), AndroidUtilities.dpf2(isM3 ? 11 : 7), paint);
-            if (!isM3) {
+            if (isOneUiStyle) {
+                rectF.set(x, y, getMeasuredWidth(), getMeasuredHeight() / 2f + thumb / 2f);
+                if (!isChecked) {
+                    canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(11), AndroidUtilities.dpf2(11), paint4);
+                    canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dpf2(11), paint4);
+
+                    if (Theme.isCurrentThemeDark() || Theme.isCurrentThemeNight()) {
+                        canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(11), AndroidUtilities.dpf2(11), paint5);
+                        canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dpf2(11), paint5);
+                    }
+                }
+                canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(11), AndroidUtilities.dpf2(11), paint);
+                canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dpf2(11), paint);
+            } else if (isMd3Style) {
+                rectF.set(
+                        x - AndroidUtilities.dpf2(2),
+                        y,
+                        getMeasuredWidth() + AndroidUtilities.dpf2(3),
+                        y + AndroidUtilities.dp(26)
+                );
+                canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(14), AndroidUtilities.dpf2(14), paint);
+            } else {
+                rectF.set(x, y, x + width, y + AndroidUtilities.dpf2(14));
+                canvasToDraw.drawRoundRect(rectF, AndroidUtilities.dpf2(7), AndroidUtilities.dpf2(7), paint);
                 canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dpf2(10), paint);
             }
 
@@ -461,11 +647,12 @@ public class Switch extends View {
                 rippleDrawable.setBounds(tx - AndroidUtilities.dp(18), ty - AndroidUtilities.dp(18), tx + AndroidUtilities.dp(18), ty + AndroidUtilities.dp(18));
                 rippleDrawable.draw(canvasToDraw);
             } else if (a == 1) {
+                canvasToDraw.translate(-getOverlayPadding() * 2, -getOverlayPadding() * 2);
                 canvasToDraw.drawBitmap(overlayMaskBitmap, 0, 0, overlayMaskPaint);
             }
         }
         if (overrideColorProgress != 0) {
-            canvas.drawBitmap(overlayBitmap[0], 0, 0, null);
+            canvas.drawBitmap(overlayBitmap[0], -getOverlayPadding() * 2, -getOverlayPadding() * 2, null);
         }
 
         for (int a = 0; a < 2; a++) {
@@ -476,13 +663,14 @@ public class Switch extends View {
 
             if (a == 1) {
                 overlayBitmap[1].eraseColor(0);
+                canvasToDraw.translate(getOverlayPadding() * 2, getOverlayPadding() * 2);
             }
             if (overrideColorProgress == 1) {
                 colorProgress = a == 0 ? 0 : 1;
             } else if (overrideColorProgress == 2) {
                 colorProgress = a == 0 ? 1 : 0;
             } else {
-                colorProgress = progress;
+                colorProgress = Utilities.clamp01(progress);
             }
 
             color1 = Theme.getColor(thumbColorKey, resourcesProvider);
@@ -500,22 +688,21 @@ public class Switch extends View {
             green = (int) (g1 + (g2 - g1) * colorProgress);
             blue = (int) (b1 + (b2 - b1) * colorProgress);
             alpha = (int) (a1 + (a2 - a1) * colorProgress);
+            if (isMd3Style) {
+                alpha = (int) (alpha * overrideAlpha);
+            }
             paint.setColor(((alpha & 0xff) << 24) | ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff));
 
-            float thumbRadius = isM3 ? AndroidUtilities.dp(6f + 3f * progress) : AndroidUtilities.dp(8);
-            canvasToDraw.drawCircle(tx, ty, thumbRadius, paint);
-            if (isM3 && progress > 0.4f) {
-                paint2.setColor(color2);
-                paint2.setStyle(Paint.Style.STROKE);
-                paint2.setStrokeWidth(AndroidUtilities.dpf2(1.6f));
-                paint2.setStrokeCap(Paint.Cap.ROUND);
-                paint2.setAlpha((int) (255 * (progress - 0.4f) / 0.6f));
-                Path checkPath = new Path();
-                checkPath.moveTo(tx - AndroidUtilities.dp(2.8f), ty);
-                checkPath.lineTo(tx - AndroidUtilities.dp(0.6f), ty + AndroidUtilities.dp(2.2f));
-                checkPath.lineTo(tx + AndroidUtilities.dp(3.2f), ty - AndroidUtilities.dp(2.2f));
-                canvasToDraw.drawPath(checkPath, paint2);
-                paint2.setStyle(Paint.Style.FILL);
+            if (isOneUiStyle) {
+                canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dp(9.5f), paint3);
+            } else if (isMd3Style) {
+                boolean hasIconState = iconDrawable != null || drawIconType == 1 || drawIconType == 2 || iconAnimator != null;
+                float radius = hasIconState
+                        ? AndroidUtilities.dpf2(9)
+                        : AndroidUtilities.dpf2(7) + AndroidUtilities.dpf2(2) * progress;
+                canvasToDraw.drawCircle(tx, ty, radius, paint);
+            } else {
+                canvasToDraw.drawCircle(tx, ty, AndroidUtilities.dp(8), paint);
             }
 
             if (a == 0) {
@@ -526,6 +713,9 @@ public class Switch extends View {
                         if (needScale) {
                             canvas.save();
                             canvas.scale(factor, factor, tx, ty);
+                        }
+                        if (isMd3Style) {
+                            iconDrawable.setAlpha((int) (255 * overrideAlpha));
                         }
                         iconDrawable.setBounds(tx - iconDrawable.getIntrinsicWidth() / 2, ty - iconDrawable.getIntrinsicHeight() / 2, tx + iconDrawable.getIntrinsicWidth() / 2, ty + iconDrawable.getIntrinsicHeight() / 2);
                         iconDrawable.draw(canvasToDraw);
@@ -546,6 +736,8 @@ public class Switch extends View {
                     int endX = startX + AndroidUtilities.dp(7);
                     int endY = startY + AndroidUtilities.dp(7);
 
+                    canvasToDraw.save();
+
                     startX = (int) (startX + (startX2 - startX) * progress);
                     startY = (int) (startY + (startY2 - startY) * progress);
                     endX = (int) (endX + (endX2 - endX) * progress);
@@ -557,8 +749,14 @@ public class Switch extends View {
                     endX = startX + AndroidUtilities.dp(7);
                     endY = startY - AndroidUtilities.dp(7);
                     canvasToDraw.drawLine(startX, startY, endX, endY, paint2);
+
+                    canvasToDraw.restore();
                 } else if (drawIconType == 2 || iconAnimator != null) {
-                    paint2.setAlpha((int) (255 * (1.0f - iconProgress)));
+                    float iconAlpha = 255 * (1.0f - iconProgress);
+                    if (isMd3Style) {
+                        iconAlpha *= overrideAlpha;
+                    }
+                    paint2.setAlpha((int) iconAlpha);
                     canvasToDraw.drawLine(tx, ty, tx, ty - AndroidUtilities.dp(5), paint2);
                     canvasToDraw.save();
                     canvasToDraw.rotate(-90 * iconProgress, tx, ty);
@@ -567,11 +765,12 @@ public class Switch extends View {
                 }
             }
             if (a == 1) {
+                canvasToDraw.translate(-getOverlayPadding() * 2, -getOverlayPadding() * 2);
                 canvasToDraw.drawBitmap(overlayMaskBitmap, 0, 0, overlayMaskPaint);
             }
         }
         if (overrideColorProgress != 0) {
-            canvas.drawBitmap(overlayBitmap[1], 0, 0, null);
+            canvas.drawBitmap(overlayBitmap[1], -getOverlayPadding() * 2, -getOverlayPadding() * 2, null);
         }
     }
 
@@ -583,5 +782,4 @@ public class Switch extends View {
         info.setChecked(isChecked);
         //info.setContentDescription(isChecked ? LocaleController.getString(R.string.NotificationsOn) : LocaleController.getString(R.string.NotificationsOff));
     }
-
 }

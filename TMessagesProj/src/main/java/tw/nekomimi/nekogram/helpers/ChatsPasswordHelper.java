@@ -2,7 +2,6 @@ package tw.nekomimi.nekogram.helpers;
 
 import android.content.SharedPreferences;
 
-import androidx.core.content.edit;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,7 +57,7 @@ public class ChatsPasswordHelper extends BaseController {
             lockedChatsCache = new HashSet<>(list);
         }
         SharedPreferences prefs = getMessagesController().getMainSettings();
-        prefs.edit(edit -> edit.putString(key, new Gson().toJson(list)));
+        prefs.edit().putString(key, new Gson().toJson(list)).apply();
     }
 
     public ArrayList<String> getArrayList(String key) {
