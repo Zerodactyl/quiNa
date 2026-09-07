@@ -48,6 +48,7 @@ import tw.nekomimi.nekogram.utils.EnvUtil;
 import tw.nekomimi.nekogram.utils.FileUtil;
 import tw.nekomimi.nekogram.utils.GsonUtil;
 import tw.nekomimi.nekogram.utils.ShareUtil;
+import xyz.nextalone.nagram.NaConfig;
 import xyz.nextalone.nagram.NkmrConfig;
 import xyz.nextalone.nagram.network.NetworkLogActivity;
 

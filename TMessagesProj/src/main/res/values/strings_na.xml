@@ -541,5 +541,8 @@
     <string name="ForceForwardStatusTextFallback">Copying text…</string>
     <string name="ForceForwardSomeSkipped">Some messages were skipped</string>
     <string name="UnsupportedMessageMessage">Update to view this part of the message</string>
+    <string name="Appearance">Appearance</string>
+    <string name="GeneralSettings">General Settings</string>
+    <string name="ExperimentAbout">Experiments</string>
 
 </resources>
