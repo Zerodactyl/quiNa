@@ -60,6 +60,7 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
 
     private int categoriesRow;
     private int generalRow;
+    private int material3Row;
     private int accountRow;
     private int chatRow;
     private int passcodeRow;
@@ -97,8 +98,9 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
     protected void onItemClick(View view, int position, float x, float y) {
         if (position == generalRow) {
             presentFragment(new NekoGeneralSettingsActivity());
+        } else if (position == material3Row) {
+            presentFragment(new NekoMaterial3SettingsActivity());
         } else if (position == accountRow) {
-            presentFragment(new NekoAccountSettingsActivity());
         } else if (position == chatRow) {
             presentFragment(new NekoChatSettingsActivity());
         } else if (position == passcodeRow) {
@@ -158,6 +160,7 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
 
         categoriesRow = addRow("categories");
         generalRow = addRow("general");
+        material3Row = addRow("material3");
         accountRow = addRow("account");
         chatRow = addRow("chat");
         if (!PasscodeHelper.isSettingsHidden()) {
@@ -228,15 +231,17 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
                 case TYPE_TEXT: {
                     TextCell textCell = (TextCell) holder.itemView;
                     if (position == generalRow) {
-                        textCell.setTextAndIcon(LocaleController.getString(R.string.General), R.drawable.msg_media, divider);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.General), LocaleController.getString("GeneralSettings", R.string.GeneralSettings), R.drawable.msg_settings, divider);
+                    } else if (position == material3Row) {
+                        textCell.setTextAndValueAndIcon(LocaleController.getString("M3ExpressiveAll", R.string.M3ExpressiveAll), NaConfig.INSTANCE.getM3ExpressiveAll().Bool() ? LocaleController.getString(R.string.NotificationsOn) : LocaleController.getString(R.string.Default), R.drawable.msg_theme, divider);
                     } else if (position == accountRow) {
-                        textCell.setTextAndIcon(LocaleController.getString(R.string.Account), R.drawable.msg_contacts, divider);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.Account), LocaleController.getString("AccountSettings", R.string.AccountSettings), R.drawable.msg_contacts, divider);
                     } else if (position == chatRow) {
-                        textCell.setTextAndIcon(LocaleController.getString(R.string.Chat), R.drawable.msg_discussion, divider);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.Chat), LocaleController.getString("ChatSettings", R.string.ChatSettings), R.drawable.msg_discussion, divider);
                     } else if (position == passcodeRow) {
-                        textCell.setTextAndIcon(LocaleController.getString(R.string.PasscodeNeko), R.drawable.msg_secret, divider);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.PasscodeNeko), LocaleController.getString("Passcode", R.string.Passcode), R.drawable.msg_permissions, divider);
                     } else if (position == experimentRow) {
-                        textCell.setTextAndIcon(LocaleController.getString(R.string.Experiment), R.drawable.msg_fave, divider);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.Experiment), LocaleController.getString("ExperimentAbout", R.string.ExperimentAbout), R.drawable.msg_fave, divider);
                     } else if (position == debugRow) {
                         textCell.setTextAndIcon(LocaleController.getString(R.string.DebugMenu), R.drawable.msg_info, divider);
                     }

@@ -275,23 +275,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     private final AbstractConfigCell fullSensorRoundVideoRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getFullSensorRoundVideo()));
     private final AbstractConfigCell dividerMaterial3 = cellGroup.appendCell(new ConfigCellDivider());
     private final AbstractConfigCell headerMaterial3 = cellGroup.appendCell(new ConfigCellHeader("Material 3 Expressive"));
-    private final AbstractConfigCell m3ExpressiveAllRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveAll()));
-    private final AbstractConfigCell m3ExpressiveProgressRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveProgress()));
-    private final AbstractConfigCell m3ExpressiveDialogsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveDialogs()));
-    private final AbstractConfigCell m3SectionCardsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3SectionCards()));
-    private final AbstractConfigCell m3GlassMenuRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3GlassMenu()));
-    private final AbstractConfigCell m3WavySliderRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3WavySlider()));
-    private final AbstractConfigCell m3TabPillRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3TabPill()));
-    private final AbstractConfigCell m3SpringPhysicsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3SpringPhysics()));
-    private final AbstractConfigCell m3ExpressiveVoiceRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveVoice()));
-    private final AbstractConfigCell m3ExpressiveSwitchRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveSwitch()));
-    private final AbstractConfigCell m3ExpressiveFabRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveFab()));
-    private final AbstractConfigCell m3ExpressiveBubblesRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveBubbles()));
-    private final AbstractConfigCell m3ExpressiveBottomSheetRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressiveBottomSheet()));
-    private final AbstractConfigCell m3ExpressivePillSlidersRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3ExpressivePillSliders()));
-    private final AbstractConfigCell m3QuoteCardRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3QuoteCard()));
-    private final AbstractConfigCell m3TactileHapticsRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3TactileHaptics()));
-    private final AbstractConfigCell m3FloatingSearchBarRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getM3FloatingSearchBar()));
+    private final AbstractConfigCell material3Row = cellGroup.appendCell(new ConfigCellCustom("Material3Expressive", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
     private final AbstractConfigCell customDialogsMenuRow = cellGroup.appendCell(new ConfigCellSelectBox(NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), null, null, () -> {
         if (getParentActivity() == null) return;
         showDialog(showConfigMenuAlert(getParentActivity(), NaConfig.INSTANCE.getCustomDialogsMenu().getKey(), new ArrayList<>() {{
@@ -513,6 +497,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     presentFragment(new SidebarMenuActivity());
                 } else if (position == cellGroup.rows.indexOf(nowPlayingRow)) {
                     presentFragment(new org.telegram.ui.SetupNowPlayingActivity());
+                } else if (position == cellGroup.rows.indexOf(material3Row)) {
+                    presentFragment(new NekoMaterial3SettingsActivity());
                 } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                     tw.nekomimi.nekogram.helpers.BackupHelper.INSTANCE.backupSettings(this);
                 } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
@@ -534,31 +520,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
 
         // Cells: Set OnSettingChanged Callbacks
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
-            if (key.equals(NaConfig.INSTANCE.getM3ExpressiveAll().getKey())) {
-                boolean all = (boolean) newValue;
-                NaConfig.INSTANCE.getM3ExpressiveProgress().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveDialogs().setConfigBool(all);
-                NaConfig.INSTANCE.getM3SectionCards().setConfigBool(all);
-                NaConfig.INSTANCE.getM3GlassMenu().setConfigBool(all);
-                NaConfig.INSTANCE.getM3WavySlider().setConfigBool(all);
-                NaConfig.INSTANCE.getM3TabPill().setConfigBool(all);
-                NaConfig.INSTANCE.getM3SpringPhysics().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveVoice().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveSwitch().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveFab().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveBubbles().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveBottomSheet().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressivePillSliders().setConfigBool(all);
-                NaConfig.INSTANCE.getM3QuoteCard().setConfigBool(all);
-                NaConfig.INSTANCE.getM3TactileHaptics().setConfigBool(all);
-                NaConfig.INSTANCE.getM3FloatingSearchBar().setConfigBool(all);
-                if (listView != null) {
-                    listView.post(() -> {
-                        if (listAdapter != null) {
-                            listAdapter.notifyDataSetChanged();
-                        }
-                    });
-                }
+            if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             } else
             if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
@@ -914,6 +876,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                             int svc = NaConfig.INSTANCE.getNowPlayingServiceType().Int();
                             String serviceName = svc == 1 ? "Last.fm" : (svc == 2 ? "Stats.fm" : LocaleController.getString(R.string.Disable));
                             textCell.setTextAndValue(LocaleController.getString(R.string.NowPlaying), serviceName, divider);
+                        } else if (position == cellGroup.rows.indexOf(material3Row)) {
+                            textCell.setTextAndValue(LocaleController.getString("M3ExpressiveAll", R.string.M3ExpressiveAll), NaConfig.INSTANCE.getM3ExpressiveAll().Bool() ? LocaleController.getString(R.string.NotificationsOn) : "Custom", divider);
                         } else if (position == cellGroup.rows.indexOf(exportCherryRow)) {
                             textCell.setTextAndValue("Export .cherry", "Backup quiNa settings", divider);
                         } else if (position == cellGroup.rows.indexOf(importCherryRow)) {
