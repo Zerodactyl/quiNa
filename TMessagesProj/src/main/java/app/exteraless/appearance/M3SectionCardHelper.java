@@ -110,21 +110,4 @@ public final class M3SectionCardHelper {
         }
     }
 
-    public static void applyToRecyclerListView(org.telegram.ui.Components.RecyclerListView listView, Theme.ResourcesProvider resourcesProvider) {
-        if (isEnabled()) {
-            listView.setSections(
-                view -> !(view instanceof org.telegram.ui.Cells.TextInfoPrivacyCell
-                    || view instanceof org.telegram.ui.Cells.ShadowSectionCell
-                    || view instanceof org.telegram.ui.Cells.GraySectionCell
-                    || view instanceof org.telegram.ui.Cells.CollapseTextCell)
-                    && !java.util.Objects.equals(view.getTag(), org.telegram.ui.Components.RecyclerListView.TAG_NOT_SECTION),
-                sectionPaddingPx(),
-                sectionRadiusPx(),
-                (c, rect, topR, bottomR, alpha) -> drawM3BackgroundRect(c, rect, topR, bottomR, alpha, resourcesProvider),
-                false
-            );
-        } else {
-            listView.setSections();
-        }
-    }
 }

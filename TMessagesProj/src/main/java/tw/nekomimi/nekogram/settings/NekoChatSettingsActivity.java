@@ -663,7 +663,6 @@ public class NekoChatSettingsActivity extends BaseNekoXSettingsActivity implemen
 
         if (!NekoConfig.showRepeat.Bool() || NaConfig.INSTANCE.getShowRepeatAsCopy().Bool()){
             cellGroup.rows.remove(autoReplaceRepeatRow);
-            NaConfig.INSTANCE.getAutoReplaceRepeat().setConfigBool(false);
         }
 
         addRowsToMap();

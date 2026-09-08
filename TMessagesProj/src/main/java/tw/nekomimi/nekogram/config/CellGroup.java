@@ -61,7 +61,7 @@ public class CellGroup {
         try {
             callBackSettingsChanged.run(key, newValue);
         } catch (Exception e) {
-
+            org.telegram.messenger.FileLog.e(e);
         }
     }
 
@@ -71,8 +71,7 @@ public class CellGroup {
 
     //Utils
     public static void hideItemFromRecyclerView(View cell, boolean hide) {
-        if (cell == null) return;
-        if (cell != null) return; //TODO hideItemFromRecyclerView
+        if (cell == null || cell.getLayoutParams() == null) return;
         ViewGroup.LayoutParams params = cell.getLayoutParams();
         if (hide) {
             cell.setVisibility(View.GONE);
@@ -85,7 +84,9 @@ public class CellGroup {
     }
 
     public boolean needSetDivider(AbstractConfigCell cell) {
-        return !(rows.get(rows.indexOf(cell) + 1) instanceof ConfigCellDivider);
+        int idx = rows.indexOf(cell);
+        if (idx < 0 || idx + 1 >= rows.size()) return false;
+        return !(rows.get(idx + 1) instanceof ConfigCellDivider);
     }
 
 }

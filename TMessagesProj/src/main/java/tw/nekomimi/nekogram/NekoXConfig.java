@@ -76,23 +76,6 @@ public class NekoXConfig {
     public static SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekox_config", Context.MODE_PRIVATE);
 
     public static boolean disableFlagSecure = NaConfig.INSTANCE.getDisableFlagSecure().Bool();
-    public static boolean m3ExpressiveAll = NaConfig.INSTANCE.getM3ExpressiveAll().Bool();
-    public static boolean m3ExpressiveProgress = NaConfig.INSTANCE.getM3ExpressiveProgress().Bool();
-    public static boolean m3ExpressiveDialogs = NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool();
-    public static boolean m3SectionCards = NaConfig.INSTANCE.getM3SectionCards().Bool();
-    public static boolean m3GlassMenu = NaConfig.INSTANCE.getM3GlassMenu().Bool();
-    public static boolean m3WavySlider = NaConfig.INSTANCE.getM3WavySlider().Bool();
-    public static boolean m3TabPill = NaConfig.INSTANCE.getM3TabPill().Bool();
-    public static boolean m3SpringPhysics = NaConfig.INSTANCE.getM3SpringPhysics().Bool();
-    public static boolean m3ExpressiveVoice = NaConfig.INSTANCE.getM3ExpressiveVoice().Bool();
-    public static boolean m3ExpressiveSwitch = NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool();
-    public static boolean m3ExpressiveFab = NaConfig.INSTANCE.getM3ExpressiveFab().Bool();
-    public static boolean m3ExpressiveBubbles = NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool();
-    public static boolean m3ExpressiveBottomSheet = NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool();
-    public static boolean m3ExpressivePillSliders = NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool();
-    public static boolean m3QuoteCard = NaConfig.INSTANCE.getM3QuoteCard().Bool();
-    public static boolean m3TactileHaptics = NaConfig.INSTANCE.getM3TactileHaptics().Bool();
-    public static boolean m3FloatingSearchBar = NaConfig.INSTANCE.getM3FloatingSearchBar().Bool();
 
     public static boolean isM3ExpressiveAll() {
         return NaConfig.INSTANCE.getM3ExpressiveAll().Bool();
@@ -163,8 +146,6 @@ public class NekoXConfig {
     }
 
     public static int autoUpdateReleaseChannel = preferences.getInt("autoUpdateReleaseChannel", 2);
-//    public static String ignoredUpdateTag = preferences.getString("ignoredUpdateTag", "");
-//    public static long nextUpdateCheck = preferences.getLong("nextUpdateCheckTimestamp", 0);
 
     public static int customApi = preferences.getInt("custom_api", 0);
     public static int customAppId = preferences.getInt("custom_app_id", 0);
