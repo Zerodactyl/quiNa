@@ -4,8 +4,8 @@ quiNa is a third-party Telegram client based on [Nagram](https://github.com/Next
 
 - Official Site: <building>
 - Telegram Update Channel: <https://t.me/athesiam>
-- Releases: <https://git.disroot.org/armaltheus/quiNa/releases>
-- Issues here: <https://git.disroot.org/armaltheus/quiNa/issues>
+- Releases: <https://github.com/Zerodactyl/quiNa/releases>
+- Issues here: <https://github.com/Zerodactyl/quiNa/issues>
 
 ## Branding
 
@@ -231,7 +231,7 @@ First, make sure you have the latest version installed (check the channel).
 
 Then, if the issue appears in the official Telegram client too, please submit it to the officials, (be careful not to show NekoX in the description and screenshots, the official developers doesn't like us!).
 
-Then, submit it to our [issues](https://git.disroot.org/armaltheus/quiNa/issues) with #bug.
+Then, submit it to our [issues](https://github.com/Zerodactyl/quiNa/issues) with #bug.
 
 If you experience a *crash*, you also need to click on the version number at the bottom of the settings and select "Enable Log" and send it to us.
 

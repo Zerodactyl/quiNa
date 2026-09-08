@@ -1472,7 +1472,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             listView.adapter.update(true);
         });
         o.add(R.drawable.msg_retry, LocaleController.getString(R.string.SwitchVersion), () -> {
-            Browser.openUrl(getContext(), "https://git.disroot.org/armaltheus/quiNa/releases");
+            Browser.openUrl(getContext(), "https://github.com/Zerodactyl/quiNa/releases");
         });
 
         o.add(R.drawable.msg_search, LocaleController.getString(R.string.CheckUpdate), () -> {

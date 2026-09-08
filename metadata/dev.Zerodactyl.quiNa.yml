@@ -2,10 +2,10 @@ Categories:
   - Internet
 License: GPL-3.0-only
 AuthorName: Zerodactyl
-WebSite: https://git.disroot.org/armaltheus/quiNa
-SourceCode: https://git.disroot.org/armaltheus/quiNa
-IssueTracker: https://git.disroot.org/armaltheus/quiNa/issues
-Changelog: https://git.disroot.org/armaltheus/quiNa/releases
+WebSite: https://github.com/Zerodactyl/quiNa
+SourceCode: https://github.com/Zerodactyl/quiNa
+IssueTracker: https://github.com/Zerodactyl/quiNa/issues
+Changelog: https://github.com/Zerodactyl/quiNa/releases
 Donate: null
 
 AutoName: quiNa
@@ -23,7 +23,7 @@ Description: |-
   Anti-Feature: Non-Free Network (Telegram servers are proprietary).
 
 RepoType: git
-Repo: https://git.disroot.org/armaltheus/quiNa
+Repo: https://github.com/Zerodactyl/quiNa
 
 Builds:
   - versionName: 12.10.0

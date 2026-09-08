@@ -18,7 +18,7 @@ class ReleaseCaptionTest(unittest.TestCase):
             "12.9.0",
             "1241",
             "abcdef123456",
-            "https://git.disroot.org/armaltheus/quiNa",
+            "https://github.com/Zerodactyl/quiNa",
         )
 
         self.assertIn(
@@ -27,7 +27,7 @@ class ReleaseCaptionTest(unittest.TestCase):
         )
         self.assertIn("✨ <b>Features</b>", caption)
         self.assertIn(
-            '<a href="https://git.disroot.org/armaltheus/quiNa/commit/abcdef123456">[abcdef1]</a>',
+            '<a href="https://github.com/Zerodactyl/quiNa/commit/abcdef123456">[abcdef1]</a>',
             caption,
         )
         self.assertIn("improve &lt;test&gt; notification", caption)
@@ -48,7 +48,7 @@ class ReleaseCaptionTest(unittest.TestCase):
             "12.9.0",
             "1241",
             "abcdef123456",
-            "https://git.disroot.org/armaltheus/quiNa",
+            "https://github.com/Zerodactyl/quiNa",
         )
 
         self.assertTrue(is_changelog_ignored(commit_message))

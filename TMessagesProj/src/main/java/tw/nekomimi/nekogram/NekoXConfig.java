@@ -32,7 +32,7 @@ import xyz.nextalone.nagram.NaConfig;
 public class NekoXConfig {
 
     //  public static String FAQ_URL = "https://telegra.ph/NekoX-FAQ-03-31";
-    public static String FAQ_URL = "https://git.disroot.org/armaltheus/quiNa#faq";
+    public static String FAQ_URL = "https://github.com/Zerodactyl/quiNa#faq";
     public static String GROUP_URL = "https://t.me/quina_group";
     public static long[] officialChats = {
 //            1305127566, // NekoX Updates
