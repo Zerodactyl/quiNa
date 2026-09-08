@@ -1,2 +1,2 @@
-git+https://github.com/TeamPGM/pyrogram
+pyrogram==2.0.106
 PyroTgCrypto==1.2.7

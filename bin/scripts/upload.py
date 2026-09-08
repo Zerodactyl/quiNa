@@ -13,8 +13,8 @@ from release_caption import (
     render_test_caption,
 )
 
-api_id = 11535358
-api_hash = "33d372962fadb01df47e6ceed4e33cd6"
+api_id = int(os.environ.get("API_ID", "11535358"))
+api_hash = os.environ.get("API_HASH", "33d372962fadb01df47e6ceed4e33cd6")
 metadata_channel = -1001471208507
 metadata_channel_msg_id = 46
 artifacts_path = Path("artifacts")
