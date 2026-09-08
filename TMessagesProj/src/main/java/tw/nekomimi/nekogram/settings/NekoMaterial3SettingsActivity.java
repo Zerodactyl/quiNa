@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
+import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Components.UndoView;
 
 import tw.nekomimi.nekogram.config.CellGroup;
@@ -56,26 +59,45 @@ public class NekoMaterial3SettingsActivity extends BaseNekoXSettingsActivity {
 
     @Override
     public View createView(Context context) {
-        View view = super.createView(context);
+        var superView = super.createView(context);
+
+        listAdapter = new ListAdapter(context);
+        listView.setAdapter(listAdapter);
+
+        listView.setOnItemClickListener((view, position, x, y) -> {
+            AbstractConfigCell cell = cellGroup.rows.get(position);
+            if (cell instanceof ConfigCellTextCheck) {
+                ((ConfigCellTextCheck) cell).onClick((TextCheckCell) view);
+            }
+        });
+        listView.setOnItemLongClickListener((view, position, x, y) -> {
+            var holder = listView.findViewHolderForAdapterPosition(position);
+            if (holder != null && listAdapter.isEnabled(holder)) {
+                createLongClickDialog(context, NekoMaterial3SettingsActivity.this, "m3", position);
+                return true;
+            }
+            return false;
+        });
+
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
             if (key.equals(NaConfig.INSTANCE.getM3ExpressiveAll().getKey())) {
                 boolean all = (boolean) newValue;
-                NaConfig.INSTANCE.getM3ExpressiveProgress().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveDialogs().setConfigBool(all);
-                NaConfig.INSTANCE.getM3SectionCards().setConfigBool(all);
-                NaConfig.INSTANCE.getM3GlassMenu().setConfigBool(all);
-                NaConfig.INSTANCE.getM3WavySlider().setConfigBool(all);
-                NaConfig.INSTANCE.getM3TabPill().setConfigBool(all);
-                NaConfig.INSTANCE.getM3SpringPhysics().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveVoice().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveSwitch().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveFab().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveBubbles().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressiveBottomSheet().setConfigBool(all);
-                NaConfig.INSTANCE.getM3ExpressivePillSliders().setConfigBool(all);
-                NaConfig.INSTANCE.getM3QuoteCard().setConfigBool(all);
-                NaConfig.INSTANCE.getM3TactileHaptics().setConfigBool(all);
-                NaConfig.INSTANCE.getM3FloatingSearchBar().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveProgress().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveDialogs().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3SectionCards().Bool() != all) NaConfig.INSTANCE.getM3SectionCards().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3GlassMenu().Bool() != all) NaConfig.INSTANCE.getM3GlassMenu().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3WavySlider().Bool() != all) NaConfig.INSTANCE.getM3WavySlider().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3TabPill().Bool() != all) NaConfig.INSTANCE.getM3TabPill().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3SpringPhysics().Bool() != all) NaConfig.INSTANCE.getM3SpringPhysics().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveVoice().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveVoice().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveSwitch().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveFab().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveFab().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveBubbles().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool() != all) NaConfig.INSTANCE.getM3ExpressiveBottomSheet().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool() != all) NaConfig.INSTANCE.getM3ExpressivePillSliders().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3QuoteCard().Bool() != all) NaConfig.INSTANCE.getM3QuoteCard().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3TactileHaptics().Bool() != all) NaConfig.INSTANCE.getM3TactileHaptics().setConfigBool(all);
+                if (NaConfig.INSTANCE.getM3FloatingSearchBar().Bool() != all) NaConfig.INSTANCE.getM3FloatingSearchBar().setConfigBool(all);
                 if (listView != null) {
                     listView.post(() -> {
                         if (listAdapter != null) {
@@ -88,6 +110,23 @@ public class NekoMaterial3SettingsActivity extends BaseNekoXSettingsActivity {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESTART, null, null);
             }
         };
-        return view;
+
+        cellGroup.setListAdapter(listView, listAdapter);
+
+        return superView;
+    }
+
+    private class ListAdapter extends BaseListAdapter {
+        public ListAdapter(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, boolean partial, boolean divider) {
+            AbstractConfigCell cell = cellGroup.rows.get(position);
+            if (cell != null) {
+                cell.onBindViewHolder(holder);
+            }
+        }
     }
 }

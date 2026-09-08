@@ -162,7 +162,7 @@ public class ConfigItem {
                     editor.putString(this.key, Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT));
                 }
 
-                editor.commit();
+                editor.apply();
             } catch (Exception e) {
                 FileLog.e(e);
             }

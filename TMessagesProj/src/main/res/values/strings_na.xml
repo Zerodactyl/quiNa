@@ -544,5 +544,16 @@
     <string name="Appearance">Appearance</string>
     <string name="GeneralSettings">General Settings</string>
     <string name="ExperimentAbout">Experiments</string>
+    <string name="NekoGeneralNotification">Notification</string>
+    <string name="AskBiometricsToOpenChats">Require Biometrics to Open Chats</string>
+    <string name="AskBiometricsToOpenEncrypted">Require Biometrics for Secret Chats</string>
+    <string name="AskBiometricsToOpenArchive">Require Biometrics for Archive</string>
+    <string name="HideArchiveFromChatsList">Hide Archive from Chats List</string>
+    <string name="AskPasscodeBeforeDelete">Ask Passcode Before Delete</string>
+    <string name="ShowClearFromCache">Clear From Cache</string>
+    <string name="ShowForwardWithoutAuthor">Forward Without Author</string>
+    <string name="ShowViewJSON">View JSON</string>
+    <string name="ShowCopyFileRef">Copy File Reference</string>
+    <string name="AllowSystemPasscode">Allow System Passcode</string>
 
 </resources>

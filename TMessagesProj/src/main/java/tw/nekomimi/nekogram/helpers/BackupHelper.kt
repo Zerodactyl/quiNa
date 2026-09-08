@@ -210,7 +210,10 @@ object BackupHelper {
             "TranslationProvider", "TransToLang", "DeepLxCustomApi", "DeepLApiKey",
             "LLMProvider", "LLMApiKeys",
             // Material 3
-            "M3ExpressiveAll", "M3SectionCards", "M3GlassMenu", "M3TactileHaptics",
+            "M3ExpressiveAll", "M3ExpressiveProgress", "M3ExpressiveDialogs", "M3SectionCards", "M3GlassMenu",
+            "M3WavySlider", "M3TabPill", "M3SpringPhysics", "M3ExpressiveVoice", "M3ExpressiveSwitch",
+            "M3ExpressiveFab", "M3ExpressiveBubbles", "M3ExpressiveBottomSheet", "M3ExpressivePillSliders",
+            "M3QuoteCard", "M3TactileHaptics", "M3FloatingSearchBar",
             // Misc
             "RegexFilters", "RegexFiltersData", "DefaultHlsVideoQuality"
         )

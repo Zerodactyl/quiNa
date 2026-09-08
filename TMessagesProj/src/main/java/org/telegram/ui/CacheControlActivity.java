@@ -1993,7 +1993,7 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
             protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
 
-                if (NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
+                if (NaConfig.INSTANCE.getM3ExpressiveAll().Bool() || NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()) {
                     final float width = getMeasuredWidth();
                     final float height = getMeasuredHeight();
                     final float progress = progressT.set(this.progress);
