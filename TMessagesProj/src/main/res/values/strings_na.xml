@@ -554,5 +554,11 @@
     <string name="ShowViewJSON">View JSON</string>
     <string name="ShowCopyFileRef">Copy File Reference</string>
     <string name="AllowSystemPasscode">Allow System Passcode</string>
+    <string name="BackupCherry">Backup (.cherry)</string>
+    <string name="MapPreview">Map</string>
+    <string name="ExportCherry">Export .cherry</string>
+    <string name="ImportCherry">Import .cherry</string>
+    <string name="ExportCherryInfo">Backup quiNa settings</string>
+    <string name="ImportCherryInfo">Restore from backup</string>
 
 </resources>

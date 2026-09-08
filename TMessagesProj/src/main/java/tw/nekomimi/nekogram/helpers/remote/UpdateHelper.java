@@ -5,6 +5,7 @@ import android.os.Build;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.telegram.messenger.BuildConfig;
+import org.telegram.messenger.FileLog;
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;
 
@@ -56,7 +57,7 @@ public class UpdateHelper extends BaseRemoteHelper {
             for(var abi: abis) {
                 map.put(abi, obj.getInt(abi));
             }
-        } catch (JSONException ignored) {}
+        } catch (JSONException e) { FileLog.e(e); }
         return map;
     }
 
@@ -86,7 +87,7 @@ public class UpdateHelper extends BaseRemoteHelper {
                     );
                     break;
                 }
-            } catch (JSONException ignored) {}
+            } catch (JSONException e) { FileLog.e(e); }
         }
         return ref;
     }
