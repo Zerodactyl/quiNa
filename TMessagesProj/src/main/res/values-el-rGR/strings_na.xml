@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Ρύθμιση</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Εξαναγκασμός Αντιγραφής</string>
     <string name="disableSecondAddress">Απενεργοποίηση Δεύτερης Αίτησης Διεύθυνσης</string>
     <string name="InvertReply">Αναστροφή</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Μη ευαίσθητες εκφράσεις πεζών</string>
     <string name="RegexFiltersAdd">Προσθήκη φίλτρου</string>
     <string name="RegexFiltersEdit">Επεξεργασία φίλτρου</string>
-    <string name="RegexFiltersAddDescription">Μπορείτε τη χρήση του ιστότοπου <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> για να ελέγξετε πλήρως την κανονική σας έκφραση.
+    <string name="RegexFiltersAddDescription">Μπορείτε τη χρήση του ιστότοπου &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; για να ελέγξετε πλήρως την κανονική σας έκφραση.
     Μπορείτε επίσης να χρησιμοποιήσετε απλό κείμενο, αλλά μην ξεχάσετε να αποφύγετε τις παρενθέσεις.</string>
     <string name="RegexFiltersAddError">Κανονικό συντακτικό σφάλμα</string>
     <string name="ShowTimeHint">Κάντε κλικ στο μήνυμα για να εμφανίσετε λεπτομέρειες</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Μία κανονική έκφραση ανά γραμμή</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Κανόνες Regex</string>
-    <string name="InlineBotRulesEditDescription">Κάθε γραμμή είναι μια ξεχωριστή κανονική έκφραση. Οι διευθύνσεις URL που ταιριάζουν με οποιαδήποτε από αυτές θα σταλούν στο αντίστοιχο inline bot. Μπορείτε να δοκιμάσετε μοτίβα στο <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Κάθε γραμμή είναι μια ξεχωριστή κανονική έκφραση. Οι διευθύνσεις URL που ταιριάζουν με οποιαδήποτε από αυτές θα σταλούν στο αντίστοιχο inline bot. Μπορείτε να δοκιμάσετε μοτίβα στο &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Απαιτείται όνομα χρήστη bot</string>
     <string name="InlineBotRulesRegexRequired">Απαιτείται τουλάχιστον μία κανονική έκφραση</string>
     <string name="InlineBotRulesSaveError">Αποτυχία αποθήκευσης του κανόνα. Ελέγξτε τη σύνταξη regex.</string>

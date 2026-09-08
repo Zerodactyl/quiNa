@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">Preferencias de na</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Forzar copiado</string>
     <string name="disableSecondAddress">Desactivar segunda solicitud de dirección</string>
     <string name="InvertReply">Invertir</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Expresiones insensivas en mayúsculas</string>
     <string name="RegexFiltersAdd">Añadir filtro</string>
     <string name="RegexFiltersEdit">Editar filtro</string>
-    <string name="RegexFiltersAddDescription">You can use site <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> to fully test your regular expression.
+    <string name="RegexFiltersAddDescription">You can use site &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; to fully test your regular expression.
     You can also use plain text, but don\'t forget to escape brackets.</string>
     <string name="RegexFiltersAddError">Error de sintaxis Regex</string>
     <string name="ShowTimeHint">Haga clic en la hora del mensaje para mostrar los detalles</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Una expresión regular por línea</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Reglas Regex</string>
-    <string name="InlineBotRulesEditDescription">Cada línea es una expresión regular separada. Las URLs que coincidan con cualquiera de ellas se enviarán al bot en línea correspondiente. Puedes probar patrones en <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Cada línea es una expresión regular separada. Las URLs que coincidan con cualquiera de ellas se enviarán al bot en línea correspondiente. Puedes probar patrones en &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Se requiere nombre de usuario de bot</string>
     <string name="InlineBotRulesRegexRequired">Se requiere al menos una expresión regular</string>
     <string name="InlineBotRulesSaveError">Error al guardar la regla. Compruebe la sintaxis regex.</string>

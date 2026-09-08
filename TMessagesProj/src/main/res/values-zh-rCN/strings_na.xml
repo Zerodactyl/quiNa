@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-设置</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">强制复制</string>
     <string name="disableSecondAddress">禁用请求备用服务器地址</string>
     <string name="InvertReply">反转</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">不区分大小写</string>
     <string name="RegexFiltersAdd">添加正则表达式</string>
     <string name="RegexFiltersEdit">修改正则表达式</string>
-    <string name="RegexFiltersAddDescription">您可以使用网站 <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> 来测试您的正则表达式。
+    <string name="RegexFiltersAddDescription">您可以使用网站 &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; 来测试您的正则表达式。
     您也可以使用纯文本，但请不要忘记使用转义符号。</string>
     <string name="RegexFiltersAddError">正则表达式语法错误</string>
     <string name="ShowTimeHint">点击消息时间显示详细信息</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">每行一个正则表达式</string>
     <string name="InlineBotRulesUsernameLabel">机器人用户名</string>
     <string name="InlineBotRulesRegexLabel">正则规则</string>
-    <string name="InlineBotRulesEditDescription">每行为一个独立的正则表达式。匹配其中任意一条的 URL 将被发送到对应的 Inline 机器人。您可以在 <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> 测试您的正则表达式。</string>
+    <string name="InlineBotRulesEditDescription">每行为一个独立的正则表达式。匹配其中任意一条的 URL 将被发送到对应的 Inline 机器人。您可以在 &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; 测试您的正则表达式。</string>
     <string name="InlineBotRulesUsernameRequired">必须填写机器人用户名</string>
     <string name="InlineBotRulesRegexRequired">至少需要一个正则表达式</string>
     <string name="InlineBotRulesSaveError">保存规则失败，请检查正则表达式语法。</string>

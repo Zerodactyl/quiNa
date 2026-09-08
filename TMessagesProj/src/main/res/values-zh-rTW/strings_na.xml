@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N - 設定</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">強制複製</string>
     <string name="disableSecondAddress">禁用請求備用伺服器位址</string>
     <string name="InvertReply">反轉</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">不區分大小寫</string>
     <string name="RegexFiltersAdd">添加正則表達式</string>
     <string name="RegexFiltersEdit">修改正則表達式</string>
-    <string name="RegexFiltersAddDescription">您可以使用網站 <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> 來測試您的正則表達式。
+    <string name="RegexFiltersAddDescription">您可以使用網站 &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; 來測試您的正則表達式。
     您也可以使用純文本，但請不要忘記使用轉義符號。</string>
     <string name="RegexFiltersAddError">正則表達式語法錯誤</string>
     <string name="ShowTimeHint">點擊消息時間顯示詳細信息</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">One regular expression per line</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Regex rules</string>
-    <string name="InlineBotRulesEditDescription">Each line is a separate regular expression. URLs that match any of them will be sent to the corresponding inline bot. You can test patterns at <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Each line is a separate regular expression. URLs that match any of them will be sent to the corresponding inline bot. You can test patterns at &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Bot username is required</string>
     <string name="InlineBotRulesRegexRequired">At least one regular expression is required</string>
     <string name="InlineBotRulesSaveError">Failed to save rule. Check the regex syntax.</string>

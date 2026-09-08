@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="HidePhone">Sakrij moj broj telefona</string>
     <string name="Chat">Ćaskanje</string>
@@ -17,7 +17,7 @@
     <string name="ChristmasHat">Prikaži Deda Mrazovu kapicu svaki dan</string>
     <string name="DeleteAllFromSelfAlert">Upozorenje! Ova radnja će **izbrisati sve poruke od tebe** u ovom ćaskanju za **sve** učesnike.</string>
     <string name="TypefaceUseDefault">Koristi podrazumevani sistemski font</string>
-    <string name="NekoSettings">Neko podešavanja</string>
+    <string name="NekoSettings">qN-Settings</string>
     <string name="DeleteAllFromSelf">Obriši sve od mene</string>
     <string name="BotLogin">Prijava bota</string>
     <string name="Connection">Veza</string>

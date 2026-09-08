@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-конфігурації</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Примусова копія</string>
     <string name="disableSecondAddress">Вимкнути другий адресний запит</string>
     <string name="InvertReply">Invert</string>
@@ -92,7 +92,7 @@
     <string name="ShowForumAsNormalChat">Показувати форум як звичайний чат</string>
     <string name="DecorationNone">Без ефекту</string>
     <string name="ChatDecoration">Прикраса Чату</string>
-    <string name="NeedChangeNekoSettings">Необхідно змінити параметри qNa Settings</string>
+    <string name="NeedChangeNekoSettings">Необхідно змінити параметри qN-Settings</string>
     <string name="DoNotUnarchiveBySwipe">Зробити не архівування свайпом</string>
     <string name="DoNotShareMyPhoneNumber">Не ділитися моїм номером телефону</string>
     <string name="DefaultDeleteMenu">Видалити меню за замовчуванням</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Нечутливі до регістру виразів</string>
     <string name="RegexFiltersAdd">Додати фільтр</string>
     <string name="RegexFiltersEdit">Редагувати фільтр</string>
-    <string name="RegexFiltersAddDescription">Ви можете використовувати сайт <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> щоб повністю перевірити свій регулярний вираз.
+    <string name="RegexFiltersAddDescription">Ви можете використовувати сайт &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; щоб повністю перевірити свій регулярний вираз.
     Ви також можете використовувати звичайний текст, але не забудьте уникнути дужок.</string>
     <string name="RegexFiltersAddError">Помилка синтаксису регулярного виразу</string>
     <string name="ShowTimeHint">Натисніть час повідомлення для відображення подробиць</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Один регулярний вираз на рядок</string>
     <string name="InlineBotRulesUsernameLabel">Ім’я користувача бота</string>
     <string name="InlineBotRulesRegexLabel">Правила регулярного виразу</string>
-    <string name="InlineBotRulesEditDescription">Кожен рядок — це окремий регулярний вираз. URL-адреси, що відповідають будь-якому з них, будуть надіслані відповідному боту. Ви можете протестувати шаблони на <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Кожен рядок — це окремий регулярний вираз. URL-адреси, що відповідають будь-якому з них, будуть надіслані відповідному боту. Ви можете протестувати шаблони на &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Потрібне ім\'я користувача бота</string>
     <string name="InlineBotRulesRegexRequired">Потрібно принаймні один регулярний вираз</string>
     <string name="InlineBotRulesSaveError">Не вдалося зберегти правило. Перевірте синтаксис регулярного виводу.</string>

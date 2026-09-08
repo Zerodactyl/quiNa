@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Configuratie</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Forceer kopiëren</string>
     <string name="disableSecondAddress">Tweede adresverzoek uitschakelen</string>
     <string name="InvertReply">Invert</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Zaak ongevoelige uitdrukkingen</string>
     <string name="RegexFiltersAdd">Filter toevoegen</string>
     <string name="RegexFiltersEdit">Filter bewerken</string>
-    <string name="RegexFiltersAddDescription">Je kunt de website <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> gebruiken om je reguliere expressie volledig te testen.
+    <string name="RegexFiltersAddDescription">Je kunt de website &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; gebruiken om je reguliere expressie volledig te testen.
     Je kunt ook platte tekst gebruiken, maar vergeet niet om uit haakjes te ontsnappen.</string>
     <string name="RegexFiltersAddError">Regex syntaxisfout</string>
     <string name="ShowTimeHint">Klik op berichttijd om details weer te geven</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Een reguliere expressie per regel</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Regex regels</string>
-    <string name="InlineBotRulesEditDescription">Elke regel is een afzonderlijke reguliere expressie. URL\'s die overeenkomen met een van de URL\'s worden verzonden naar de overeenkomstige inline bot. U kunt patronen testen op <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Elke regel is een afzonderlijke reguliere expressie. URL\'s die overeenkomen met een van de URL\'s worden verzonden naar de overeenkomstige inline bot. U kunt patronen testen op &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Bot gebruikersnaam is vereist</string>
     <string name="InlineBotRulesRegexRequired">Ten minste één reguliere expressie is vereist</string>
     <string name="InlineBotRulesSaveError">Regel opslaan mislukt. Controleer de regex syntax.</string>

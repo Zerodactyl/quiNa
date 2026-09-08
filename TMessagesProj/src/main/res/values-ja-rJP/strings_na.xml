@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-構成</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">強制コピー</string>
     <string name="disableSecondAddress">2番目のアドレスリクエストを無効にする</string>
     <string name="InvertReply">反転</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">大文字小文字を区別しない表現</string>
     <string name="RegexFiltersAdd">フィルターを追加</string>
     <string name="RegexFiltersEdit">フィルターを編集</string>
-    <string name="RegexFiltersAddDescription">You can use site <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> to fully test your regular expression.
+    <string name="RegexFiltersAddDescription">You can use site &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; to fully test your regular expression.
     You can also use plain text, but don\'t forget to escape brackets.</string>
     <string name="RegexFiltersAddError">正規表現の構文エラー</string>
     <string name="ShowTimeHint">詳細を表示するメッセージ時間をクリックしてください</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">1行に1つの正規表現</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">正規表現ルール</string>
-    <string name="InlineBotRulesEditDescription">各行は個別の正規表現です。それらのいずれかに一致する URL は対応するインラインボットに送信されます。 パターンは、 <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> でテストできます。</string>
+    <string name="InlineBotRulesEditDescription">各行は個別の正規表現です。それらのいずれかに一致する URL は対応するインラインボットに送信されます。 パターンは、 &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; でテストできます。</string>
     <string name="InlineBotRulesUsernameRequired">Botのユーザー名が必要です</string>
     <string name="InlineBotRulesRegexRequired">少なくとも 1 つの正規表現が必要です</string>
     <string name="InlineBotRulesSaveError">ルールを保存できませんでした。正規表現の構文を確認してください。</string>

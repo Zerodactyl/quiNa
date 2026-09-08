@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Config</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Copiere forțată</string>
     <string name="disableSecondAddress">Dezactivează cererea de adresă secundară</string>
     <string name="InvertReply">Invert</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Expresii insensibile de caz</string>
     <string name="RegexFiltersAdd">Adaugă filtru</string>
     <string name="RegexFiltersEdit">Editare filtru</string>
-    <string name="RegexFiltersAddDescription">Poți folosi site-ul <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> pentru a testa complet expresia ta obișnuită.
+    <string name="RegexFiltersAddDescription">Poți folosi site-ul &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; pentru a testa complet expresia ta obișnuită.
     Puteți, de asemenea, să folosiți text simplu, dar să nu uitați să scăpați de paranteze.</string>
     <string name="RegexFiltersAddError">Eroare de sintaxă Regex</string>
     <string name="ShowTimeHint">Apasă pe timpul mesajului pentru a afișa detaliile</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">O expresie regulată pe linie</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Norme Regex</string>
-    <string name="InlineBotRulesEditDescription">Fiecare linie este o expresie regulată separată. URL-urile care se potrivesc cu oricare dintre ele vor fi trimise botului inline corespunzător. Poți testa modele la <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Fiecare linie este o expresie regulată separată. URL-urile care se potrivesc cu oricare dintre ele vor fi trimise botului inline corespunzător. Poți testa modele la &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Numele de utilizator bot este necesar</string>
     <string name="InlineBotRulesRegexRequired">Cel puțin o expresie regulată este necesară</string>
     <string name="InlineBotRulesSaveError">Salvarea regulii a eșuat. Verificați sintaxa regex.</string>

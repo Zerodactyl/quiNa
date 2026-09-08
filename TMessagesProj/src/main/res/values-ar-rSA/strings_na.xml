@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">تكوين N-Config</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">إجبار النسخ</string>
     <string name="disableSecondAddress">تعطيل طلب العنوان الثاني</string>
     <string name="InvertReply">عكس</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">تعبيرات غير حساسة للحالة</string>
     <string name="RegexFiltersAdd">إضافة فلتر</string>
     <string name="RegexFiltersEdit">تعديل عامل التصفية</string>
-    <string name="RegexFiltersAddDescription">يمكنك استخدام الموقع <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> لاختبار التعبير العادي الخاص بك بشكل كامل.
+    <string name="RegexFiltersAddDescription">يمكنك استخدام الموقع &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; لاختبار التعبير العادي الخاص بك بشكل كامل.
     يمكنك أيضًا استخدام نص عادي، ولكن لا تنسى أن تخرج من الأقواس المعقوفة.</string>
     <string name="RegexFiltersAddError">خطأ في صيغة Regex</string>
     <string name="ShowTimeHint">انقر فوق وقت الرسالة لعرض التفاصيل</string>
@@ -284,7 +284,7 @@
     <string name="LLMApiFormatAnthropic">أنثروبيك</string>
     <string name="LLMApiFormatCustom">مخصص</string>
     <string name="LLMApiFormatOpenAIChatDesc">POST {baseUrl}/chat/completions التنسيق القياسي لواجهة OpenAI. متوافق مع أغلب المزودين الذين يدعمون نظام OpenAI.</string>
-    <string name="LLMApiFormatOpenAIResponseDesc"></string>
+    <string name="LLMApiFormatOpenAIResponseDesc" />
     <string name="LLMApiFormatAnthropicDesc">POST {baseUrl}/messages — تنسيق واجهة Anthropic. يستخدم رأس x-api-key وحقل النظام (system).</string>
     <string name="LLMApiFormatCustomDesc">إرسال طلب POST إلى رابط API المكتوب تماماً — دون إضافة أي مسار endpoint في نهايته. نص الطلب يستخدم تنسيق OpenAI Chat.</string>
     <string name="LLMFetchModels">جلب النماذج المتاحة</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">تعبير عادي واحد لكل سطر</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">قواعد Regex</string>
-    <string name="InlineBotRulesEditDescription">كل سطر عبارة عادية منفصلة. عناوين URL التي تطابق أي منها سيتم إرسالها إلى بوت داخلي مناظر. يمكنك اختبار الأنماط على <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">كل سطر عبارة عادية منفصلة. عناوين URL التي تطابق أي منها سيتم إرسالها إلى بوت داخلي مناظر. يمكنك اختبار الأنماط على &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">اسم المستخدم البوت مطلوب</string>
     <string name="InlineBotRulesRegexRequired">مطلوب تعبير عادي واحد على الأقل</string>
     <string name="InlineBotRulesSaveError">فشل في حفظ القاعدة. تحقق من بناء صيغة regex</string>

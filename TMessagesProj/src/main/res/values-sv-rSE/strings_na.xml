@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Konfiguration</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Tvinga kopiering</string>
     <string name="disableSecondAddress">Inaktivera andra adressbegäran</string>
     <string name="InvertReply">Invert</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Fall okänsliga uttryck</string>
     <string name="RegexFiltersAdd">Lägg till filter</string>
     <string name="RegexFiltersEdit">Redigera filter</string>
-    <string name="RegexFiltersAddDescription">Du kan använda webbplatsen <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> för att testa ditt reguljära uttryck.
+    <string name="RegexFiltersAddDescription">Du kan använda webbplatsen &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; för att testa ditt reguljära uttryck.
     Du kan också använda ren text, men glöm inte att fly parenteser.</string>
     <string name="RegexFiltersAddError">Regex syntaxfel</string>
     <string name="ShowTimeHint">Klicka på meddelandetid för att visa detaljer</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Ett reguljärt uttryck per rad</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Regex regler</string>
-    <string name="InlineBotRulesEditDescription">Varje rad är ett separat reguljärt uttryck. URL:er som matchar någon av dem kommer att skickas till motsvarande inline bot. Du kan testa mönster på <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Varje rad är ett separat reguljärt uttryck. URL:er som matchar någon av dem kommer att skickas till motsvarande inline bot. Du kan testa mönster på &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Bot användarnamn krävs</string>
     <string name="InlineBotRulesRegexRequired">Minst ett reguljärt uttryck krävs</string>
     <string name="InlineBotRulesSaveError">Det gick inte att spara regel. Kontrollera regex-syntax.</string>

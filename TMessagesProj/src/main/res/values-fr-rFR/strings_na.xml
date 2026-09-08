@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Configuration</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Forcer la copie</string>
     <string name="disableSecondAddress">Désactiver la demande de deuxième adresse</string>
     <string name="InvertReply">Inverser</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Expressions insensibles à la casse</string>
     <string name="RegexFiltersAdd">Ajouter un filtre</string>
     <string name="RegexFiltersEdit">Modifier le filtre</string>
-    <string name="RegexFiltersAddDescription">You can use site <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> to fully test your regular expression.
+    <string name="RegexFiltersAddDescription">You can use site &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; to fully test your regular expression.
     You can also use plain text, but don\'t forget to escape brackets.</string>
     <string name="RegexFiltersAddError">Erreur de syntaxe Regex</string>
     <string name="ShowTimeHint">Cliquez sur l\'heure du message pour afficher les détails</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Une expression régulière par ligne</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Règles Regex</string>
-    <string name="InlineBotRulesEditDescription">Chaque ligne est une expression régulière distincte. Les URL qui correspondent à l\'une d\'elles seront envoyées au bot en ligne correspondant. Vous pouvez tester les modèles à <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Chaque ligne est une expression régulière distincte. Les URL qui correspondent à l\'une d\'elles seront envoyées au bot en ligne correspondant. Vous pouvez tester les modèles à &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Le nom d\'utilisateur du bot est requis</string>
     <string name="InlineBotRulesRegexRequired">Au moins une expression régulière est requise</string>
     <string name="InlineBotRulesSaveError">Impossible d\'enregistrer la règle. Vérifiez la syntaxe regex.</string>

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="DeleteAllFromSelf">Slett alle fra deg selv</string>
     <string name="Hide">Skjul</string>
     <string name="HidePhone">Skjul mitt telefonnummer</string>
     <string name="MessageMenu">Meldingsmeny</string>
     <string name="IPv6">Tilkobling gjennom IPv6</string>
-    <string name="NekoSettings">Neko-innstillinger</string>
+    <string name="NekoSettings">qN-Settings</string>
     <string name="UseMediaStreamInVoip">Bruk mediastrøm i VoIP</string>
     <string name="BotLogin">Bott-innlogging</string>
     <string name="Repeat">Gjenta</string>

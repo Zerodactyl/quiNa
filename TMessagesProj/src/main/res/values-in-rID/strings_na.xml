@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Config</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Salin Paksa</string>
     <string name="disableSecondAddress">Nonaktifkan Permintaan Alamat Kedua</string>
     <string name="InvertReply">Membalikkan</string>
@@ -92,7 +92,7 @@
     <string name="ShowForumAsNormalChat">Show forum as normal chat</string>
     <string name="DecorationNone">None</string>
     <string name="ChatDecoration">Chat Decoration</string>
-    <string name="NeedChangeNekoSettings">You need to change qNa Settings</string>
+    <string name="NeedChangeNekoSettings">You need to change qN-Settings</string>
     <string name="DoNotUnarchiveBySwipe">Do not unarchive by swipe</string>
     <string name="DoNotShareMyPhoneNumber">Do not share my phone number</string>
     <string name="DefaultDeleteMenu">Default Delete Menu</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Case insensitive expressions</string>
     <string name="RegexFiltersAdd">Add filter</string>
     <string name="RegexFiltersEdit">Edit filter</string>
-    <string name="RegexFiltersAddDescription">You can use site <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> to fully test your regular expression.
+    <string name="RegexFiltersAddDescription">You can use site &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; to fully test your regular expression.
     You can also use plain text, but don\'t forget to escape brackets.</string>
     <string name="RegexFiltersAddError">Regex syntax error</string>
     <string name="ShowTimeHint">Click message time to display details</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">One regular expression per line</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Regex rules</string>
-    <string name="InlineBotRulesEditDescription">Each line is a separate regular expression. URLs that match any of them will be sent to the corresponding inline bot. You can test patterns at <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Each line is a separate regular expression. URLs that match any of them will be sent to the corresponding inline bot. You can test patterns at &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Bot username is required</string>
     <string name="InlineBotRulesRegexRequired">At least one regular expression is required</string>
     <string name="InlineBotRulesSaveError">Failed to save rule. Check the regex syntax.</string>

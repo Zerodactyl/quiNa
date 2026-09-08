@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Config</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Gennemtving Kopiering</string>
     <string name="disableSecondAddress">Deaktivér Anden Adresseanmodning</string>
     <string name="InvertReply">Invert</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Ufølsomme udtryk</string>
     <string name="RegexFiltersAdd">Tilføj filter</string>
     <string name="RegexFiltersEdit">Rediger filter</string>
-    <string name="RegexFiltersAddDescription">Du kan bruge <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> til at teste dit regulære udtryk fuldt ud.
+    <string name="RegexFiltersAddDescription">Du kan bruge &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; til at teste dit regulære udtryk fuldt ud.
     Du kan også bruge almindelig tekst, men glem ikke at undslippe parenteser.</string>
     <string name="RegexFiltersAddError">Regex syntaksfejl</string>
     <string name="ShowTimeHint">Klik på beskedtid for at vise detaljer</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Et regulært udtryk pr. linje</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Regex regler</string>
-    <string name="InlineBotRulesEditDescription">Hver linje er et separat regulært udtryk. URLer der matcher nogen af dem vil blive sendt til den tilsvarende indlejrede bot. Du kan teste mønstre på <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Hver linje er et separat regulært udtryk. URLer der matcher nogen af dem vil blive sendt til den tilsvarende indlejrede bot. Du kan teste mønstre på &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Bot brugernavn er påkrævet</string>
     <string name="InlineBotRulesRegexRequired">Mindst et regulært udtryk er påkrævet</string>
     <string name="InlineBotRulesSaveError">Reglen kunne ikke gemmes. Kontrollér regex- syntaksen.</string>

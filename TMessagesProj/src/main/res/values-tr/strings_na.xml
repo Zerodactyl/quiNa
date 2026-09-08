@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Config</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Kopyalamaya Zorla</string>
     <string name="InvertReply">Ters çevir</string>
     <string name="Great">Harika</string>

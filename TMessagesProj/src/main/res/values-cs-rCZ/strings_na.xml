@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">Konfigurace N-</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Vynutit kopírování</string>
     <string name="disableSecondAddress">Zakázat žádost o druhou adresu</string>
     <string name="InvertReply">Invert</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Necitlivé výrazy na velikost písmen</string>
     <string name="RegexFiltersAdd">Přidat filtr</string>
     <string name="RegexFiltersEdit">Upravit filtr</string>
-    <string name="RegexFiltersAddDescription">Můžete použít web <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> a vyzkoušet váš regulární výraz.
+    <string name="RegexFiltersAddDescription">Můžete použít web &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; a vyzkoušet váš regulární výraz.
     Můžete také použít prostý text, ale nezapomeňte uniknout závorky.</string>
     <string name="RegexFiltersAddError">Syntaktická chyba Regex</string>
     <string name="ShowTimeHint">Pro zobrazení podrobností klikněte na čas zprávy</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Jeden regulární výraz na řádek</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Pravidla regexu</string>
-    <string name="InlineBotRulesEditDescription">Každý řádek je samostatný regulární výraz. URL, které se shodují s kterýmkoli z nich, budou odeslány na příslušný inline bot. Můžete testovat vzory na <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Každý řádek je samostatný regulární výraz. URL, které se shodují s kterýmkoli z nich, budou odeslány na příslušný inline bot. Můžete testovat vzory na &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Je vyžadováno uživatelské jméno Bot</string>
     <string name="InlineBotRulesRegexRequired">Je vyžadován alespoň jeden regulární výraz</string>
     <string name="InlineBotRulesSaveError">Uložení pravidla se nezdařilo. Zkontrolujte syntaxi regex.</string>

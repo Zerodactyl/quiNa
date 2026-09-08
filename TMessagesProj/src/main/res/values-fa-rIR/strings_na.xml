@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">N-Config</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Force Copy</string>
     <string name="InvertReply">Invert</string>
     <string name="Great">Great</string>
@@ -89,7 +89,7 @@
     <string name="ShowForumAsNormalChat">Show forum as normal chat</string>
     <string name="DecorationNone">None</string>
     <string name="ChatDecoration">Chat Decoration</string>
-    <string name="NeedChangeNekoSettings">You need to change qNa Settings</string>
+    <string name="NeedChangeNekoSettings">You need to change qN-Settings</string>
     <string name="DoNotUnarchiveBySwipe">Do not unarchive by swipe</string>
     <string name="DoNotShareMyPhoneNumber">Do not share my phone number</string>
     <string name="DefaultDeleteMenu">Default Delete Menu</string>

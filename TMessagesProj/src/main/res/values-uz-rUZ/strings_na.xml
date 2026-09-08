@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">Sozlamalar</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Force Copy</string>
     <string name="InvertReply">Invert</string>
     <string name="Great">Zo\'r</string>
@@ -89,7 +89,7 @@
     <string name="ShowForumAsNormalChat">Show forum as normal chat</string>
     <string name="DecorationNone">None</string>
     <string name="ChatDecoration">Chat Decoration</string>
-    <string name="NeedChangeNekoSettings">You need to change qNa Settings</string>
+    <string name="NeedChangeNekoSettings">You need to change qN-Settings</string>
     <string name="DoNotUnarchiveBySwipe">Do not unarchive by swipe</string>
     <string name="DoNotShareMyPhoneNumber">Do not share my phone number</string>
     <string name="DefaultDeleteMenu">Default Delete Menu</string>
@@ -152,7 +152,7 @@
     <string name="RegexFiltersCaseInsensitive">Case insensitive expressions</string>
     <string name="RegexFiltersAdd">Add filter</string>
     <string name="RegexFiltersEdit">Edit filter</string>
-    <string name="RegexFiltersAddDescription">You can use site <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> to fully test your regular expression.
+    <string name="RegexFiltersAddDescription">You can use site &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; to fully test your regular expression.
     You can also use plain text, but don\'t forget to escape brackets.</string>
     <string name="RegexFiltersAddError">Regex syntax error</string>
     <string name="ShowTimeHint">Click message time to display details</string>

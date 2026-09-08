@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="N_Config">Настройки N</string>
+    <string name="N_Config">qN-Settings</string>
     <string name="ForceCopy">Принудительное копирование</string>
     <string name="disableSecondAddress">Отключить второй запрос адреса</string>
     <string name="InvertReply">Инвертировать</string>
@@ -156,7 +156,7 @@
     <string name="RegexFiltersCaseInsensitive">Не учитывать регистр</string>
     <string name="RegexFiltersAdd">Добавить фильтр</string>
     <string name="RegexFiltersEdit">Изменить фильтр</string>
-    <string name="RegexFiltersAddDescription">Вы можете использовать сайт <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> для полного тестирования вашего регулярного выражения.
+    <string name="RegexFiltersAddDescription">Вы можете использовать сайт &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt; для полного тестирования вашего регулярного выражения.
     Вы также можете использовать простой текст, но не забудьте убрать скобки.</string>
     <string name="RegexFiltersAddError">Синтаксическая ошибка регулярного выражения</string>
     <string name="ShowTimeHint">Показывать подробную информацию при нажатии на время сообщения</string>
@@ -335,7 +335,7 @@
     <string name="InlineBotRulesRegexHint">Одно регулярное выражение в строке</string>
     <string name="InlineBotRulesUsernameLabel">Bot username</string>
     <string name="InlineBotRulesRegexLabel">Правила Regex</string>
-    <string name="InlineBotRulesEditDescription">Каждая строка - отдельное регулярное выражение. URL, соответствующие любому из них, будут отправлены на соответствующий встроенный бот. Вы можете протестировать шаблоны на <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>.</string>
+    <string name="InlineBotRulesEditDescription">Каждая строка - отдельное регулярное выражение. URL, соответствующие любому из них, будут отправлены на соответствующий встроенный бот. Вы можете протестировать шаблоны на &lt;a href="https://regex101.com"&gt;regex101.com&lt;/a&gt;.</string>
     <string name="InlineBotRulesUsernameRequired">Требуется имя пользователя бота</string>
     <string name="InlineBotRulesRegexRequired">Требуется хотя бы одно регулярное выражение</string>
     <string name="InlineBotRulesSaveError">Не удалось сохранить правило. Проверьте синтаксис выражения.</string>
