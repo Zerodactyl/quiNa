@@ -75,7 +75,14 @@ public class NekoXConfig {
 
     public static SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekox_config", Context.MODE_PRIVATE);
 
-    public static boolean disableFlagSecure = NaConfig.INSTANCE.getDisableFlagSecure().Bool();
+    public static boolean isDisableFlagSecure() {
+        // Live mirror of NaConfig.INSTANCE.getDisableFlagSecure().Bool().
+        // NekoXConfig is a static facade over Nagram's NaConfig (single source of truth):
+        //   NaConfig  -> Nagram runtime config (xyz.nextalone.nagram)
+        //   NekoConfig -> legacy NekoX SharedPreferences (nekox_config)
+        // Reading via the getter (not a static field) keeps flag-secure override in sync.
+        return NaConfig.INSTANCE.getDisableFlagSecure().Bool();
+    }
 
     public static boolean isM3ExpressiveAll() {
         return NaConfig.INSTANCE.getM3ExpressiveAll().Bool();

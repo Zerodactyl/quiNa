@@ -9998,7 +9998,7 @@ public class MessageObject {
     }
 
     public static boolean shouldEncryptPhotoOrVideo(int currentAccount, TLRPC.Message message) {
-        if (NekoXConfig.disableFlagSecure) {
+        if (NekoXConfig.isDisableFlagSecure()) {
             return false;
         }
         if (message != null && message.media != null && (isVoiceDocument(getDocument(message)) || isRoundVideoMessage(message)) && message.media.ttl_seconds == 0x7FFFFFFF) {
@@ -10022,7 +10022,7 @@ public class MessageObject {
     }
 
     public static boolean isSecretPhotoOrVideo(TLRPC.Message message) {
-        if (NekoXConfig.disableFlagSecure) {
+        if (NekoXConfig.isDisableFlagSecure()) {
             return false;
         }
         if (message instanceof TLRPC.TL_message_secret) {
@@ -10034,7 +10034,7 @@ public class MessageObject {
     }
 
     public static boolean isSecretMedia(TLRPC.Message message) {
-        if (NekoXConfig.disableFlagSecure) {
+        if (NekoXConfig.isDisableFlagSecure()) {
             return false;
         }
         if (message instanceof TLRPC.TL_message_secret) {
@@ -10046,7 +10046,7 @@ public class MessageObject {
     }
 
     public boolean needDrawBluredPreview() {
-        if (NekoXConfig.disableFlagSecure) {
+        if (NekoXConfig.isDisableFlagSecure()) {
             return false;
         }
         if (isRepostPreview) {
@@ -10068,7 +10068,7 @@ public class MessageObject {
     }
 
     public boolean isSecretMedia() {
-        if (NekoXConfig.disableFlagSecure) {
+        if (NekoXConfig.isDisableFlagSecure()) {
             return false;
         }
         if (messageOwner instanceof TLRPC.TL_message_secret) {

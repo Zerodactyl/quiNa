@@ -330,7 +330,7 @@ public class NekoExperimentalSettingsActivity extends BaseNekoXSettingsActivity 
             } else if (key.equals(NaConfig.INSTANCE.getPlayerDecoder().getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESATRT, null, null);
             } else if (key.equals(NaConfig.INSTANCE.getDisableFlagSecure().getKey())) {
-                NekoXConfig.disableFlagSecure = NaConfig.INSTANCE.getDisableFlagSecure().Bool();
+                NekoXConfig.isDisableFlagSecure();
             } else if (key.equals(NaConfig.INSTANCE.getNavigationAnimationSpring().getKey())) {
                 tooltip.showWithAction(0, UndoView.ACTION_NEED_RESATRT, null, null);
             } else if (key.equals(NaConfig.INSTANCE.getForceEdgeToEdge().getKey())) {

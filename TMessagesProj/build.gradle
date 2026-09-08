@@ -185,9 +185,11 @@ android {
         }
 
         buildConfigField "String", "BUILD_VERSION_STRING", "\"" + verName + "\""
-        // F-Droid reproducible: APP_BUILD_TIMESTAMP from gradle.properties (2000000000000 placeholder)
-        // is replaced at CI time (see .gitlab-ci.yml / .github/workflows) for deterministic builds
-        buildConfigField "long", "BUILD_TIMESTAMP", APP_BUILD_TIMESTAMP + ""
+        // F-Droid reproducible: APP_BUILD_TIMESTAMP from gradle.properties (2000000000000 placeholder).
+        // CI may override via env APP_BUILD_TIMESTAMP (ms epoch); otherwise fallback to placeholder,
+        // so local builds stay deterministic and no sed on gradle.properties is needed.
+        def appBuildTimestamp = System.getenv("APP_BUILD_TIMESTAMP") ?: APP_BUILD_TIMESTAMP
+        buildConfigField "long", "BUILD_TIMESTAMP", appBuildTimestamp + ""
         buildConfigField "String", "OFFICIAL_VERSION", "\"" + officialVer + "\""
         buildConfigField "int", "OFFICIAL_VERSION_CODE", officialCode + ""
         buildConfigField "String", "APP_HASH", "\"" + appHash + "\""

@@ -7030,7 +7030,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 drawSideButton = checkNeedDrawShareButton(messageObject) ? 2 : 0;
             } else if (messageObject.searchType == ChatActivity.SEARCH_MY_MESSAGES) {
                 drawSideButton = 0;
-            } else if (MessagesController.getInstance(currentAccount).isPeerNoForwards(messageObject.getDialogId()) || (messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.disableFlagSecure)) {
+            } else if (MessagesController.getInstance(currentAccount).isPeerNoForwards(messageObject.getDialogId()) || (messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.isDisableFlagSecure())) {
                 drawSideButton = 0;
                 if (isPinnedChat && !isRepliesChat && !messageObject.isSponsored()) {
                     if (currentMessagesGroup != null && currentPosition != null) {
@@ -12177,7 +12177,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             Window window = activity == null ? null : activity.getWindow();
             if (window != null) {
                 flagSecure = new FlagSecureReason(window, () ->
-                        !NekoXConfig.disableFlagSecure && currentMessageObject != null && currentMessageObject.messageOwner != null && (
+                        !NekoXConfig.isDisableFlagSecure() && currentMessageObject != null && currentMessageObject.messageOwner != null && (
                         currentMessageObject.type == MessageObject.TYPE_PAID_MEDIA && (groupMedia == null || !groupMedia.hidden) ||
                         currentMessageObject.messageOwner.noforwards ||
                         currentMessageObject.isVoiceOnce() ||

@@ -14878,7 +14878,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
             boolean isInvoice = newMessageObject.isInvoice();
             boolean noforwards = MessagesController.getInstance(currentAccount).isPeerNoForwards(newMessageObject.getDialogId()) || (newMessageObject.messageOwner != null && newMessageObject.messageOwner.noforwards) || newMessageObject.hasRevealedExtendedMedia();
-            boolean noforwardsOverride = noforwards && !NekoXConfig.disableFlagSecure && !NaConfig.INSTANCE.getForceCopy().Bool();
+            boolean noforwardsOverride = noforwards && !NekoXConfig.isDisableFlagSecure() && !NaConfig.INSTANCE.getForceCopy().Bool();
             if (isVideo && !isLivePhoto) {
                 bottomLayout.setVisibility(View.VISIBLE);
                 bottomLayout.setTag(1);
@@ -17847,7 +17847,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 messageObject != null && (MessagesController.getInstance(currentAccount).isPeerNoForwardsWithOverride(messageObject.getDialogId()) ||
                 (messageObject.messageOwner != null && messageObject.messageOwner.noforwards)) || messageObject != null && messageObject.hasRevealedExtendedMedia()
             ) {
-                if (!NekoXConfig.disableFlagSecure)
+                if (!NekoXConfig.isDisableFlagSecure())
                 windowLayoutParams.flags |= WindowManager.LayoutParams.FLAG_SECURE;
                 AndroidUtilities.logFlagSecure();
             } else {

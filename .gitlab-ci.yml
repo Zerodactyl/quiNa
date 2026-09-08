@@ -146,7 +146,7 @@ build:
   script:
     - sed -i -E 's#https://github\.com/[^/]+/#https://gitlab.com/xtao-labs/mirrors/#g' .gitmodules
     - git submodule update --init 'TMessagesProj/lib/*'
-    - sed -i "s/2000000000000/$(date +%s%N | cut -c1-13)/g" gradle.properties
+    - export APP_BUILD_TIMESTAMP="$(date +%s%N | cut -c1-13)"
     - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle-cache"
     - export LOCAL_PROPERTIES="${LOCAL_PROPERTIES}"
     - export SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}"

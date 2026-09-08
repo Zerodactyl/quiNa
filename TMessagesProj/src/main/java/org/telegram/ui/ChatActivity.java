@@ -14102,7 +14102,7 @@ public class ChatActivity extends BaseFragment implements
     }
 
     private void showTextSelectionHint(MessageObject messageObject) {
-        if (getParentActivity() == null || getMessagesController().isPeerNoForwardsWithOverride(messageObject.getDialogId()) || (messageObject != null && messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.disableFlagSecure)) {
+        if (getParentActivity() == null || getMessagesController().isPeerNoForwardsWithOverride(messageObject.getDialogId()) || (messageObject != null && messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.isDisableFlagSecure())) {
             return;
         }
         CharSequence text;
@@ -19858,7 +19858,7 @@ public class ChatActivity extends BaseFragment implements
                                 return 21;
                             }
                         }
-                        if (NekoXConfig.disableFlagSecure || messageObject.messageOwner.ttl <= 0) {
+                        if (NekoXConfig.isDisableFlagSecure() || messageObject.messageOwner.ttl <= 0) {
                             return 4;
                         }
                     }
@@ -19916,7 +19916,7 @@ public class ChatActivity extends BaseFragment implements
             if (selectedMessagesIds[index].indexOfKey(messageObject.getId()) >= 0) {
                 selectedMessagesIds[index].remove(messageObject.getId());
                 if (!isReport()) {
-                    if ((messageObject.type == MessageObject.TYPE_TEXT || messageObject.isAnimatedEmoji() || messageObject.caption != null) && !(messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.disableFlagSecure)) {
+                    if ((messageObject.type == MessageObject.TYPE_TEXT || messageObject.isAnimatedEmoji() || messageObject.caption != null) && !(messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.isDisableFlagSecure())) {
                         selectedMessagesCanCopyIds[index].remove(messageObject.getId());
                     }
                     if (!messageObject.isAnimatedEmoji() && (messageObject.isSticker() || messageObject.isAnimatedSticker()) && MessageObject.isStickerHasSet(messageObject.getDocument())) {
@@ -19953,7 +19953,7 @@ public class ChatActivity extends BaseFragment implements
                 }
                 selectedMessagesIds[index].put(messageObject.getId(), messageObject);
                 if (!isReport()) {
-                    if ((messageObject.type == MessageObject.TYPE_TEXT || messageObject.isAnimatedEmoji() || messageObject.caption != null) && !(messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.disableFlagSecure)) {
+                    if ((messageObject.type == MessageObject.TYPE_TEXT || messageObject.isAnimatedEmoji() || messageObject.caption != null) && !(messageObject.messageOwner != null && messageObject.messageOwner.noforwards && !NekoXConfig.isDisableFlagSecure())) {
                         selectedMessagesCanCopyIds[index].put(messageObject.getId(), messageObject);
                     }
                     if (!messageObject.isAnimatedEmoji() && (messageObject.isSticker() || messageObject.isAnimatedSticker()) && MessageObject.isStickerHasSet(messageObject.getDocument())) {
@@ -20069,7 +20069,7 @@ public class ChatActivity extends BaseFragment implements
                 }
 
                 int copyVisible = View.GONE, starVisible = View.GONE, newCopyVisible = View.GONE, newStarVisible = View.GONE;
-                boolean noforwardsOverride = noforwards && !NekoXConfig.disableFlagSecure && !NaConfig.INSTANCE.getForceCopy().Bool();
+                boolean noforwardsOverride = noforwards && !NekoXConfig.isDisableFlagSecure() && !NaConfig.INSTANCE.getForceCopy().Bool();
                 if (copyItem != null) {
                     copyVisible = copyItem.getVisibility();
                     copyItem.setVisibility(!noforwardsOverride && (selectedMessagesCanCopyIds[0].size() + selectedMessagesCanCopyIds[1].size() != 0) && !NaConfig.INSTANCE.getDisableActionBarButtonCopy().Bool() ? View.VISIBLE : View.GONE);
@@ -31903,7 +31903,7 @@ public class ChatActivity extends BaseFragment implements
         }
         allowPin = allowPin && message.getId() > 0 && (message.messageOwner.action == null || message.messageOwner.action instanceof TLRPC.TL_messageActionEmpty) && !message.isExpiredStory() && message.type != MessageObject.TYPE_STORY_MENTION;
         boolean noforwards = isPeerNoForwards() || message.messageOwner.noforwards || getDialogId() == UserObject.VERIFY;
-        boolean noforwardsOverride = noforwards && !NekoXConfig.disableFlagSecure && !NaConfig.INSTANCE.getForceCopy().Bool();
+        boolean noforwardsOverride = noforwards && !NekoXConfig.isDisableFlagSecure() && !NaConfig.INSTANCE.getForceCopy().Bool();
         boolean noforwardsOrPaidMedia = noforwardsOverride || message.type == MessageObject.TYPE_PAID_MEDIA;
         boolean allowUnpin = message.getDialogId() != mergeDialogId && allowPin && (pinnedMessageObjects.containsKey(message.getId()) || groupedMessages != null && !groupedMessages.messages.isEmpty() && pinnedMessageObjects.containsKey(groupedMessages.messages.get(0).getId())) && !message.isExpiredStory();
         boolean allowEdit = message.canEditMessage(currentChat) && !chatActivityEnterView.hasAudioToSend() && message.getDialogId() != mergeDialogId && message.type != MessageObject.TYPE_STORY && message.type != MessageObject.TYPE_POLL;
@@ -37798,7 +37798,7 @@ public class ChatActivity extends BaseFragment implements
             return;
         }
         boolean noforwards = isPeerNoForwards() || (messageObject != null && messageObject.messageOwner != null && messageObject.messageOwner.noforwards);
-        boolean noforwardsOverride = noforwards && !NekoXConfig.disableFlagSecure && !NaConfig.INSTANCE.getForceCopy().Bool();
+        boolean noforwardsOverride = noforwards && !NekoXConfig.isDisableFlagSecure() && !NaConfig.INSTANCE.getForceCopy().Bool();
         if (url instanceof URLSpanMono) {
             if (!noforwardsOverride || getDialogId() == UserObject.VERIFY) {
                 ((URLSpanMono) url).copyToClipboard();
@@ -48079,7 +48079,7 @@ public class ChatActivity extends BaseFragment implements
         }
         allowPin = allowPin && message.getId() > 0 && (message.messageOwner.action == null || message.messageOwner.action instanceof TLRPC.TL_messageActionEmpty) && !message.isExpiredStory() && message.type != MessageObject.TYPE_STORY_MENTION;
         boolean noforwards = isPeerNoForwards() || message.messageOwner.noforwards || getDialogId() == UserObject.VERIFY;
-        boolean noforwardsOverride = noforwards && !NekoXConfig.disableFlagSecure && !NaConfig.INSTANCE.getForceCopy().Bool();
+        boolean noforwardsOverride = noforwards && !NekoXConfig.isDisableFlagSecure() && !NaConfig.INSTANCE.getForceCopy().Bool();
         boolean noforwardsOrPaidMedia = noforwardsOverride || message.type == MessageObject.TYPE_PAID_MEDIA;
         boolean allowUnpin = !isEphemeral && message.getDialogId() != mergeDialogId && allowPin && (pinnedMessageObjects.containsKey(message.getId()) || groupedMessages != null && !groupedMessages.messages.isEmpty() && pinnedMessageObjects.containsKey(groupedMessages.messages.get(0).getId())) && !message.isExpiredStory();
         boolean allowEdit = !isEphemeral && message.canEditMessage(currentChat) && !chatActivityEnterView.hasAudioToSend() && message.getDialogId() != mergeDialogId && message.type != MessageObject.TYPE_STORY && message.type != MessageObject.TYPE_POLL;
@@ -48580,7 +48580,7 @@ public class ChatActivity extends BaseFragment implements
                 }
 
                 boolean noforward = getMessagesController().isChatNoForwards(currentChat);
-                boolean noforwardOverride = noforward && !NekoXConfig.disableFlagSecure && !NaConfig.INSTANCE.getForceCopy().Bool();
+                boolean noforwardOverride = noforward && !NekoXConfig.isDisableFlagSecure() && !NaConfig.INSTANCE.getForceCopy().Bool();
 
                 final boolean canForward = !selectedObject.isSponsored()
                     && !isQuickRepliesOrWelcomeMessagesMode()

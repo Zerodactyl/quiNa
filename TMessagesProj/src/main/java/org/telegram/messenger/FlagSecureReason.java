@@ -76,7 +76,7 @@ public class FlagSecureReason {
     }
 
     public static boolean isSecuredNow(Window window) {
-        return currentSecureReasons != null && currentSecureReasons.get(window) != null && !NekoXConfig.disableFlagSecure;
+        return currentSecureReasons != null && currentSecureReasons.get(window) != null && !NekoXConfig.isDisableFlagSecure();
     }
 
     public interface FlagSecureCondition {
