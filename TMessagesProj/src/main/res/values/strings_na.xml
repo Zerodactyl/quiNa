@@ -544,7 +544,6 @@
     <string name="Appearance">Appearance</string>
     <string name="GeneralSettings">General Settings</string>
     <string name="ExperimentAbout">Experiments</string>
-    <string name="NekoGeneralNotification">Notification</string>
     <string name="AskBiometricsToOpenChats">Require Biometrics to Open Chats</string>
     <string name="AskBiometricsToOpenEncrypted">Require Biometrics for Secret Chats</string>
     <string name="AskBiometricsToOpenArchive">Require Biometrics for Archive</string>
