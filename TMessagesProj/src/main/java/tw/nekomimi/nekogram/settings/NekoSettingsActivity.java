@@ -73,7 +73,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
     private int channelRow;
     private int channelTipsRow = -1;
     private int sourceCodeRow;
-    private int translationRow;
     private int datacenterRow;
     private int networkLogRow;
     private int about2Row;
@@ -114,8 +113,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
             getMessagesController().openByUserName(channelUsername, this, 1);
         } else if (position == sourceCodeRow) {
             Browser.openUrl(getParentActivity(), "https://github.com/Zerodactyl/quiNa");
-        } else if (position == translationRow) {
-            Browser.openUrl(getParentActivity(), "https://crowdin.com/project/quina");
         } else if (position == datacenterRow) {
             presentFragment(new DatacenterActivity(0));
         } else if (position == networkLogRow) {
@@ -176,7 +173,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
         aboutRow = addRow("about");
         channelRow = addRow("channel");
         sourceCodeRow = addRow("sourceCode");
-        translationRow = addRow("translation");
         datacenterRow = addRow("datacenter");
         networkLogRow = addRow("networkLog");
         about2Row = addRow();
@@ -203,8 +199,6 @@ public class NekoSettingsActivity extends BaseNekoSettingsActivity {
                         textCell.setTextAndValue(LocaleController.getString(R.string.OfficialChannel), "@" + channelUsername, divider);
                     } else if (position == sourceCodeRow) {
                         textCell.setText(LocaleController.getString(R.string.SourceCode), divider);
-                    } else if (position == translationRow) {
-                        textCell.setText(LocaleController.getString(R.string.TransSite), divider);
                     } else if (position == datacenterRow) {
                         textCell.setText(LocaleController.getString(R.string.DatacenterStatus), divider);
                     } else if (position == networkLogRow) {
