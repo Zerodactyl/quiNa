@@ -77,6 +77,10 @@ public abstract class BaseRemoteHelper {
     }
 
     private void onGetMessageSuccess(TLObject response, Delegate delegate) {
+        if (!(response instanceof TLRPC.messages_Messages)) {
+            onError("Invalid metadata search response", delegate);
+            return;
+        }
         var tag = "#" + getTag();
         final var res = (TLRPC.messages_Messages) response;
         getMessagesController().removeDeletedMessagesFromArray(CHANNEL_METADATA_ID, res.messages);
@@ -115,18 +119,23 @@ public abstract class BaseRemoteHelper {
             req1.username = CHANNEL_METADATA_NAME;
             getConnectionsManager().sendRequest(req1, (response1, error1) -> {
                 if (error1 != null) {
+                    onError(error1.text, delegate);
                     return;
                 }
                 if (!(response1 instanceof TLRPC.TL_contacts_resolvedPeer)) {
+                    onError("Invalid metadata channel resolution response", delegate);
                     return;
                 }
                 TLRPC.TL_contacts_resolvedPeer resolvedPeer = (TLRPC.TL_contacts_resolvedPeer) response1;
+                if (resolvedPeer.chats == null || resolvedPeer.chats.isEmpty()
+                        || resolvedPeer.chats.get(0).id != CHANNEL_METADATA_ID
+                        || resolvedPeer.chats.get(0).access_hash == 0) {
+                    onError("Metadata channel could not be resolved", delegate);
+                    return;
+                }
                 getMessagesController().putUsers(resolvedPeer.users, false);
                 getMessagesController().putChats(resolvedPeer.chats, false);
                 getMessagesStorage().putUsersAndChats(resolvedPeer.users, resolvedPeer.chats, false, true);
-                if ((resolvedPeer.chats == null || resolvedPeer.chats.size() == 0)) {
-                    return;
-                }
                 req.peer = new TLRPC.TL_inputPeerChannel();
                 req.peer.channel_id = resolvedPeer.chats.get(0).id;
                 req.peer.access_hash = resolvedPeer.chats.get(0).access_hash;

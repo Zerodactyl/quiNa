@@ -178,7 +178,7 @@ Build:
 ### Reproducible builds / F-Droid
 
 - F-Droid metadata: `metadata/dev.Zerodactyl.quiNa.yml` with `bin/fdroid/prebuild.sh` / `bin/fdroid/build.sh`.
-- Reproducible flag: `TMessagesProj/build.gradle` builds a universal APK when the Gradle task contains `fdroid` (no ABI splits), and `APP_BUILD_TIMESTAMP` in `gradle.properties` is replaced at CI time (`sed` in `.gitlab-ci.yml` / `.github/workflows`) for deterministic builds; local placeholder is `2000000000000`.
+- Reproducible flag: `TMessagesProj/build.gradle` builds a universal APK when the Gradle task contains `fdroid` (no ABI splits). Without an `APP_BUILD_TIMESTAMP` environment override, Gradle uses the reproducible `gradle.properties` placeholder `2000000000000`; CI does not modify that file. GitHub Actions and GitLab generate one millisecond timestamp for Gradle and deliver the same value to the publishing job in `build-timestamp.txt`.
 - No integrity/genuine header generation is required.
 
 ## Compilation with GitHub Action
@@ -214,6 +214,15 @@ Then, use base64 to encode the above.
 5. *(removed - integrity check deleted)*
 
 > **Reproducible builds:** F-Droid builds use `metadata/dev.Zerodactyl.quiNa.yml`; see `### Reproducible builds / F-Droid` above. No `genuine.h` generation.
+
+### Updater publishing
+
+- Stable publishing (`upload.py ... release`) edits `#updatev2`. Set the GitHub Actions repository variable `UPDATE_METADATA_MESSAGE_ID` to the ID of the existing `#updatev2` JSON message in `@quina_remote_metadata`. Find that message in the channel and use its message link ID; there is deliberately no guessed stable default. The bot must be allowed to post, forward, and edit metadata there.
+- Test publishing (`upload.py ... test`, including the debug and GitLab pipelines) retains `#updatetest` message `46`. Override it with the GitHub repository variable `TEST_UPDATE_METADATA_MESSAGE_ID`, or `UPDATE_METADATA_MESSAGE_ID` in GitLab CI/CD variables or a local uploader environment. Keep stable and test message IDs distinct. The uploader rejects a destination whose tag does not match the selected publishing mode.
+- For stable publishing from GitLab, change the uploader argument to `release` and configure the required CI/CD variable `UPDATE_METADATA_MESSAGE_ID` for `#updatev2`. The checked-in GitLab pipeline remains a test publisher.
+- Download the timestamp artifact from the same build as the APKs to `artifacts/build-timestamp.txt`. GitHub upload jobs require that artifact; GitLab checks it exists. The uploader uses that value and rejects a conflicting environment override. Without an artifact, local uploads use `APP_BUILD_TIMESTAMP`, then the unchanged reproducible Gradle property. Do not generate a new timestamp at upload time.
+- Upload, forward, and edit operations retry up to three times, then fail the job. Network errors are not printed verbatim and the bot session stays in memory. Retrying sends after an ambiguous network failure may still duplicate posts; inspect the channel before rerunning a failed publishing job.
+- Run the publishing tests with Python 3.12: `python -m pip install -r bin/scripts/requirements-test.txt` followed by `python -m unittest discover -s bin/scripts -p 'test_*.py'`. All Telegram network operations in the uploader tests are mocked; CI tests check the YAML artifact routing and execute only timestamp setup in temporary directories.
 
 ## FAQ
 

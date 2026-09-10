@@ -380,6 +380,10 @@ import tw.nekomimi.nekogram.utils.ProxyUtil;
 import tw.nekomimi.nekogram.utils.ShareUtil;
 import tw.nekomimi.nekogram.utils.UIUtil;
 import xyz.nextalone.nagram.NaConfig;
+import xyz.nextalone.nagram.nowplaying.LocalNowPlayingController;
+import xyz.nextalone.nagram.nowplaying.NowPlayingCard;
+import xyz.nextalone.nagram.nowplaying.NowPlayingCardData;
+import xyz.nextalone.nagram.nowplaying.NowPlayingDTO;
 import xyz.nextalone.nagram.helper.MessageHelper;
 import xyz.nextalone.nagram.ui.ItemOptionsPatch;
 
@@ -770,6 +774,13 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int blockedUsersRow;
     private int membersSectionRow;
     private boolean hasMusic;
+    private NowPlayingCardData nowPlayingCardData;
+    private boolean loadingNowPlayingTrack;
+    private boolean nowPlayingPollingActive;
+    private int nowPlayingRequestId;
+    private final Runnable nowPlayingPollRunnable = this::pollNowPlayingTrack;
+    private int nowPlayingRow = -1;
+    private int nowPlayingSectionRow = -1;
 
     private int sharedMediaRow;
 
@@ -10024,8 +10035,124 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     }
 
     @Override
+    private boolean shouldShowLocalNowPlaying() {
+        return getDialogId() == getUserConfig().getClientUserId()
+            && (imageUpdater == null || myProfile)
+            && LocalNowPlayingController.isEnabled();
+    }
+
+    private boolean shouldShowRemoteNowPlaying() {
+        return getDialogId() != getUserConfig().getClientUserId()
+            && userId != 0
+            && LocalNowPlayingController.isEnabled();
+    }
+
+    private void cancelNowPlayingPolling() {
+        AndroidUtilities.cancelRunOnUIThread(nowPlayingPollRunnable);
+    }
+
+    private void scheduleNowPlayingPolling() {
+        cancelNowPlayingPolling();
+        if (nowPlayingPollingActive && shouldShowLocalNowPlaying()) {
+            AndroidUtilities.runOnUIThread(nowPlayingPollRunnable, 30000);
+        }
+    }
+
+    private void pollNowPlayingTrack() {
+        cancelNowPlayingPolling();
+        boolean showLocal = shouldShowLocalNowPlaying();
+        boolean showRemote = shouldShowRemoteNowPlaying();
+        if (!nowPlayingPollingActive || (!showLocal && !showRemote)) {
+            nowPlayingRequestId++;
+            loadingNowPlayingTrack = false;
+            if (nowPlayingCardData != null) {
+                nowPlayingCardData = null;
+                updateListAnimated(false);
+            }
+            return;
+        }
+        final int requestId = ++nowPlayingRequestId;
+        final long startTime = System.currentTimeMillis();
+        final boolean rowVisible = nowPlayingRow >= 0;
+        final boolean isRemote = showRemote;
+        loadingNowPlayingTrack = !isRemote;
+
+        if (!isRemote) {
+            NowPlayingDTO cached = LocalNowPlayingController.getCachedTrack();
+            if (cached != null && cached.isPlaying() && nowPlayingCardData == null) {
+                final NowPlayingDTO cachedDto = cached;
+                NowPlayingCardData.create(cachedDto, cardData -> {
+                    if (requestId != nowPlayingRequestId || nowPlayingCardData != null) return;
+                    if (cardData != null && cardData.getCoverBitmap() == null) return;
+                    nowPlayingCardData = cardData;
+                    if (nowPlayingRow < 0) updateListAnimated(false);
+                    else refreshNowPlayingRow();
+                });
+            }
+        }
+        if (!isRemote && !rowVisible) updateListAnimated(false);
+
+        LocalNowPlayingController.Callback trackCallback = dto -> {
+            if (requestId != nowPlayingRequestId) return;
+            final NowPlayingDTO finalDto = (dto != null && dto.isPlaying()) ? dto : null;
+            final Runnable finish = () -> {
+                if (requestId != nowPlayingRequestId) return;
+                loadingNowPlayingTrack = false;
+                if (nowPlayingCardData == null) {
+                    if (nowPlayingRow >= 0) updateListAnimated(false);
+                } else {
+                    refreshNowPlayingRow();
+                }
+                scheduleNowPlayingPolling();
+            };
+            if (finalDto == null) {
+                long elapsed = System.currentTimeMillis() - startTime;
+                long delay = elapsed < 325 ? 325 - elapsed : 0;
+                AndroidUtilities.runOnUIThread(finish, delay);
+                return;
+            }
+            final NowPlayingDTO trackDto = finalDto;
+            NowPlayingCardData.create(trackDto, cardData -> {
+                if (requestId != nowPlayingRequestId) return;
+                long elapsed = System.currentTimeMillis() - startTime;
+                long delay = elapsed < 325 ? 325 - elapsed : 0;
+                AndroidUtilities.runOnUIThread(() -> {
+                    if (requestId != nowPlayingRequestId) return;
+                    loadingNowPlayingTrack = false;
+                    if (cardData != null && cardData.getCoverBitmap() == null
+                        && nowPlayingCardData != null) {
+                        scheduleNowPlayingPolling();
+                        return;
+                    }
+                    nowPlayingCardData = cardData;
+                    if (nowPlayingRow < 0) updateListAnimated(false);
+                    else refreshNowPlayingRow();
+                    scheduleNowPlayingPolling();
+                }, delay);
+            });
+        };
+
+        if (isRemote) {
+            LocalNowPlayingController.getNowPlayingByUid(userId, trackCallback);
+        } else {
+            LocalNowPlayingController.getCurrentTrack(trackCallback);
+        }
+    }
+
+    private void refreshNowPlayingRow() {
+        if (listAdapter != null && nowPlayingRow >= 0) {
+            try {
+                listAdapter.notifyItemChanged(nowPlayingRow);
+            } catch (Exception ignore) {}
+        }
+    }
+
     public void onResume() {
         super.onResume();
+        nowPlayingPollingActive = true;
+        if (shouldShowLocalNowPlaying()) {
+            loadingNowPlayingTrack = true;
+        }
         if (sharedMediaLayout != null) {
             sharedMediaLayout.onResume();
         }
@@ -10046,6 +10173,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
         updateProfileData(true);
+        pollNowPlayingTrack();
         fixLayout();
         if (nameTextView[1] != null) {
             setParentActivityTitle(nameTextView[1].getText());
@@ -10075,6 +10203,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onPause() {
         super.onPause();
+        nowPlayingPollingActive = false;
+        cancelNowPlayingPolling();
+        nowPlayingRequestId++;
         if (undoView != null) {
             undoView.hide(true, 0);
         }
@@ -11058,6 +11189,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         channelBalanceRow = -1;
         balanceDividerRow = -1;
         hasMusic = false;
+        nowPlayingRow = -1;
+        nowPlayingSectionRow = -1;
 
         unblockRow = -1;
         joinRow = -1;
@@ -11103,16 +11236,23 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         if (userId != 0) {
             TLRPC.User user = getMessagesController().getUser(userId);
+            boolean showNowPlaying = (shouldShowLocalNowPlaying() || shouldShowRemoteNowPlaying())
+                && (nowPlayingCardData != null || loadingNowPlayingTrack);
             if (userInfo != null && userInfo.saved_music != null && (imageUpdater == null || myProfile)) {
                 hasMusic = true;
             }
 
             if (emptyRow < 0 && emptyRow2 < 0) {
-                if (hasMusic || peerColor != null || actionsView == null) {
+                if (hasMusic || showNowPlaying || peerColor != null || actionsView == null) {
                     emptyRow2 = rowCount++;
                 } else {
                     emptyRow = rowCount++;
                 }
+            }
+
+            if (showNowPlaying) {
+                nowPlayingRow = rowCount++;
+                nowPlayingSectionRow = rowCount++;
             }
 
             if (UserObject.isUserSelf(user) && !myProfile) {
@@ -13737,6 +13877,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 VIEW_TYPE_COLORFUL_TEXT = 27,
                 VIEW_TYPE_HEADER_EMPTY = 28,
                 VIEW_TYPE_MUSIC = 29,
+                VIEW_TYPE_NOW_PLAYING = 100,
                 VIEW_TYPE_TEXT_DETAIL_MULTILINE_2 = 30,
                 VIEW_TYPE_EMPTY2 = 31,
                 VIEW_TYPE_TEXT2 = 32,
@@ -13985,6 +14126,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         }
                     };
                     break;
+                case VIEW_TYPE_NOW_PLAYING: {
+                    NowPlayingCard card = new NowPlayingCard(mContext, resourcesProvider);
+                    view = card;
+                    break;
+                }
                 case VIEW_TYPE_BOT_APP:
                     FrameLayout frameLayout = new FrameLayout(mContext);
                     ButtonWithCounterView button = new ButtonWithCounterView(mContext, resourcesProvider);
@@ -14834,6 +14980,20 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     break;
                 case VIEW_TYPE_MUSIC:
                     break;
+                case VIEW_TYPE_NOW_PLAYING:
+                    if (holder.itemView instanceof NowPlayingCard) {
+                        NowPlayingCard card = (NowPlayingCard) holder.itemView;
+                        if (nowPlayingCardData != null) {
+                            card.set(nowPlayingCardData);
+                        } else {
+                            card.set(new NowPlayingCardData(
+                                new NowPlayingDTO(getString(R.string.Loading), null, null, null, null,
+                                    LocalNowPlayingController.getProfileUrl(), true, null,
+                                    LocalNowPlayingController.PLATFORM_LAST_FM, null),
+                                null, null, null, null, 0L));
+                        }
+                    }
+                    break;
             }
         }
 
@@ -14975,6 +15135,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         @Override
         public int getItemViewType(int position) {
+            if (position == nowPlayingRow) {
+                return VIEW_TYPE_NOW_PLAYING;
+            }
             if (position == infoHeaderRow || position == membersHeaderRow || position == settingsSectionRow2 ||
                     position == numberSectionRow || position == helpHeaderRow || position == debugHeaderRow || position == botPermissionsHeader) {
                 return VIEW_TYPE_HEADER;
@@ -15011,7 +15174,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == helpSectionCell || position == setAvatarSectionRow || position == passwordSuggestionSectionRow ||
                     position == phoneSuggestionSectionRow || position == premiumSectionsRow || position == reportDividerRow ||
                     position == channelDividerRow || position == graceSuggestionSectionRow || position == balanceDividerRow ||
-                    position == botPermissionsDivider || position == channelBalanceSectionRow || position == unofficialSecurityRiskDividerRow
+                    position == botPermissionsDivider || position == channelBalanceSectionRow || position == unofficialSecurityRiskDividerRow ||
+                    position == nowPlayingSectionRow
             ) {
                 return VIEW_TYPE_SHADOW;
             } else if (position >= membersStartRow && position < membersEndRow) {
@@ -16348,6 +16512,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             int pointer = 0;
             put(++pointer, setAvatarRow, sparseIntArray);
             put(++pointer, setAvatarSectionRow, sparseIntArray);
+            put(++pointer, nowPlayingRow, sparseIntArray);
+            put(++pointer, nowPlayingSectionRow, sparseIntArray);
             put(++pointer, numberSectionRow, sparseIntArray);
             put(++pointer, numberRow, sparseIntArray);
             put(++pointer, setUsernameRow, sparseIntArray);

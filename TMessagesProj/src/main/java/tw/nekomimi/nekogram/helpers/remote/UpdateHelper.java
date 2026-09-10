@@ -29,7 +29,9 @@ public class UpdateHelper extends BaseRemoteHelper {
 
     @Override
     protected void onError(String text, Delegate delegate) {
-        delegate.onTLResponse(null, text);
+        if (delegate != null) {
+            delegate.onTLResponse(null, text);
+        }
     }
 
     @Override
@@ -37,27 +39,24 @@ public class UpdateHelper extends BaseRemoteHelper {
         return NekoXConfig.autoUpdateReleaseChannel >= 2 ? "updatetest" : "updatev2";
     }
 
-    @SuppressWarnings("ConstantConditions")
     private int getPreferredAbiFile(Map<String, Integer> files) {
         for (String abi : Build.SUPPORTED_ABIS) {
-            if (files.containsKey(abi)) {
-                return files.get(abi);
+            Integer file = files.get(abi);
+            if (file != null && file > 0) {
+                return file;
             }
         }
-        return files.get("arm64-v8a");
+        return 0;
     }
 
     private Map<String, Integer> jsonToMap(JSONObject obj) {
         Map<String, Integer> map = new HashMap<>();
-        List<String> abis = new ArrayList<>();
-        abis.add("armeabi-v7a");
-        abis.add("arm64-v8a");
-
-        try {
-            for(var abi: abis) {
-                map.put(abi, obj.getInt(abi));
+        for (String abi : new String[]{"armeabi-v7a", "arm64-v8a"}) {
+            int file = obj.optInt(abi, 0);
+            if (file > 0) {
+                map.put(abi, file);
             }
-        } catch (JSONException e) { FileLog.e(e); }
+        }
         return map;
     }
 
@@ -72,8 +71,9 @@ public class UpdateHelper extends BaseRemoteHelper {
                 if (versionCode > currentVersion
                         || (versionCode == currentVersion && timestamp > currentTimestamp)
                         || updateAlways) {
-                    if (updateAlways) {
-                        updateAlways = false;
+                    var files = jsonToMap(string.getJSONObject("gcm"));
+                    if (getPreferredAbiFile(files) == 0) {
+                        continue;
                     }
                     ref = new Update(
                             string.getBoolean("can_not_skip"),
@@ -82,9 +82,10 @@ public class UpdateHelper extends BaseRemoteHelper {
                             timestamp,
                             string.getInt("sticker"),
                             string.getInt("message"),
-                            jsonToMap(string.getJSONObject("gcm")),
+                            files,
                             string.getString("url")
                     );
+                    updateAlways = false;
                     break;
                 }
             } catch (JSONException e) { FileLog.e(e); }
@@ -140,6 +141,9 @@ public class UpdateHelper extends BaseRemoteHelper {
 
     @Override
     protected void onLoadSuccess(ArrayList<JSONObject> responses, Delegate delegate) {
+        if (delegate == null) {
+            return;
+        }
         var update = getShouldUpdateVersion(responses);
         if (update == null) {
             delegate.onTLResponse(null, null);
@@ -164,10 +168,12 @@ public class UpdateHelper extends BaseRemoteHelper {
             req.channel = getMessagesController().getInputChannel(CHANNEL_METADATA_ID);
             req.id = new ArrayList<>(ids.values());
             getConnectionsManager().sendRequest(req, (response1, error1) -> {
-                if (error1 == null) {
+                if (error1 != null) {
+                    onError(error1.text, delegate);
+                } else if (response1 instanceof TLRPC.messages_Messages) {
                     getNewVersionMessagesCallback(delegate, update, ids, response1);
                 } else {
-                    delegate.onTLResponse(null, error1.text);
+                    onError("Invalid update messages response", delegate);
                 }
             });
         }

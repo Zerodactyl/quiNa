@@ -68,6 +68,7 @@ object ChatMenuInjector {
     fun handleOption(chatActivity: ChatActivity, option: Int, selectedObject: MessageObject?): Boolean {
         when (option) {
             OPTION_CLEAR_FROM_CACHE -> {
+                var cleared = false
                 try {
                     val path = selectedObject?.messageOwner?.attachPath
                     var filePath = path
@@ -77,13 +78,23 @@ object ChatMenuInjector {
                     }
                     if (!filePath.isNullOrEmpty()) {
                         val file = java.io.File(filePath)
-                        if (file.exists()) file.delete()
-                        if (selectedObject != null) selectedObject.mediaExists = false
+                        val cacheDir = org.telegram.messenger.FileLoader.getDirectory(org.telegram.messenger.FileLoader.MEDIA_DIR_CACHE)?.canonicalPath
+                        if (cacheDir != null && file.canonicalPath.startsWith(cacheDir + java.io.File.separator) && file.exists()) {
+                            cleared = file.delete()
+                            if (cleared && selectedObject != null) selectedObject.mediaExists = false
+                        } else {
+                            org.telegram.messenger.FileLog.d("ClearFromCache skipped non-cache path")
+                        }
                     }
+                    val success = cleared
                     org.telegram.messenger.AndroidUtilities.runOnUIThread {
                         try {
                             val bulletin = org.telegram.ui.Components.BulletinFactory.of(chatActivity)
-                            bulletin.createSimpleBulletin(R.raw.done, LocaleController.getString(R.string.CacheCleared)).show()
+                            if (success) {
+                                bulletin.createSimpleBulletin(R.raw.done, LocaleController.getString(R.string.CacheCleared)).show()
+                            } else {
+                                bulletin.createErrorBulletin(LocaleController.getString(R.string.CacheClearFailed)).show()
+                            }
                         } catch (_: Exception) {}
                     }
                 } catch (e: Exception) {
@@ -93,13 +104,15 @@ object ChatMenuInjector {
             }
             OPTION_FORWARD_WO_AUTHOR -> {
                 if (selectedObject == null) return true
+                ChatActivity.noForwardQuote = true
+                chatActivity.messagePreviewParams?.setHideForwardSendersName(true)
                 chatActivity.forwardingMessage = selectedObject
                 chatActivity.forwardingMessageGroup = null
                 val args = android.os.Bundle()
                 args.putBoolean("onlySelect", true)
                 args.putInt("dialogsType", org.telegram.ui.DialogsActivity.DIALOGS_TYPE_FORWARD)
                 args.putInt("messagesCount", 1)
-                args.putBoolean("forwardNoAuthor", true)
+                args.putBoolean("forward_noquote", true)
                 val fragment = org.telegram.ui.DialogsActivity(args)
                 fragment.setDelegate(chatActivity)
                 chatActivity.presentFragment(fragment)

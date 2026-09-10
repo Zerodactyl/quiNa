@@ -560,5 +560,6 @@
     <string name="ImportCherry">Import .cherry</string>
     <string name="ExportCherryInfo">Backup quiNa settings</string>
     <string name="ImportCherryInfo">Restore from backup</string>
+    <string name="CacheClearFailed">File is not in cache</string>
 
 </resources>

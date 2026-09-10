@@ -23,6 +23,7 @@ import tw.nekomimi.nekogram.settings.NekoDebugSettingsActivity;
 import tw.nekomimi.nekogram.settings.NekoEmojiSettingsActivity;
 import tw.nekomimi.nekogram.settings.NekoExperimentalSettingsActivity;
 import tw.nekomimi.nekogram.settings.NekoGeneralSettingsActivity;
+import tw.nekomimi.nekogram.settings.NekoMaterial3SettingsActivity;
 import tw.nekomimi.nekogram.settings.NekoPasscodeSettingsActivity;
 import tw.nekomimi.nekogram.settings.NekoSettingsActivity;
 import xyz.nextalone.nagram.network.NetworkLogActivity;
@@ -75,6 +76,10 @@ public class SettingsHelper {
                 case "g":
                     fragment = nekox_fragment = new NekoGeneralSettingsActivity();
                     break;
+                case "m3":
+                case "material":
+                    fragment = nekox_fragment = new NekoMaterial3SettingsActivity();
+                    break;
                 case "network_logs":
                 case "n":
                     fragment = new NetworkLogActivity();
@@ -125,6 +130,7 @@ public class SettingsHelper {
         ArrayList<SettingsSearchResult> items = new ArrayList<>();
         ArrayList<BaseNekoXSettingsActivity> fragments = new ArrayList<>();
         fragments.add(new NekoGeneralSettingsActivity());
+        fragments.add(new NekoMaterial3SettingsActivity());
         fragments.add(new NekoChatSettingsActivity());
         fragments.add(new NekoExperimentalSettingsActivity());
         fragments.add(new NekoDebugSettingsActivity());

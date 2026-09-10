@@ -79,6 +79,20 @@ public class FlagSecureReason {
         return currentSecureReasons != null && currentSecureReasons.get(window) != null && !NekoXConfig.isDisableFlagSecure();
     }
 
+    /**
+     * Re-applies FLAG_SECURE to every tracked window. The disable-flag-secure
+     * override is read live, so toggling the setting must refresh windows
+     * whose reasons did not change.
+     */
+    public static void refreshAllSecureWindows() {
+        if (currentSecureReasons == null) {
+            return;
+        }
+        for (Window window : new java.util.ArrayList<>(currentSecureReasons.keySet())) {
+            updateWindowSecure(window);
+        }
+    }
+
     public interface FlagSecureCondition {
         boolean run();
     }

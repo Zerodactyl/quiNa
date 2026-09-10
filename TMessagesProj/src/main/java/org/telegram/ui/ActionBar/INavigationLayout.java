@@ -247,6 +247,16 @@ public interface INavigationLayout {
     }
 
     default boolean presentFragment(BaseFragment fragment) {
+        if (fragment instanceof org.telegram.ui.DialogsActivity) {
+            android.os.Bundle args = fragment.getArguments();
+            if (args != null && args.getInt("folderId", 0) == 1
+                    && xyz.nextalone.nagram.NaConfig.INSTANCE.getAskBiometricsToOpenArchive().Bool()
+                    && tw.nekomimi.nekogram.helpers.BiometricHelper.checkBiometricAvailable()
+                    && getParentActivity() != null) {
+                tw.nekomimi.nekogram.helpers.BiometricHelper.prompt(getParentActivity(), () -> presentFragment(new NavigationParams(fragment)), null);
+                return true;
+            }
+        }
         return presentFragment(new NavigationParams(fragment));
     }
 

@@ -155,12 +155,12 @@ build:
     - APK_DIR=$(dirname "$APK")
     - mkdir -p artifacts/Release
     - cp -r "$APK_DIR"/* artifacts/Release/
-    - cp gradle.properties artifacts/gradle.properties
+    - echo "$APP_BUILD_TIMESTAMP" > artifacts/build-timestamp.txt
   artifacts:
     name: "Release-${CI_COMMIT_SHORT_SHA}"
     paths:
       - artifacts/Release/
-      - artifacts/gradle.properties
+      - artifacts/build-timestamp.txt
     expire_in: 1 week
 
 upload:
@@ -174,7 +174,7 @@ upload:
     - job: build
       artifacts: true
   script:
-    - cp artifacts/gradle.properties gradle.properties
+    - test -s artifacts/build-timestamp.txt
     - export mini64=$(find artifacts -name "*arm64-v8a.apk")
     - export mini32=$(find artifacts -name "*armeabi-v7a.apk")
     - echo $mini64

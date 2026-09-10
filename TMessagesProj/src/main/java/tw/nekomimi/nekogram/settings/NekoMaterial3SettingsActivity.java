@@ -58,6 +58,16 @@ public class NekoMaterial3SettingsActivity extends BaseNekoXSettingsActivity {
     }
 
     @Override
+    public int getBaseGuid() {
+        return 14000;
+    }
+
+    @Override
+    public int getDrawable() {
+        return R.drawable.msg_theme;
+    }
+
+    @Override
     public View createView(Context context) {
         var superView = super.createView(context);
 
@@ -98,12 +108,18 @@ public class NekoMaterial3SettingsActivity extends BaseNekoXSettingsActivity {
                 if (NaConfig.INSTANCE.getM3QuoteCard().Bool() != all) NaConfig.INSTANCE.getM3QuoteCard().setConfigBool(all);
                 if (NaConfig.INSTANCE.getM3TactileHaptics().Bool() != all) NaConfig.INSTANCE.getM3TactileHaptics().setConfigBool(all);
                 if (NaConfig.INSTANCE.getM3FloatingSearchBar().Bool() != all) NaConfig.INSTANCE.getM3FloatingSearchBar().setConfigBool(all);
-                if (listView != null) {
-                    listView.post(() -> {
-                        if (listAdapter != null) {
-                            listAdapter.notifyDataSetChanged();
-                        }
-                    });
+                refreshM3List();
+            } else {
+                // Runtime checks use master || child, so keep the master toggle
+                // consistent with the individual switches: turning any child off
+                // clears the master, and turning the last child on restores it.
+                boolean childValue = (boolean) newValue;
+                if (!childValue && NaConfig.INSTANCE.getM3ExpressiveAll().Bool()) {
+                    NaConfig.INSTANCE.getM3ExpressiveAll().setConfigBool(false);
+                    refreshM3List();
+                } else if (childValue && !NaConfig.INSTANCE.getM3ExpressiveAll().Bool() && allM3ChildrenOn()) {
+                    NaConfig.INSTANCE.getM3ExpressiveAll().setConfigBool(true);
+                    refreshM3List();
                 }
             }
             if (tooltip != null) {
@@ -111,9 +127,39 @@ public class NekoMaterial3SettingsActivity extends BaseNekoXSettingsActivity {
             }
         };
 
+        addRowsToMap();
         cellGroup.setListAdapter(listView, listAdapter);
 
         return superView;
+    }
+
+    private void refreshM3List() {
+        if (listView != null) {
+            listView.post(() -> {
+                if (listAdapter != null) {
+                    listAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    private static boolean allM3ChildrenOn() {
+        return NaConfig.INSTANCE.getM3ExpressiveProgress().Bool()
+                && NaConfig.INSTANCE.getM3ExpressiveDialogs().Bool()
+                && NaConfig.INSTANCE.getM3SectionCards().Bool()
+                && NaConfig.INSTANCE.getM3GlassMenu().Bool()
+                && NaConfig.INSTANCE.getM3WavySlider().Bool()
+                && NaConfig.INSTANCE.getM3TabPill().Bool()
+                && NaConfig.INSTANCE.getM3SpringPhysics().Bool()
+                && NaConfig.INSTANCE.getM3ExpressiveVoice().Bool()
+                && NaConfig.INSTANCE.getM3ExpressiveSwitch().Bool()
+                && NaConfig.INSTANCE.getM3ExpressiveFab().Bool()
+                && NaConfig.INSTANCE.getM3ExpressiveBubbles().Bool()
+                && NaConfig.INSTANCE.getM3ExpressiveBottomSheet().Bool()
+                && NaConfig.INSTANCE.getM3ExpressivePillSliders().Bool()
+                && NaConfig.INSTANCE.getM3QuoteCard().Bool()
+                && NaConfig.INSTANCE.getM3TactileHaptics().Bool()
+                && NaConfig.INSTANCE.getM3FloatingSearchBar().Bool();
     }
 
     private class ListAdapter extends BaseListAdapter {

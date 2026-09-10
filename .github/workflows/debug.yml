@@ -207,7 +207,9 @@ jobs:
           key: ${{ hashFiles('TMessagesProj/jni/**', 'ffmpeg_status', 'boringssl_status') }}-arm64-v8a
       - name: Configure Gradle
         run: |
-          export APP_BUILD_TIMESTAMP="$(date +%s%N | cut -c1-13)"
+          APP_BUILD_TIMESTAMP="$(date +%s%N | cut -c1-13)"
+          echo "APP_BUILD_TIMESTAMP=$APP_BUILD_TIMESTAMP" >> "$GITHUB_ENV"
+          echo "$APP_BUILD_TIMESTAMP" > build-timestamp.txt
           echo "sdk.dir=${ANDROID_HOME}" >> local.properties
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -222,11 +224,12 @@ jobs:
           APK=$(find TMessagesProj/build/outputs/apk -name '*arm64-v8a*.apk')
           APK=$(dirname $APK)
           echo "APK=$APK" >> $GITHUB_ENV
-      - name: Upload gradle.properties
+      - name: Upload build timestamp
         uses: actions/upload-artifact@v4
         with:
-          name: gradle-properties
-          path: gradle.properties
+          name: build-timestamp
+          path: build-timestamp.txt
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
           name: Release
@@ -240,23 +243,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Remove gradle.properties
-        run: |
-          rm -f gradle.properties
-      - name: Download gradle.properties
+      - name: Download build timestamp
         uses: actions/download-artifact@v4
         with:
-          name: gradle-properties
-          path: .
-      - name: Donwload Artifacts
-        uses: actions/download-artifact@v4
-        with:
+          name: build-timestamp
           path: artifacts
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Release
+          path: artifacts/Release
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.12
       - name: Send to Telegram
+        env:
+          UPDATE_METADATA_MESSAGE_ID: ${{ vars.TEST_UPDATE_METADATA_MESSAGE_ID }}
+          HELPER_BOT_TOKEN: ${{ secrets.HELPER_BOT_TOKEN }}
+          HELPER_BOT_TARGET: ${{ secrets.HELPER_BOT_TARGET }}
         run: |
           # send release via telegram bot api
           export mini64=$(find artifacts -name "*arm64-v8a.apk")
@@ -267,4 +272,4 @@ jobs:
 
           python -m pip install -r bin/scripts/requirements.txt
           git log -1 --pretty=format:"%s%n%n%b" > artifacts/caption.txt
-          python bin/scripts/upload.py ${{ secrets.HELPER_BOT_TOKEN }} ${{ secrets.HELPER_BOT_TARGET }} test
+          python bin/scripts/upload.py "$HELPER_BOT_TOKEN" "$HELPER_BOT_TARGET" test
